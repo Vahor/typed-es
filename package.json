@@ -1,0 +1,49 @@
+{
+	"name": "@vahor/typed-es",
+	"version": "0.0.0",
+	"description": "[description]",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/vahor/typed-es.git"
+	},
+	"module": "index.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"main": "./dist/index.cjs",
+	"private": false,
+	"files": ["dist"],
+	"author": {
+		"email": "me@vahor.fr"
+	},
+	"keywords": ["elasticsearch", "typed", "types", "typescript", "query"],
+	"devDependencies": {
+		"@biomejs/biome": "2.1.2",
+		"@changesets/changelog-github": "^0.5.1",
+		"@types/bun": "latest",
+		"bun-plugin-dts": "^0.3.0",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.2",
+		"pkg-pr-new": "^0.0.54"
+	},
+	"peerDependencies": {
+		"typescript": "^5.8.3"
+	},
+	"scripts": {
+		"prepare": "husky",
+		"build": "bun run build.ts",
+		"format": "bunx @biomejs/biome check ./ --write",
+		"typecheck": "tsc --noEmit --declaration"
+	},
+	"lint-staged": {
+		"*": ["biome check --no-errors-on-unmatched --files-ignore-unknown=true"]
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}
