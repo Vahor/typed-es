@@ -34,7 +34,7 @@ type CustomIndexes = {
 
 ```ts
 import { Client } from "@elastic/elasticsearch";
-import { TyedClient } from "@vahor/typed-es";
+import { TypedClient } from "@vahor/typed-es";
 
 const client: TypedClient<CustomIndexes> = new Client({
     ...
