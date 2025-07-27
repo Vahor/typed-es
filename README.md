@@ -48,18 +48,18 @@ import { typedEs } from "@vahor/typed-es";
 
 const query = typedEs(client, {
     index: "first-index",
-    _source: ["score", "entity_id"],
+    _source: ["score", "entity_id", "*ate"],
 });
 
 // typedEs is a simple wrapper, this is equivalent to:
 const query = {
     index: "first-index",
-    _source: ["score", "entity_id"],
+    _source: ["score", "entity_id", "*ate"],
 } as const satisfies SearchRequest;
 
 const queryWithAggs = typedEs(client, {
     index: "first-index",
-    _source: ["score", "entity_id"],
+    _source: ["score", "entity_id", "*ate"],
     aggs: {
         some_agg: {
             terms: {
@@ -81,7 +81,7 @@ const output = await client.search(query);
 // And without having to add .search<Sources, Aggs>(query) everywhere, you now have access to the correct types
 const hits = output.hits.hits;
 for (const hit of hits) {
-    // Here hit is typed as { _source: { score: number; entity_id: string } }
+    // Here hit is typed as { _source: { score: number; entity_id: string, date: string } }
     const score = hit._source.score; // typed as number
     const entity_id = hit._source.entity_id; // typed as string
     const invalid = hit._source.invalid; // error: Property 'invalid' does not exist on type '{ score: number; entity_id: string; }'
@@ -113,9 +113,9 @@ See more examples in the test files.
 
 ## Limitations
 
-- _source error message is not very clear when a field is invalid.
 - query fields and aggs fields are not typed.
 - Some agg functions might be missing.
+- _source fields allow any string as you can use wildcards. On the other hand, wildcards will result in the **correct type** in the output.
 
 
 PRs are welcome to fix these limitations.

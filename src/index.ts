@@ -4,30 +4,67 @@ export type PossibleFields<Index, Indexes> = Index extends keyof Indexes
 	? keyof Indexes[Index]
 	: never;
 
+type InferSource<T, Key extends string> = T extends {
+	[k in Key]: (infer A)[];
+}
+	? A
+	: never;
+
+// start wildcard search
+type ReplaceStarWithString<T extends string> =
+	T extends `${infer Left}*${infer Right}`
+		? `${Left}${string}${ReplaceStarWithString<Right>}`
+		: T;
+type MatchesWildcard<
+	W extends string,
+	Pattern extends string,
+> = W extends ReplaceStarWithString<Pattern> ? true : false;
+
+type WildcardSearch<Words, Search> = Words extends infer W extends string
+	? Search extends infer S extends string
+		? MatchesWildcard<W, S> extends true
+			? W
+			: never
+		: never
+	: never;
+// end
+
 export type RequestedFields<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	Indexes,
 	Index extends string = RequestedIndex<Query>,
-> = Query["_source"] extends readonly (infer Fields)[]
-	? Fields extends string
-		? Fields
-		: never
-	: Query["_source"] extends false
-		? never
-		: Index extends keyof Indexes
-			? keyof Indexes[Index]
-			: never;
+	AllFields = Index extends keyof Indexes ? keyof Indexes[Index] : never,
+	Source = Query["_source"],
+> = Source extends readonly (infer Fields extends string)[]
+	? Fields
+	: Source extends {
+				includes?: string[];
+				include?: string[];
+				excludes?: string[];
+				exclude?: string[];
+			}
+		? Exclude<
+				// TODO: check if we can do this better
+					| InferSource<Source, "includes">
+					| InferSource<Source, "include"> extends never
+					? AllFields
+					: InferSource<Source, "includes"> | InferSource<Source, "include">,
+				InferSource<Source, "excludes"> | InferSource<Source, "exclude">
+			>
+		: Source extends false
+			? never
+			: AllFields;
 
-export type RequestedIndex<Query extends BaseQuery> =
+export type RequestedIndex<Query extends SearchRequest> =
 	Query["index"] extends string ? Query["index"] : never;
 
 export type HasOption<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	Option extends keyof Query,
 	V = unknown,
 > = Query[Option] extends V ? true : false;
 
-export type ExtractAggsKey<Query extends BaseQuery> =
+export type ExtractAggsKey<Query extends SearchRequest> =
 	ExtractAggs<Query> extends Record<infer K, unknown>
 		? K extends string
 			? K
@@ -71,7 +108,7 @@ type AggregationOutput<
 			| BucketAggs<Query, CurrentAggregationKey>;
 
 type CompositeAggs<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	ElasticsearchIndexes,
 	Key extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
@@ -95,7 +132,7 @@ type CompositeAggs<
 	: never;
 
 type TermsAggs<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	Key extends keyof ExtractAggs<Query>,
 > = ExtractAggs<Query>[Key] extends { terms: unknown }
 	? {
@@ -107,7 +144,7 @@ type TermsAggs<
 	: never;
 
 type DateHistogramAggs<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	ElasticsearchIndexes,
 	Key extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
@@ -150,7 +187,7 @@ type AggFunctionsNumber =
 type AggFunction = "last" | "first" | "stats" | AggFunctionsNumber;
 
 type SimpleAggs<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	Indexes,
 	Index = RequestedIndex<Query>,
 	Agg = ExtractAggField<ExtractAggs<Query>>,
@@ -181,7 +218,7 @@ type ExtractBucketAgg<Agg> = Agg extends {
 type BucketAggFunction = "avg_bucket" | "sum_bucket";
 
 type BucketAggs<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	Key extends keyof ExtractAggs<Query>,
 	Agg = ExtractBucketAgg<ExtractAggs<Query>[Key]>,
 > = Agg extends { path: string }
@@ -192,7 +229,7 @@ type BucketAggs<
 
 type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
-type OverrideSearchResponse<Query extends BaseQuery, T, V> = Prettify<
+type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
 	Omit<estypes.SearchResponse<T, V>, "hits"> & {
 		hits: Omit<estypes.SearchHitsMetadata<T>, "total" | "hits"> & {
 			total: HasOption<Query, "track_total_hits", false> extends true
@@ -210,38 +247,49 @@ type OverrideSearchResponse<Query extends BaseQuery, T, V> = Prettify<
 >;
 
 export type ElasticsearchOutput<
-	Query extends BaseQuery,
+	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
-> = RequestedIndex<Query> extends keyof E
+	Index extends string = RequestedIndex<Query>,
+> = Index extends keyof E
 	? OverrideSearchResponse<
 			Query,
 			{
-				[K in RequestedFields<
-					Query,
-					E
-				>]: K extends keyof E[RequestedIndex<Query>]
-					? E[RequestedIndex<Query>][K]
+				[K in WildcardSearch<
+					keyof E[Index],
+					RequestedFields<Query, E>
+				>]: K extends keyof E[Index]
+					? E[Index][K]
 					: `Field '${K extends string
 							? K
-							: "unknown"}' not found in index '${RequestedIndex<Query>}'`;
+							: "unknown"}' not found in index '${Index}'`;
 			},
 			{
 				// @ts-expect-error: Query is BaseQuery not Record<string, unknown> but we know it
-				[K in ExtractAggsKey<Query>]: AggregationOutput<Query, E, K>;
+				[K in ExtractAggsKey<Query>]: AggregationOutput<Query, E, K, Index>;
 			}
 		>
-	: `Index '${RequestedIndex<Query>}' not found`;
+	: `Index '${Index}' not found`;
 
-type BaseQuery = estypes.SearchRequest;
+export type SearchRequest = estypes.SearchRequest;
+
+type AnyString = string & {};
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
-	BaseQuery,
+	SearchRequest,
 	"index" | "_source"
 > &
 	{
 		[K in keyof Indexes]: {
 			index: K;
-			_source?: Array<keyof Indexes[K]> | false;
+			_source?:
+				| Array<keyof Indexes[K] | AnyString>
+				| false
+				| {
+						includes?: Array<keyof Indexes[K]>;
+						include?: Array<keyof Indexes[K]>;
+						excludes?: Array<keyof Indexes[K]>;
+						exclude?: Array<keyof Indexes[K]>;
+				  };
 		};
 	}[keyof Indexes];
 
