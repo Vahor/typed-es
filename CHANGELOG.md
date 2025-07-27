@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.2
+
+### Patch Changes
+
+- [#8](https://github.com/Vahor/typed-es/pull/8) [`d2cceca`](https://github.com/Vahor/typed-es/commit/d2cceca9ca53197a2eee2b329d9828c378c50857) Thanks [@Vahor](https://github.com/Vahor)! - allow "@elastic/elasticsearch" to be v8 or v9
+
 ## 0.0.1
 
 ### Patch Changes
