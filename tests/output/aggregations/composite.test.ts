@@ -10,7 +10,7 @@ describe("Composite Aggregations", () => {
 			size: 10,
 			from: 0,
 			_source: ["score"],
-			aggs: {
+			aggregations: {
 				page: {
 					composite: {
 						size: 10,

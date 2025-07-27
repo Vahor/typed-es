@@ -28,7 +28,7 @@ export type HasOption<
 > = Query[Option] extends V ? true : false;
 
 export type ExtractAggsKey<Query extends BaseQuery> =
-	Query[aggs] extends Record<infer K, unknown>
+	ExtractAggs<Query> extends Record<infer K, unknown>
 		? K extends string
 			? K
 			: never
@@ -42,16 +42,19 @@ type ObjectKeysWithSpecificKeys<T, TargetKeys extends string> = {
 		: never;
 }[keyof T];
 
-type NextAggsParentKey<Query extends Record<string, unknown>> =
-	| ObjectKeysWithSpecificKeys<Query[aggs], "date_histogram">
-	| ObjectKeysWithSpecificKeys<Query[aggs], "terms">
-	| ObjectKeysWithSpecificKeys<Query[aggs], AggFunction>
-	| ObjectKeysWithSpecificKeys<Query[aggs], BucketAggFunction>;
+type NextAggsParentKey<
+	Query extends Record<string, unknown>,
+	Aggs = ExtractAggs<Query>,
+> =
+	| ObjectKeysWithSpecificKeys<Aggs, "date_histogram">
+	| ObjectKeysWithSpecificKeys<Aggs, "terms">
+	| ObjectKeysWithSpecificKeys<Aggs, AggFunction>
+	| ObjectKeysWithSpecificKeys<Aggs, BucketAggFunction>;
 
 type AggregationOutput<
 	Query extends Record<string, unknown>,
 	ElasticsearchIndexes,
-	CurrentAggregationKey extends keyof Query[aggs],
+	CurrentAggregationKey extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
 > = CurrentAggregationKey extends never
 	? never
@@ -64,15 +67,15 @@ type AggregationOutput<
 					Index
 			  >
 			| TermsAggs<Query, CurrentAggregationKey>
-			| SimpleAggs<Query, ElasticsearchIndexes, CurrentAggregationKey, Index>
+			| SimpleAggs<Query, ElasticsearchIndexes, Index>
 			| BucketAggs<Query, CurrentAggregationKey>;
 
 type CompositeAggs<
 	Query extends BaseQuery,
 	ElasticsearchIndexes,
-	Key extends keyof Query[aggs],
+	Key extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
-> = Query[aggs][Key] extends { composite: unknown }
+> = ExtractAggs<Query>[Key] extends { composite: unknown }
 	? {
 			after_key: Record<string, unknown>;
 			buckets: PrettyArray<
@@ -80,8 +83,8 @@ type CompositeAggs<
 					key: Record<string, unknown>;
 					doc_count: number;
 				} & {
-					[k in NextAggsParentKey<Query[aggs][Key]>]: AggregationOutput<
-						Query[aggs][Key],
+					[k in NextAggsParentKey<ExtractAggs<Query>[Key]>]: AggregationOutput<
+						ExtractAggs<Query>[Key],
 						ElasticsearchIndexes,
 						k,
 						Index
@@ -93,8 +96,8 @@ type CompositeAggs<
 
 type TermsAggs<
 	Query extends BaseQuery,
-	Key extends keyof Query[aggs],
-> = Query[aggs][Key] extends { terms: unknown }
+	Key extends keyof ExtractAggs<Query>,
+> = ExtractAggs<Query>[Key] extends { terms: unknown }
 	? {
 			buckets: PrettyArray<{
 				key: unknown;
@@ -106,9 +109,9 @@ type TermsAggs<
 type DateHistogramAggs<
 	Query extends BaseQuery,
 	ElasticsearchIndexes,
-	Key extends keyof Query[aggs],
+	Key extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
-> = Query[aggs][Key] extends { date_histogram: unknown }
+> = ExtractAggs<Query>[Key] extends { date_histogram: unknown }
 	? {
 			buckets: PrettyArray<
 				{
@@ -116,8 +119,8 @@ type DateHistogramAggs<
 					key: unknown;
 					doc_count: number;
 				} & {
-					[k in NextAggsParentKey<Query[aggs][Key]>]: AggregationOutput<
-						Query[aggs][Key],
+					[k in NextAggsParentKey<ExtractAggs<Query>[Key]>]: AggregationOutput<
+						ExtractAggs<Query>[Key],
 						ElasticsearchIndexes,
 						k,
 						Index
@@ -149,9 +152,8 @@ type AggFunction = "last" | "first" | "stats" | AggFunctionsNumber;
 type SimpleAggs<
 	Query extends BaseQuery,
 	Indexes,
-	_Key extends keyof Query[aggs],
 	Index = RequestedIndex<Query>,
-	Agg = ExtractAggField<Query[aggs]>,
+	Agg = ExtractAggField<ExtractAggs<Query>>,
 > = Agg extends { fn: string; field: string }
 	? {
 			value: Agg["fn"] extends AggFunctionsNumber
@@ -180,8 +182,8 @@ type BucketAggFunction = "avg_bucket" | "sum_bucket";
 
 type BucketAggs<
 	Query extends BaseQuery,
-	Key extends keyof Query[aggs],
-	Agg = ExtractBucketAgg<Query[aggs][Key]>,
+	Key extends keyof ExtractAggs<Query>,
+	Agg = ExtractBucketAgg<ExtractAggs<Query>[Key]>,
 > = Agg extends { path: string }
 	? {
 			value: unknown;
@@ -238,7 +240,15 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 			_source?: Array<keyof Indexes[K]> | false;
 		};
 	}[keyof Indexes];
-type aggs = "aggs";
+
+type ExtractAggs<V> = V extends {
+	aggs: infer A;
+}
+	? A
+	: V extends { aggregations: infer A }
+		? A
+		: never;
+
 type Prettify<T> = {
 	[K in keyof T]: T[K];
 } & {};
