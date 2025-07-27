@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.3
+
+### Patch Changes
+
+- [#10](https://github.com/Vahor/typed-es/pull/10) [`8b7f74a`](https://github.com/Vahor/typed-es/commit/8b7f74a2f9e37ff64175ff9b748cc99bc2a1a7f2) Thanks [@Vahor](https://github.com/Vahor)! - improve types of hits.total and hits.hits[number].\_source based on the query
+
 ## 0.0.2
 
 ### Patch Changes
