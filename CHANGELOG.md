@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.4
+
+### Patch Changes
+
+- [#13](https://github.com/Vahor/typed-es/pull/13) [`84d07c6`](https://github.com/Vahor/typed-es/commit/84d07c66ac5e7fd39f5d39b625bcfd09ebdee8ce) Thanks [@Vahor](https://github.com/Vahor)! - handle `aggregations` as aggregation key (previously only `aggs`)
+
 ## 0.0.3
 
 ### Patch Changes
