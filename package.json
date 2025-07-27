@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/vahor/typed-es.git"
+		"url": "git+https://github.com/Vahor/typed-es.git"
 	},
 	"module": "index.ts",
 	"type": "module",
