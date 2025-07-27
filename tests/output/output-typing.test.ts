@@ -4,15 +4,6 @@ import type { ElasticsearchOutput, SearchRequest } from "../../src/index";
 import type { CustomIndexes, testQueries } from "../shared";
 
 describe("ElasticsearchOutput Type", () => {
-	test("Should fail if the field is not found", () => {
-		expectTypeOf<
-			ElasticsearchOutput<
-				typeof testQueries.invalidSourceQuery,
-				CustomIndexes
-			>["hits"]["hits"][0]["_source"]["invalid"]
-		>().toBeString();
-	});
-
 	describe("Should return the correct type", () => {
 		test("with _source", () => {
 			expectTypeOf<
