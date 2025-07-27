@@ -190,16 +190,20 @@ type BucketAggs<
 
 type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
-type OverrideSearchResponse<Query extends BaseQuery, T, V> = Omit<
-	estypes.SearchResponse<T, V>,
-	"hits"
-> & {
-	hits: Omit<estypes.SearchHitsMetadata<T>, "total"> & {
-		total: HasOption<Query, "track_total_hits", false> extends true
-			? never
-			: NonNullable<estypes.SearchHitsMetadata<T>["total"]>;
-	};
-};
+type OverrideSearchResponse<Query extends BaseQuery, T, V> = Prettify<
+	Omit<estypes.SearchResponse<T, V>, "hits"> & {
+		hits: Omit<estypes.SearchHitsMetadata<T>, "total" | "hits"> & {
+			total: HasOption<Query, "track_total_hits", false> extends true
+				? never
+				: NonNullable<estypes.SearchHitsMetadata<T>["total"]>;
+			hits: Array<
+				Omit<estypes.SearchHitsMetadata<T>["hits"][number], "_source"> & {
+					_source: Query["_source"] extends false ? never : T;
+				}
+			>;
+		};
+	}
+>;
 
 export type ElasticsearchOutput<
 	Query extends BaseQuery,

@@ -81,10 +81,10 @@ const output = await client.search(query);
 // And without having to add .search<Sources, Aggs>(query) everywhere, you now have access to the correct types
 const hits = output.hits.hits;
 for (const hit of hits) {
-    // Here hit is typed as { _source: { score: number; entity_id: string } | undefined }
-    const score = hit._source!.score; // typed as number
-    const entity_id = hit._source!.entity_id; // typed as string
-    const invalid = hit._source!.invalid; // error: Property 'invalid' does not exist on type '{ score: number; entity_id: string; }'
+    // Here hit is typed as { _source: { score: number; entity_id: string } }
+    const score = hit._source.score; // typed as number
+    const entity_id = hit._source.entity_id; // typed as string
+    const invalid = hit._source.invalid; // error: Property 'invalid' does not exist on type '{ score: number; entity_id: string; }'
 }
 
 
@@ -117,7 +117,6 @@ See more examples in the test files.
 - query fields and aggs fields are not typed.
 - aggs types are only types if we use `aggs`. You won't get types if you use `aggregations`.
 - Some agg functions might be missing.
-- Would be nice to have _source not be undefined if the query ask for fields.
 
 
 PRs are welcome to fix these limitations.
