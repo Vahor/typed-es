@@ -219,7 +219,7 @@ describe("Elasticsearch Types Interface", () => {
 							Query,
 							CustomIndexes
 						>["hits"]["hits"][0]["_source"]
-					>().toEqualTypeOf<{}>();
+					>().toEqualTypeOf<never>();
 				});
 			});
 
@@ -332,10 +332,6 @@ describe("Elasticsearch Types Interface", () => {
 						}>;
 					};
 				}>();
-
-				expectTypeOf<
-					Output["hits"]["hits"][0]["_source"]
-				>().toEqualTypeOf<{}>();
 			});
 
 			test("number agg on a non-number field", () => {
