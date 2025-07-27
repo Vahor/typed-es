@@ -197,7 +197,9 @@ type OverrideSearchResponse<Query extends BaseQuery, T, V> = Prettify<
 		hits: Omit<estypes.SearchHitsMetadata<T>, "total" | "hits"> & {
 			total: HasOption<Query, "track_total_hits", false> extends true
 				? never
-				: NonNullable<estypes.SearchHitsMetadata<T>["total"]>;
+				: HasOption<Query, "rest_total_hits_as_int", true> extends true
+					? number
+					: estypes.SearchTotalHits;
 			hits: Array<
 				Omit<estypes.SearchHitsMetadata<T>["hits"][number], "_source"> & {
 					_source: Query["_source"] extends false ? never : T;
@@ -219,7 +221,9 @@ export type ElasticsearchOutput<
 					E
 				>]: K extends keyof E[RequestedIndex<Query>]
 					? E[RequestedIndex<Query>][K]
-					: `Field '${K extends string ? K : "unknown"}' not found in index '${RequestedIndex<Query>}'`;
+					: `Field '${K extends string
+							? K
+							: "unknown"}' not found in index '${RequestedIndex<Query>}'`;
 			},
 			{
 				// @ts-expect-error: Query is BaseQuery not Record<string, unknown> but we know it

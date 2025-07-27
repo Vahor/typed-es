@@ -13,11 +13,10 @@ describe("Query Options", () => {
 				_source: false,
 			});
 			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<
-				number | estypes.SearchTotalHits
-			>();
+			expectTypeOf<
+				Output["hits"]["total"]
+			>().toEqualTypeOf<estypes.SearchTotalHits>();
 		});
-
 		test("set to false", () => {
 			const query = typedEs(client, {
 				index: "demo",
@@ -34,9 +33,65 @@ describe("Query Options", () => {
 				_source: false,
 			});
 			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<
-				number | estypes.SearchTotalHits
-			>();
+			expectTypeOf<
+				Output["hits"]["total"]
+			>().toEqualTypeOf<estypes.SearchTotalHits>();
+		});
+	});
+
+	describe("rest_total_hits_as_int", () => {
+		test("set to true", () => {
+			const query = typedEs(client, {
+				index: "demo",
+				rest_total_hits_as_int: true,
+				_source: false,
+			});
+			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<number>();
+		});
+
+		test("set to false", () => {
+			const query = typedEs(client, {
+				index: "demo",
+				rest_total_hits_as_int: false,
+				_source: false,
+			});
+			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			expectTypeOf<
+				Output["hits"]["total"]
+			>().toEqualTypeOf<estypes.SearchTotalHits>();
+		});
+
+		test("set to undefined (defaults to false)", () => {
+			const query = typedEs(client, {
+				index: "demo",
+				_source: false,
+			});
+			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			expectTypeOf<
+				Output["hits"]["total"]
+			>().toEqualTypeOf<estypes.SearchTotalHits>();
+		});
+
+		test("combined with track_total_hits: false", () => {
+			const query = typedEs(client, {
+				index: "demo",
+				track_total_hits: false,
+				rest_total_hits_as_int: true,
+				_source: false,
+			});
+			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<never>();
+		});
+		test("combined with track_total_hits: true", () => {
+			const query = typedEs(client, {
+				index: "demo",
+				track_total_hits: true,
+				rest_total_hits_as_int: true,
+				_source: false,
+			});
+			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<number>();
 		});
 	});
 
