@@ -71,6 +71,72 @@ describe("Elasticsearch Types Interface", () => {
 		>().toBeString();
 	});
 
+	describe("should enforce types based on options", () => {
+		describe("track_total_hits", () => {
+			test("set to true", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					track_total_hits: true,
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<
+					number | estypes.SearchTotalHits
+				>();
+			});
+
+			test("set to false", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					track_total_hits: false,
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<never>();
+			});
+
+			test("set to undefined", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<
+					number | estypes.SearchTotalHits
+				>();
+			});
+		});
+		describe("_source undefiend when set to false", () => {
+			test("false", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<
+					Output["hits"]["hits"][0]["_source"]
+				>().toEqualTypeOf<never>();
+			});
+			test("undefined", () => {
+				const query = typedEs(client, {
+					index: "demo",
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Source = Output["hits"]["hits"][0]["_source"];
+				expectTypeOf<Source>().toEqualTypeOf<CustomIndexes["demo"]>();
+			});
+			test("empty array", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					_source: [],
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Source = Output["hits"]["hits"][0]["_source"];
+				expectTypeOf<Source>().toEqualTypeOf<{}>();
+			});
+		});
+	});
+
 	describe("typedEs", () => {
 		describe("Should enforce correct index", () => {
 			test("with valid index", () => {
@@ -122,46 +188,38 @@ describe("Elasticsearch Types Interface", () => {
 		describe("Should type the output", () => {
 			test("Should fail if the field is not found", () => {
 				expectTypeOf<
-					NonNullable<
-						ElasticsearchOutput<
-							typeof invalidSourceQuery,
-							CustomIndexes
-						>["hits"]["hits"][0]["_source"]
-					>["invalid"]
+					ElasticsearchOutput<
+						typeof invalidSourceQuery,
+						CustomIndexes
+					>["hits"]["hits"][0]["_source"]["invalid"]
 				>().toBeString();
 			});
 
 			describe("Should return the correct type", () => {
 				test("with _source", () => {
 					expectTypeOf<
-						NonNullable<
-							ElasticsearchOutput<
-								typeof invalidSourceQuery,
-								CustomIndexes
-							>["hits"]["hits"][0]["_source"]
-						>["score"]
+						ElasticsearchOutput<
+							typeof invalidSourceQuery,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"]["score"]
 					>().toEqualTypeOf<number>();
 				});
 				test("without _source", () => {
 					expectTypeOf<
-						NonNullable<
-							ElasticsearchOutput<
-								typeof queryWithoutSource,
-								CustomIndexes
-							>["hits"]["hits"][0]["_source"]
-						>
+						ElasticsearchOutput<
+							typeof queryWithoutSource,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"]
 					>().toEqualTypeOf<CustomIndexes["demo"]>();
 				});
 				test("with _source set to false", () => {
 					type Query = typeof queryWithoutSource & { _source: false };
 					expectTypeOf<
-						NonNullable<
-							ElasticsearchOutput<
-								Query,
-								CustomIndexes
-							>["hits"]["hits"][0]["_source"]
-						>
-					>().toEqualTypeOf<{}>();
+						ElasticsearchOutput<
+							Query,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"]
+					>().toEqualTypeOf<never>();
 				});
 			});
 
@@ -214,9 +272,7 @@ describe("Elasticsearch Types Interface", () => {
 						};
 					}>();
 
-					expectTypeOf<
-						NonNullable<Output["hits"]["hits"][0]["_source"]>
-					>().toEqualTypeOf<{
+					expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toEqualTypeOf<{
 						score: number;
 					}>();
 				});
@@ -276,10 +332,6 @@ describe("Elasticsearch Types Interface", () => {
 						}>;
 					};
 				}>();
-
-				expectTypeOf<
-					NonNullable<Output["hits"]["hits"][0]["_source"]>
-				>().toEqualTypeOf<{}>();
 			});
 
 			test("number agg on a non-number field", () => {
