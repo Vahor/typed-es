@@ -1,5 +1,15 @@
 # @vahor/typed-es
 
+## 0.0.5
+
+### Patch Changes
+
+- [#17](https://github.com/Vahor/typed-es/pull/17) [`ddaa347`](https://github.com/Vahor/typed-es/commit/ddaa3471b236d664d4ec8d8d1e78849ad0dfb7a7) Thanks [@Vahor](https://github.com/Vahor)! - handle `rest_total_hits_as_int` option
+
+- [#20](https://github.com/Vahor/typed-es/pull/20) [`a3e8154`](https://github.com/Vahor/typed-es/commit/a3e815424582f9b7bd067814a826a22267509a4b) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `includes` and `excludes` (and singular version) in `_source`
+
+- [#20](https://github.com/Vahor/typed-es/pull/20) [`a3e8154`](https://github.com/Vahor/typed-es/commit/a3e815424582f9b7bd067814a826a22267509a4b) Thanks [@Vahor](https://github.com/Vahor)! - Add support for wildcards in `_source`
+
 ## 0.0.4
 
 ### Patch Changes
