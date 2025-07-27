@@ -1,6 +1,6 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import type { ElasticsearchOutput } from "../../src/index";
+import type { ElasticsearchOutput, SearchRequest } from "../../src/index";
 import type { CustomIndexes, testQueries } from "../shared";
 
 describe("ElasticsearchOutput Type", () => {
@@ -37,6 +37,62 @@ describe("ElasticsearchOutput Type", () => {
 			expectTypeOf<
 				ElasticsearchOutput<Query, CustomIndexes>["hits"]["hits"][0]["_source"]
 			>().toEqualTypeOf<never>();
+		});
+
+		describe("support wildcards", () => {
+			test("with _source set to *", () => {
+				const query = {
+					index: "demo",
+					_source: ["*"],
+				} as const satisfies SearchRequest;
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toEqualTypeOf<
+					CustomIndexes["demo"]
+				>();
+			});
+			test("with before wildcard", () => {
+				const query = {
+					index: "demo",
+					_source: ["*core"],
+				} as const satisfies SearchRequest;
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toEqualTypeOf<{
+					score: number;
+				}>();
+			});
+
+			test("with after wildcard", () => {
+				const query = {
+					index: "demo",
+					_source: ["sc*"],
+				} as const satisfies SearchRequest;
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toEqualTypeOf<{
+					score: number;
+				}>();
+			});
+
+			test("with before and after wildcard", () => {
+				const query = {
+					index: "demo",
+					_source: ["*cor*"],
+				} as const satisfies SearchRequest;
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toEqualTypeOf<{
+					score: number;
+				}>();
+			});
+			test("can use wildcard and non-wildcard", () => {
+				const query = {
+					index: "demo",
+					_source: ["*core", "entity_id"],
+				} as const satisfies SearchRequest;
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toEqualTypeOf<{
+					score: number;
+					entity_id: string;
+				}>();
+			});
 		});
 	});
 });

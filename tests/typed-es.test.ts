@@ -47,7 +47,6 @@ describe("typedEs Function", () => {
 		test("with invalid fields", () => {
 			typedEs(client, {
 				index: "demo",
-				// @ts-expect-error: 'invalid' is not a valid field
 				_source: ["score", "invalid"],
 			});
 		});
@@ -55,6 +54,18 @@ describe("typedEs Function", () => {
 		test("with no _source", () => {
 			typedEs(client, {
 				index: "demo",
+			});
+		});
+
+		test("with include and exclude", () => {
+			typedEs(client, {
+				index: "demo",
+				_source: {
+					includes: ["score"],
+					include: ["score"],
+					excludes: ["score"],
+					exclude: ["score"],
+				},
 			});
 		});
 	});
