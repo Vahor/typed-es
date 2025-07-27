@@ -113,7 +113,6 @@ See more examples in the test files.
 
 ## Limitations
 
-- Types are currently setup with elasticsearch version 8. Might need to be adjusted for other versions.
 - _source error message is not very clear when a field is invalid.
 - query fields and aggs fields are not typed.
 - aggs types are only types if we use `aggs`. You won't get types if you use `aggregations`.

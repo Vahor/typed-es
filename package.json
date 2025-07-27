@@ -34,7 +34,7 @@
 		"@biomejs/biome": "2.1.2",
 		"@changesets/changelog-github": "^0.5.1",
 		"@changesets/cli": "^2.29.5",
-		"@elastic/elasticsearch": "^8",
+		"@elastic/elasticsearch": "^8 || ^9",
 		"@types/bun": "latest",
 		"bun-plugin-dts": "^0.3.0",
 		"expect-type": "^1.2.2",
