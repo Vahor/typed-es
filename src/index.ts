@@ -241,13 +241,9 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 		};
 	}[keyof Indexes];
 
-type ExtractAggs<V> = V extends {
-	aggs: infer A;
-}
+type ExtractAggs<V> = V extends { aggs: infer A } | { aggregations: infer A }
 	? A
-	: V extends { aggregations: infer A }
-		? A
-		: never;
+	: never;
 
 type Prettify<T> = {
 	[K in keyof T]: T[K];
