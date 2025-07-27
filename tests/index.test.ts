@@ -71,6 +71,43 @@ describe("Elasticsearch Types Interface", () => {
 		>().toBeString();
 	});
 
+	describe("should enforce types based on options", () => {
+		describe("track_total_hits", () => {
+			test("set to true", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					track_total_hits: true,
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<
+					number | estypes.SearchTotalHits
+				>();
+			});
+
+			test("set to false", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					track_total_hits: false,
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<never>();
+			});
+
+			test("set to undefined", () => {
+				const query = typedEs(client, {
+					index: "demo",
+					_source: false,
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<
+					number | estypes.SearchTotalHits
+				>();
+			});
+		});
+	});
+
 	describe("typedEs", () => {
 		describe("Should enforce correct index", () => {
 			test("with valid index", () => {

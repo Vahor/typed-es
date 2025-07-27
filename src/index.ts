@@ -21,6 +21,12 @@ export type RequestedFields<
 export type RequestedIndex<Query extends BaseQuery> =
 	Query["index"] extends string ? Query["index"] : never;
 
+export type HasOption<
+	Query extends BaseQuery,
+	Option extends keyof Query,
+	V = unknown,
+> = Query[Option] extends V ? true : false;
+
 export type ExtractAggsKey<Query extends BaseQuery> =
 	Query[aggs] extends Record<infer K, unknown>
 		? K extends string
@@ -184,11 +190,23 @@ type BucketAggs<
 
 type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
+type OverrideSearchResponse<Query extends BaseQuery, T, V> = Omit<
+	estypes.SearchResponse<T, V>,
+	"hits"
+> & {
+	hits: Omit<estypes.SearchHitsMetadata<T>, "total"> & {
+		total: HasOption<Query, "track_total_hits", false> extends true
+			? never
+			: NonNullable<estypes.SearchHitsMetadata<T>["total"]>;
+	};
+};
+
 export type ElasticsearchOutput<
 	Query extends BaseQuery,
 	E extends ElasticsearchIndexes,
 > = RequestedIndex<Query> extends keyof E
-	? estypes.SearchResponse<
+	? OverrideSearchResponse<
+			Query,
 			{
 				[K in RequestedFields<
 					Query,
