@@ -15,7 +15,7 @@ describe("Date Histogram Aggregations", () => {
 						field: "@timestamp",
 						calendar_interval: "year",
 					},
-					aggs: {
+					aggregations: {
 						daily: {
 							date_histogram: {
 								field: "@timestamp",
