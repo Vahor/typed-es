@@ -1,8 +1,65 @@
 import type { Client, estypes } from "@elastic/elasticsearch";
 
-export type PossibleFields<Index, Indexes> = Index extends keyof Indexes
-	? keyof Indexes[Index]
+// helpers
+type Prettify<T> = {
+	[K in keyof T]: T[K];
+} & {};
+type PrettyArray<T> = Array<Prettify<T>>;
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
+	k: infer I,
+) => void
+	? Prettify<I>
 	: never;
+// end
+
+// start possible fields
+export type PossibleFields<Index, Indexes> = Index extends keyof Indexes
+	? JoinKeys<Indexes[Index]>
+	: never;
+
+type Primitive = string | number | boolean | bigint | symbol | null | undefined;
+
+type JoinKeys<T, Prefix extends string = ""> = {
+	[K in keyof T]: T[K] extends Function
+		? `${Prefix}${Extract<K, string>}`
+		: T[K] extends Primitive | Array<Primitive> | Date
+			? `${Prefix}${Extract<K, string>}`
+			:
+					| `${Prefix}${Extract<K, string>}`
+					| JoinKeys<T[K], `${Prefix}${Extract<K, string>}.`>;
+}[keyof T];
+// end
+
+// start type of field
+export type TypeOfField<
+	Field extends string,
+	Indexes,
+	Index extends keyof Indexes,
+> = RecursiveDotNotation<Indexes[Index], Field>;
+
+type RecursiveDotNotation<
+	T,
+	Path extends string,
+> = Path extends `${infer Key}.${infer Rest}`
+	? Key extends keyof T
+		? RecursiveDotNotation<T[Key], Rest>
+		: never
+	: Path extends keyof T
+		? T[Path]
+		: never;
+
+type ExpandDottedKey<
+	Key extends string,
+	Value,
+> = Key extends `${infer K}.${infer Rest}`
+	? { [P in K]: ExpandDottedKey<Rest, Value> }
+	: { [P in Key]: Value };
+type ExpandAll<T> = UnionToIntersection<
+	{
+		[K in keyof T]: ExpandDottedKey<K & string, T[K]>;
+	}[keyof T]
+>;
+// end
 
 type InferSource<T, Key extends string> = T extends {
 	[k in Key]: (infer A)[];
@@ -20,7 +77,7 @@ type MatchesWildcard<
 	Pattern extends string,
 > = W extends ReplaceStarWithString<Pattern> ? true : false;
 
-type WildcardSearch<Words, Search> = Words extends infer W extends string
+export type WildcardSearch<Words, Search> = Words extends infer W extends string
 	? Search extends infer S extends string
 		? MatchesWildcard<W, S> extends true
 			? W
@@ -203,8 +260,8 @@ type SimpleAggs<
 							avg: number;
 							sum: number;
 						}
-					: // @ts-expect-error: I know what I'm doing
-						Indexes[Index][Agg["field"]];
+					: // @ts-expect-error: Index should be in keyof Indexes, This is fine
+						TypeOfField<Agg["field"], Indexes, Index>;
 		}
 	: never;
 
@@ -253,16 +310,12 @@ export type ElasticsearchOutput<
 > = Index extends keyof E
 	? OverrideSearchResponse<
 			Query,
-			{
+			ExpandAll<{
 				[K in WildcardSearch<
-					keyof E[Index],
-					RequestedFields<Query, E>
-				>]: K extends keyof E[Index]
-					? E[Index][K]
-					: `Field '${K extends string
-							? K
-							: "unknown"}' not found in index '${Index}'`;
-			},
+					PossibleFields<Index, E>,
+					RequestedFields<Query, E, Index>
+				>]: TypeOfField<K, E, Index>;
+			}>,
 			{
 				// @ts-expect-error: Query is BaseQuery not Record<string, unknown> but we know it
 				[K in ExtractAggsKey<Query>]: AggregationOutput<Query, E, K, Index>;
@@ -282,13 +335,13 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 		[K in keyof Indexes]: {
 			index: K;
 			_source?:
-				| Array<keyof Indexes[K] | AnyString>
+				| Array<PossibleFields<K, Indexes> | AnyString>
 				| false
 				| {
-						includes?: Array<keyof Indexes[K]>;
-						include?: Array<keyof Indexes[K]>;
-						excludes?: Array<keyof Indexes[K]>;
-						exclude?: Array<keyof Indexes[K]>;
+						includes?: Array<PossibleFields<K, Indexes> | AnyString>;
+						include?: Array<PossibleFields<K, Indexes> | AnyString>;
+						excludes?: Array<PossibleFields<K, Indexes> | AnyString>;
+						exclude?: Array<PossibleFields<K, Indexes> | AnyString>;
 				  };
 		};
 	}[keyof Indexes];
@@ -296,11 +349,6 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 type ExtractAggs<V> = V extends { aggs: infer A } | { aggregations: infer A }
 	? A
 	: never;
-
-type Prettify<T> = {
-	[K in keyof T]: T[K];
-} & {};
-type PrettyArray<T> = Array<Prettify<T>>;
 
 // @ts-expect-error: We are overriding types, but it's fine
 export interface TypedClient<E extends ElasticsearchIndexes> extends Client {

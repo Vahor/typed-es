@@ -22,7 +22,8 @@
 				"noBannedTypes": "off"
 			},
 			"suspicious": {
-				"noRedeclare": "off"
+				"noRedeclare": "off",
+				"noExplicitAny": "off"
 			}
 		}
 	},
