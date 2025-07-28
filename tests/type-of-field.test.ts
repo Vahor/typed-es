@@ -25,4 +25,10 @@ describe("TypeOfField", () => {
 		type Expected = CustomIndexes["orders"]["shipping_address"]["street"];
 		expectTypeOf<Value>().toEqualTypeOf<Expected>();
 	});
+
+	test("return never if the field is not found", () => {
+		type Value = TypeOfField<"invalid", CustomIndexes, "orders">;
+		type Expected = never;
+		expectTypeOf<Value>().toEqualTypeOf<Expected>();
+	});
 });
