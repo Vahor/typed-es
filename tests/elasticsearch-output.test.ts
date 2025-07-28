@@ -45,7 +45,7 @@ describe("Should return the correct type", () => {
 			>["hits"]["hits"][0]["_source"];
 			type Expected = {
 				shipping_address: {
-					street: string;
+					street: CustomIndexes["orders"]["shipping_address"]["street"];
 				};
 			};
 			expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
