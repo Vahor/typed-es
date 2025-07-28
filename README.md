@@ -4,6 +4,11 @@
 [![npm downloads](https://img.shields.io/npm/dm/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
 
 
+## Features
+- **Wildcard support**: Allows the use of wildcards in the `_source` field to flexibly specify the fields to be returned.
+- **Automatic type based on options**: Automatically determines the output types based on query options, such as returning the `total` count.
+- **Automatic output type based on `_source` and aggregations**: Infers the correct output types according to the `_source` field and aggregations in the query.
+
 Automatically add output types to your Elasticsearch queries.
 
 ## Install
