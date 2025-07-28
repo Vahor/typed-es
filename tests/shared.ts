@@ -24,6 +24,11 @@ export type CustomIndexes = {
 			city: string;
 			country: string;
 			postal_code: string;
+			again: {
+				and_again: {
+					last_time: string;
+				};
+			};
 		};
 	};
 };

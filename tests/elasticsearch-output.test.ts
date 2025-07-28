@@ -72,6 +72,26 @@ describe("Should return the correct type", () => {
 				Expected["shipping_address"]["city"]
 			>();
 		});
+		test("with a deeply nested field", () => {
+			const query = typedEs(client, {
+				index: "orders",
+				_source: ["shipping_address.again.and_again.last_time"],
+			});
+			type OutputSource = ElasticsearchOutput<
+				typeof query,
+				CustomIndexes
+			>["hits"]["hits"][0]["_source"];
+			type Expected = {
+				shipping_address: {
+					again: {
+						and_again: {
+							last_time: string;
+						};
+					};
+				};
+			};
+			expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
+		});
 	});
 
 	describe("support wildcards", () => {

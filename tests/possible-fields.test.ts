@@ -17,7 +17,10 @@ describe("Field Extraction", () => {
 			| "shipping_address.street"
 			| "shipping_address.city"
 			| "shipping_address.country"
-			| "shipping_address.postal_code";
+			| "shipping_address.postal_code"
+			| "shipping_address.again"
+			| "shipping_address.again.and_again"
+			| "shipping_address.again.and_again.last_time";
 
 		expectTypeOf<Value>().toEqualTypeOf<Expected>();
 	});
