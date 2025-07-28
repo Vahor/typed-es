@@ -12,9 +12,27 @@ export type CustomIndexes = {
 	demo2: {
 		invalid: string;
 	};
+	orders: {
+		id: string;
+		user_id: string;
+		product_ids: string[];
+		total: number;
+		status: "pending" | "completed" | "cancelled";
+		created_at: string;
+		shipping_address: {
+			street: string;
+			city: string;
+			country: string;
+			postal_code: string;
+			again: {
+				and_again: {
+					last_time: string;
+				};
+			};
+		};
+	};
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: client is not used in tests
 export const client: TypedClient<CustomIndexes> = undefined as any;
 
 export const testQueries = {
