@@ -4,12 +4,40 @@
 [![npm downloads](https://img.shields.io/npm/dm/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
 
 
-## Features
-- **Wildcard support**: Allows the use of wildcards in the `_source` field to flexibly specify the fields to be returned.
-- **Automatic type based on options**: Automatically determines the output types based on query options, such as returning the `total` count.
-- **Automatic output type based on `_source` and aggregations**: Infers the correct output types according to the `_source` field and aggregations in the query.
-
 Automatically add output types to your Elasticsearch queries.
+
+## Features
+- **Automatic type based on options**: Automatically infers output types from query options (e.g., returning `total` count).  
+- **Automatic output type based on `_source` and aggregations**: Derives precise types from specified `_source` fields and aggregation configurations.  
+- **Understand wildcards**: Unlike basic wildcard support, the library correctly detects and infers output types even when using wildcards in `_source` (e.g., `*_at` still returns the correct field types).  
+
+
+```ts
+// Example: Using all features together
+type MyIndex = {
+  id: number;
+  name: string;
+  created_at: string;
+};
+
+const client: TypedClient<MyIndex> = new Client({/* config */});
+
+// Query with _source (wildcard), aggregation, and options
+const query = typedEs(client, {
+  index: "my-index",
+  _source: ["id", "*_at"], 
+  track_total_hits: true, 
+  aggs: { 
+    name_counts: { terms: { field: "name" } }
+  }
+});
+
+const result = await client.search(query);
+result.hits.total.value; 
+result.hits.hits[0]._source.created_at; 
+result.aggregations.name_counts.buckets[0].key; 
+```
+
 
 ## Install
 
