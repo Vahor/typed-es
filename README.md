@@ -41,7 +41,7 @@ const query = typedEs(client, {
 const result = await client.search(query);
 const total = result.hits.total; // number
 const firstHit = result.hits.hits[0]!._source; // { id: number; created_at: string }
-const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
+const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
 ```
 
 ## Why This Library?
@@ -83,7 +83,7 @@ const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ 
 const result = await client.search(query);
 const total = result.hits.total; // number
 const firstHit = result.hits.hits[0]?._source; // { id: number; created_at: string }
-const aggregationBuckets = result.aggregations?.name_counts.buckets; // Array<{ key: unknown; doc_count: number }> 
+const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ key: unknown; doc_count: number }> 
 ```
 
 </details>

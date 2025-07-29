@@ -108,7 +108,7 @@ export type AggregationOutput<
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
 type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
-	Omit<estypes.SearchResponse<T, V>, "hits"> & {
+	Omit<estypes.SearchResponse<T, V>, "hits" | "aggregations"> & {
 		hits: Omit<estypes.SearchHitsMetadata<T>, "total" | "hits"> & {
 			total: HasOption<Query, "track_total_hits", false> extends true
 				? never
@@ -121,6 +121,8 @@ type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
 				}
 			>;
 		};
+	} & {
+		aggregations: ExtractAggs<Query> extends never ? never : NonNullable<V>;
 	}
 >;
 

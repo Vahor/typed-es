@@ -1,7 +1,7 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import { type ElasticsearchOutput, typedEs } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import { type CustomIndexes, client } from "../shared";
 
 describe("Composite Aggregations", () => {
 	test("with pagination", () => {
@@ -31,7 +31,7 @@ describe("Composite Aggregations", () => {
 			},
 		});
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = NonNullable<Output["aggregations"]>;
+		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			page: {
 				after_key: Record<string, unknown>;
