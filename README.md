@@ -17,11 +17,11 @@ Automatically add output types to your Elasticsearch queries.
 ```ts
 // Example: Using all features together
 type MyIndex = {
-	"my-index": {
-		id: number;
-		name: string;
-		created_at: string;
-	}
+   "my-index": {
+      id: number;
+      name: string;
+      created_at: string;
+   }
 };
 
 const client: TypedClient<MyIndex> = new Client({/* config */});
@@ -31,20 +31,18 @@ const query = typedEs(client, {
   index: "my-index",
   _source: ["id", "*_at"], 
   track_total_hits: true,
-rest_total_hits_as_int: true, // Ensures total value is returned as a number
-aggs: { 
+  rest_total_hits_as_int: true, // Ensures total value is returned as a number
+  aggs: { 
     name_counts: { terms: { field: "name" } }
   }
 });
 
 const result = await client.search(query);
-// Type: { value: number; relation: string }
-const total = result.hits.total;
-// Type: { id: number; created_at: string }
-const firstHit = result.hits.hits[0]?._source;
-// Type: Array<{ key: string; doc_count: number }>
-const aggregationBuckets = result.aggregations?.name_counts.buckets;
+const total = result.hits.total; // number
+const firstHit = result.hits.hits[0]!._source; // { id: number; created_at: string }
+const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
 ```
+
 ## Why This Library?
 To highlight the benefits, here's a comparison with/without the library:
 
@@ -52,6 +50,7 @@ To highlight the benefits, here's a comparison with/without the library:
 <summary>Same Example Without This Library</summary>
 
 #### Without providing any types
+
 ```ts
 const result = await client.search(query);
 const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
@@ -60,6 +59,7 @@ const aggregationBuckets = result.aggregations!.name_counts.buckets; // any, ts 
 ```
 
 #### With manual type definitions
+
 ```ts
 const result = await client.search<
   { id: number; created_at: string },
@@ -71,18 +71,20 @@ const result = await client.search<
 >(query);
 
 const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
-const firstHit = result.hits.hits[0]!._source; // {   id: number;    created_at: string; } | undefined
+const firstHit = result.hits.hits[0]!._source; // { id: number; created_at: string; } | undefined
 const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
 ```
 
 #### With @vahor/typed-es
+
 ```ts
 // Automatic type inference - no manual definitions needed
 const result = await client.search(query);
-const total = result.hits.total; // { value: number; relation: string }
+const total = result.hits.total; // number
 const firstHit = result.hits.hits[0]?._source; // { id: number; created_at: string }
 const aggregationBuckets = result.aggregations?.name_counts.buckets; // Array<{ key: string; doc_count: number }> 
 ```
+
 </details>
 
 ## Install
