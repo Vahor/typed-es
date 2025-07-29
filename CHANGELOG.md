@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.0.6
+
+### Patch Changes
+
+- [#23](https://github.com/Vahor/typed-es/pull/23) [`d1ee874`](https://github.com/Vahor/typed-es/commit/d1ee8740a30018ca6a6d9ae01388b5c071cd734f) Thanks [@Vahor](https://github.com/Vahor)! - add support for nested fields
+
+  Note: current goal is to support nested fields in `_source`, aggregations can work but not guaranteed
+
 ## 0.0.5
 
 ### Patch Changes
