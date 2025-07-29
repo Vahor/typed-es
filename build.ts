@@ -11,6 +11,7 @@ const defaultBuildConfig: BuildConfig = {
 const dtsConfig: DtsOptions = {
 	output: {
 		noBanner: true,
+		sortNodes: true,
 	},
 };
 
