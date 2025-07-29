@@ -72,7 +72,7 @@ const result = await client.search<
 
 const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
 const firstHit = result.hits.hits[0]!._source; // { id: number; created_at: string; } | undefined
-const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
+const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: string; doc_count: number; }>
 ```
 
 #### With @vahor/typed-es
@@ -82,7 +82,7 @@ const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ 
 const result = await client.search(query);
 const total = result.hits.total; // number
 const firstHit = result.hits.hits[0]?._source; // { id: number; created_at: string }
-const aggregationBuckets = result.aggregations?.name_counts.buckets; // Array<{ key: string; doc_count: number }> 
+const aggregationBuckets = result.aggregations?.name_counts.buckets; // Array<{ key: unknown; doc_count: number }> 
 ```
 
 </details>
@@ -174,8 +174,8 @@ const aggs = outputWithAggs.aggregations;
 const someAgg = aggs.some_agg;
 const someAggTerms = someAgg.buckets;
 for (const bucket of someAggTerms) {
-    // Here bucket is typed as { key: string; doc_count: number }
-    const key = bucket.key; // typed as string
+    // Here bucket is typed as { key: unknown; doc_count: number }
+    const key = bucket.key; // typed as unknown
     const doc_count = bucket.doc_count; // typed as number
 }
 ```
