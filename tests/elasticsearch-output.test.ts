@@ -2,6 +2,7 @@ import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
 import {
 	type ElasticsearchOutput,
+	type ExtractAggs,
 	type SearchRequest,
 	typedEs,
 } from "../src/index";
@@ -161,7 +162,7 @@ describe("Should return the correct type", () => {
 			});
 			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 			expectTypeOf<Output["aggregations"]>().toEqualTypeOf<never>();
-			expectTypeOf<Output["aggregations"]>().toBeNullable();
+			expectTypeOf<Output["aggregations"]>().not.toBeNullable();
 		});
 
 		test("with aggregations", () => {
