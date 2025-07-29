@@ -195,6 +195,7 @@ See more examples in the test files.
 - query fields and aggs fields are not typed.
 - Some agg functions might be missing.
 - _source fields allow any string as you can use wildcards. On the other hand, wildcards will result in the **correct type** in the output.
+- has to use `as unknown as TypedClient<Indexes>` which I don't like.
 
 
 PRs are welcome to fix these limitations.
