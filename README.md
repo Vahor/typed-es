@@ -9,15 +9,19 @@ Automatically add output types to your Elasticsearch queries.
 ## Features
 - **Automatic type based on options**: Automatically infers output types from query options (e.g., returning `total` count).  
 - **Automatic output type based on `_source` and aggregations**: Derives precise types from specified `_source` fields and aggregation configurations.  
-- **Understand wildcards**: Unlike basic wildcard support, the library correctly detects and infers output types even when using wildcards in `_source` (e.g., `*_at` still returns the correct field types).  
+- **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
+  For example, given an index with fields `{ created_at: string; title: string }`,  
+  specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
 
-
+## Example Usage
 ```ts
 // Example: Using all features together
 type MyIndex = {
-  id: number;
-  name: string;
-  created_at: string;
+	"my-index": {
+		id: number;
+		name: string;
+		created_at: string;
+	}
 };
 
 const client: TypedClient<MyIndex> = new Client({/* config */});
@@ -26,18 +30,60 @@ const client: TypedClient<MyIndex> = new Client({/* config */});
 const query = typedEs(client, {
   index: "my-index",
   _source: ["id", "*_at"], 
-  track_total_hits: true, 
-  aggs: { 
+  track_total_hits: true,
+rest_total_hits_as_int: true, // Ensures total value is returned as a number
+aggs: { 
     name_counts: { terms: { field: "name" } }
   }
 });
 
 const result = await client.search(query);
-result.hits.total.value; 
-result.hits.hits[0]._source.created_at; 
-result.aggregations.name_counts.buckets[0].key; 
+// Type: { value: number; relation: string }
+const total = result.hits.total;
+// Type: { id: number; created_at: string }
+const firstHit = result.hits.hits[0]?._source;
+// Type: Array<{ key: string; doc_count: number }>
+const aggregationBuckets = result.aggregations?.name_counts.buckets;
+```
+## Why This Library?
+To highlight the benefits, here's a comparison with/without the library:
+
+<details>
+<summary>Same Example Without This Library</summary>
+
+#### Without providing any types
+```ts
+const result = await client.search(query);
+const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
+const firstHit = result.hits.hits[0]!._source; // unknown
+const aggregationBuckets = result.aggregations!.name_counts.buckets; // any, ts error: Object is possibly 'undefined'.
 ```
 
+#### With manual type definitions
+```ts
+const result = await client.search<
+  { id: number; created_at: string },
+  {
+    name_counts: {
+      buckets: Array<{ key: string; doc_count: number }>;
+    };
+  }
+>(query);
+
+const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
+const firstHit = result.hits.hits[0]!._source; // {   id: number;    created_at: string; } | undefined
+const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
+```
+
+#### With @vahor/typed-es
+```ts
+// Automatic type inference - no manual definitions needed
+const result = await client.search(query);
+const total = result.hits.total; // { value: number; relation: string }
+const firstHit = result.hits.hits[0]?._source; // { id: number; created_at: string }
+const aggregationBuckets = result.aggregations?.name_counts.buckets; // Array<{ key: string; doc_count: number }> 
+```
+</details>
 
 ## Install
 
