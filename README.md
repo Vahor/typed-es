@@ -132,12 +132,6 @@ const query = typedEs(client, {
     _source: ["score", "entity_id", "*ate"],
 });
 
-// typedEs is a simple wrapper, this is equivalent to:
-const query = {
-    index: "first-index",
-    _source: ["score", "entity_id", "*ate"],
-} as const satisfies SearchRequest;
-
 const queryWithAggs = typedEs(client, {
     index: "first-index",
     _source: ["score", "entity_id", "*ate"],
@@ -150,6 +144,9 @@ const queryWithAggs = typedEs(client, {
     },
 });
 ```
+
+`typedEs` is a simple wrapper that adds type safety to index, autocompletes on _source. 
+Check its definition in [typed-es.ts](./src/typed-es.ts), you can reuse the same definition to add default values to your queries.
 
 Note: when `_source` is missing, the output will contain every fields.
 

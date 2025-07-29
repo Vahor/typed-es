@@ -1,4 +1,4 @@
-import type { Client, estypes } from "@elastic/elasticsearch";
+import type { estypes } from "@elastic/elasticsearch";
 
 // helpers
 type Prettify<T> = {
@@ -284,7 +284,7 @@ type BucketAggs<
 		}
 	: never;
 
-type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
+export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
 type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
 	Omit<estypes.SearchResponse<T, V>, "hits"> & {
@@ -350,17 +350,5 @@ type ExtractAggs<V> = V extends { aggs: infer A } | { aggregations: infer A }
 	? A
 	: never;
 
-// @ts-expect-error: We are overriding types, but it's fine
-export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
-	search<Query extends TypedSearchRequest<E>>(
-		query: Query,
-		// @ts-expect-error: Same as above
-	): Promise<ElasticsearchOutput<Query, E>>;
-}
-
-export function typedEs<
-	Indexes extends ElasticsearchIndexes,
-	const Query extends TypedSearchRequest<Indexes>,
->(_client: TypedClient<Indexes>, query: Query): Query {
-	return query;
-}
+export * from "./client";
+export * from "./typed-es";
