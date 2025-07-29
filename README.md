@@ -24,7 +24,8 @@ type MyIndex = {
    }
 };
 
-const client: TypedClient<MyIndex> = new Client({/* config */});
+// Having to use `as unknown` is less than ideal, but as we're overriding types, typescript isn't very happy
+const client = new Client({/* config */}) as unknown as TypedClient<Indexes>;
 
 // Query with _source (wildcard), aggregation, and options
 const query = typedEs(client, {
