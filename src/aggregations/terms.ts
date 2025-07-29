@@ -1,4 +1,5 @@
-import type { ExtractAggs, PrettyArray, SearchRequest } from "..";
+import type { ExtractAggs, SearchRequest } from "..";
+import type { PrettyArray } from "../types/helpers";
 
 export type TermsAggs<
 	Query extends SearchRequest,

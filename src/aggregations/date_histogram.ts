@@ -2,10 +2,10 @@ import type {
 	AggregationOutput,
 	ExtractAggs,
 	NextAggsParentKey,
-	PrettyArray,
 	RequestedIndex,
 	SearchRequest,
 } from "..";
+import type { PrettyArray } from "../types/helpers";
 
 export type DateHistogramAggs<
 	Query extends SearchRequest,
