@@ -120,7 +120,7 @@ import { TypedClient } from "@vahor/typed-es";
 
 const client = new Client({
     ... // elasticsearch client config
-}) as unknown as TypedClient<Indexes>;
+}) as unknown as TypedClient<CustomIndexes>;
 ```
 
 ### Step 3: Use the typedEs function
