@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.8
+
+### Patch Changes
+
+- [#32](https://github.com/Vahor/typed-es/pull/32) [`d591ad6`](https://github.com/Vahor/typed-es/commit/d591ad6cd4ccdb851757642fb948746d0edf693f) Thanks [@Vahor](https://github.com/Vahor)! - make aggregations field in output non nullable if present in query
+
 ## 0.0.7
 
 ### Patch Changes
