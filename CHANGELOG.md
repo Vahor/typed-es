@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.7
+
+### Patch Changes
+
+- [#28](https://github.com/Vahor/typed-es/pull/28) [`fc536a0`](https://github.com/Vahor/typed-es/commit/fc536a08273c13d463846c4a7c59cbee87c52981) Thanks [@Vahor](https://github.com/Vahor)! - split files, should not cause any issues
+
 ## 0.0.6
 
 ### Patch Changes
