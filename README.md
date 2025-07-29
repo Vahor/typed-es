@@ -24,7 +24,8 @@ type MyIndex = {
    }
 };
 
-const client: TypedClient<MyIndex> = new Client({/* config */});
+// Having to use `as unknown` is less than ideal, but as we're overriding types, typescript isn't very happy
+const client = new Client({/* config */}) as unknown as TypedClient<Indexes>;
 
 // Query with _source (wildcard), aggregation, and options
 const query = typedEs(client, {
@@ -132,12 +133,6 @@ const query = typedEs(client, {
     _source: ["score", "entity_id", "*ate"],
 });
 
-// typedEs is a simple wrapper, this is equivalent to:
-const query = {
-    index: "first-index",
-    _source: ["score", "entity_id", "*ate"],
-} as const satisfies SearchRequest;
-
 const queryWithAggs = typedEs(client, {
     index: "first-index",
     _source: ["score", "entity_id", "*ate"],
@@ -150,6 +145,9 @@ const queryWithAggs = typedEs(client, {
     },
 });
 ```
+
+`typedEs` is a simple wrapper that adds type safety to index, autocompletes on _source. 
+Check its definition in [typed-es.ts](./src/typed-es.ts), you can reuse the same definition to add default values to your queries.
 
 Note: when `_source` is missing, the output will contain every fields.
 
@@ -197,6 +195,7 @@ See more examples in the test files.
 - query fields and aggs fields are not typed.
 - Some agg functions might be missing.
 - _source fields allow any string as you can use wildcards. On the other hand, wildcards will result in the **correct type** in the output.
+- has to use `as unknown as TypedClient<Indexes>` which I don't like.
 
 
 PRs are welcome to fix these limitations.

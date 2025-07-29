@@ -1,6 +1,6 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import type { WildcardSearch } from "../src/index";
+import type { WildcardSearch } from "../src/types/wildcard-search";
 
 describe("WildcardSearch", () => {
 	type Words = "nested.field" | "created_at" | "title" | "updated_at";
