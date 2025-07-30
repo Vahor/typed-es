@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.10
+
+### Patch Changes
+
+- [#38](https://github.com/Vahor/typed-es/pull/38) [`8169fc9`](https://github.com/Vahor/typed-es/commit/8169fc95d3cc692910c6f78849171e91fced0bb4) Thanks [@Vahor](https://github.com/Vahor)! - add `top_hits` aggregation
+
 ## 0.0.9
 
 ### Patch Changes
