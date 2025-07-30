@@ -2,7 +2,6 @@ import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
 import {
 	type ElasticsearchOutput,
-	type ExtractAggs,
 	type SearchRequest,
 	typedEs,
 } from "../src/index";
