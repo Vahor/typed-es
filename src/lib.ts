@@ -4,6 +4,7 @@ import type { CompositeAggs } from "./aggregations/composite";
 import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
 import type { TermsAggs } from "./aggregations/terms";
+import type { TopHitsAggs } from "./aggregations/top_hits";
 import type { Prettify } from "./types/helpers";
 import type {
 	ExpandAll,
@@ -28,7 +29,7 @@ type InferSource<T, Key extends string> = T extends {
 	: never;
 
 export type RequestedFields<
-	Query extends SearchRequest,
+	Query extends Partial<{ _source: unknown; index: string | string[] }>,
 	Indexes,
 	Index extends string = RequestedIndex<Query>,
 	AllFields = Index extends keyof Indexes ? keyof Indexes[Index] : never,
@@ -53,8 +54,11 @@ export type RequestedFields<
 			? never
 			: AllFields;
 
-export type RequestedIndex<Query extends SearchRequest> =
-	Query["index"] extends string ? Query["index"] : never;
+export type RequestedIndex<Query> = "index" extends keyof Query
+	? Query["index"] extends string
+		? Query["index"]
+		: never
+	: never;
 
 export type HasOption<
 	Query extends SearchRequest,
@@ -81,40 +85,44 @@ export type NextAggsParentKey<
 	Query extends Record<string, unknown>,
 	Aggs = ExtractAggs<Query>,
 > =
+	| ObjectKeysWithSpecificKeys<Aggs, "top_hits">
 	| ObjectKeysWithSpecificKeys<Aggs, "date_histogram">
 	| ObjectKeysWithSpecificKeys<Aggs, "terms">
 	| ObjectKeysWithSpecificKeys<Aggs, AggFunction>
 	| ObjectKeysWithSpecificKeys<Aggs, BucketAggFunction>;
 
 export type AggregationOutput<
+	BaseQuery extends SearchRequest,
 	Query extends Record<string, unknown>,
-	ElasticsearchIndexes,
+	E extends ElasticsearchIndexes,
 	CurrentAggregationKey extends keyof ExtractAggs<Query>,
-	Index = RequestedIndex<Query>,
+	Index extends string = RequestedIndex<Query>,
 > = CurrentAggregationKey extends never
 	? never
 	:
-			| CompositeAggs<Query, ElasticsearchIndexes, CurrentAggregationKey, Index>
-			| DateHistogramAggs<
-					Query,
-					ElasticsearchIndexes,
-					CurrentAggregationKey,
-					Index
-			  >
-			| TermsAggs<Query, CurrentAggregationKey>
+			| CompositeAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
+			| DateHistogramAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
+			| TermsAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
+			| TopHitsAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
 			| FunctionAggs<Query, ElasticsearchIndexes, Index>
 			| BucketAggs<Query, CurrentAggregationKey>;
 
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
+export type QueryTotal<Query extends SearchRequest> = HasOption<
+	Query,
+	"track_total_hits",
+	false
+> extends true
+	? never
+	: HasOption<Query, "rest_total_hits_as_int", true> extends true
+		? number
+		: estypes.SearchTotalHits;
+
 type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
 	Omit<estypes.SearchResponse<T, V>, "hits" | "aggregations"> & {
 		hits: Omit<estypes.SearchHitsMetadata<T>, "total" | "hits"> & {
-			total: HasOption<Query, "track_total_hits", false> extends true
-				? never
-				: HasOption<Query, "rest_total_hits_as_int", true> extends true
-					? number
-					: estypes.SearchTotalHits;
+			total: QueryTotal<Query>;
 			hits: Array<
 				Omit<estypes.SearchHitsMetadata<T>["hits"][number], "_source"> & {
 					_source: Query["_source"] extends false ? never : T;
@@ -125,6 +133,17 @@ type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
 		aggregations: ExtractAggs<Query> extends never ? never : NonNullable<V>;
 	}
 >;
+
+export type ElasticsearchOutputFields<
+	QueryWithSource extends Record<"_source", unknown>,
+	E extends ElasticsearchIndexes,
+	Index extends string,
+> = ExpandAll<{
+	[K in WildcardSearch<
+		PossibleFields<Index, E>,
+		RequestedFields<QueryWithSource, E, Index>
+	>]: TypeOfField<K, E, Index>;
+}>;
 
 export type ElasticsearchOutput<
 	Query extends SearchRequest,
@@ -140,8 +159,14 @@ export type ElasticsearchOutput<
 				>]: TypeOfField<K, E, Index>;
 			}>,
 			{
-				// @ts-expect-error: Query is BaseQuery not Record<string, unknown> but we know it
-				[K in ExtractAggsKey<Query>]: AggregationOutput<Query, E, K, Index>;
+				[K in ExtractAggsKey<Query>]: AggregationOutput<
+					Query,
+					// @ts-expect-error: Query is BaseQuery not Record<string, unknown> but we know it
+					Query,
+					E,
+					K,
+					Index
+				>;
 			}
 		>
 	: `Index '${Index}' not found`;

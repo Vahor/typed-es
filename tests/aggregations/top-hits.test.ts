@@ -7,6 +7,7 @@ describe("Top Hits Aggregations", () => {
 	test("top_hits query construction", () => {
 		const query = typedEs(client, {
 			index: "orders",
+			rest_total_hits_as_int: true,
 			_source: false,
 			size: 0,
 			aggs: {
@@ -38,15 +39,16 @@ describe("Top Hits Aggregations", () => {
 
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
+
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			top_tags: {
 				buckets: Array<{
 					key: unknown;
 					doc_count: number;
 					top_sales_hits: {
-						hits: {
+						hits: Array<{
 							total: number;
-							max_score: number;
+							max_score: number | null;
 							hits: Array<{
 								_index: "orders";
 								_id: string;
@@ -58,7 +60,7 @@ describe("Top Hits Aggregations", () => {
 								sort: Array<unknown>;
 								_score: number | null;
 							}>;
-						};
+						}>;
 					};
 				}>;
 			};
