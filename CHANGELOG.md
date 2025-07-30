@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.9
+
+### Patch Changes
+
+- [`5868cb3`](https://github.com/Vahor/typed-es/commit/5868cb323b34b49798348beee0294e44bb983826) Thanks [@Vahor](https://github.com/Vahor)! - Add type to `after_key` and `key` in aggregation result/bucket when using composite
+
 ## 0.0.8
 
 ### Patch Changes
