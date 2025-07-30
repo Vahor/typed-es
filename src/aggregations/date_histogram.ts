@@ -1,17 +1,18 @@
 import type {
 	AggregationOutput,
+	ElasticsearchIndexes,
 	ExtractAggs,
 	NextAggsParentKey,
-	RequestedIndex,
 	SearchRequest,
 } from "..";
 import type { PrettyArray } from "../types/helpers";
 
 export type DateHistogramAggs<
+	BaseQuery extends SearchRequest,
 	Query extends SearchRequest,
-	ElasticsearchIndexes,
+	E extends ElasticsearchIndexes,
 	Key extends keyof ExtractAggs<Query>,
-	Index = RequestedIndex<Query>,
+	Index extends string,
 > = ExtractAggs<Query>[Key] extends { date_histogram: unknown }
 	? {
 			buckets: PrettyArray<
@@ -21,8 +22,9 @@ export type DateHistogramAggs<
 					doc_count: number;
 				} & {
 					[k in NextAggsParentKey<ExtractAggs<Query>[Key]>]: AggregationOutput<
+						BaseQuery,
 						ExtractAggs<Query>[Key],
-						ElasticsearchIndexes,
+						E,
 						k,
 						Index
 					>;

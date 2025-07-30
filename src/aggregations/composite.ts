@@ -1,8 +1,8 @@
 import type {
 	AggregationOutput,
+	ElasticsearchIndexes,
 	ExtractAggs,
 	NextAggsParentKey,
-	RequestedIndex,
 	SearchRequest,
 } from "..";
 import type { PrettyArray } from "../types/helpers";
@@ -14,10 +14,11 @@ type ExtractSourcesKeys<Sources extends CompositeSources> = {
 }[number];
 
 export type CompositeAggs<
+	BaseQuery extends SearchRequest,
 	Query extends SearchRequest,
-	ElasticsearchIndexes,
+	E extends ElasticsearchIndexes,
 	Key extends keyof ExtractAggs<Query>,
-	Index = RequestedIndex<Query>,
+	Index extends string,
 > = ExtractAggs<Query>[Key] extends {
 	composite: { sources: infer Sources extends CompositeSources };
 }
@@ -29,8 +30,9 @@ export type CompositeAggs<
 					doc_count: number;
 				} & {
 					[k in NextAggsParentKey<ExtractAggs<Query>[Key]>]: AggregationOutput<
+						BaseQuery,
 						ExtractAggs<Query>[Key],
-						ElasticsearchIndexes,
+						E,
 						k,
 						Index
 					>;
