@@ -14,7 +14,10 @@ describe("Composite Aggregations", () => {
 				page: {
 					composite: {
 						size: 10,
-						sources: [{ entity: { terms: { field: "entity_id" } } }],
+						sources: [
+							{ entity: { terms: { field: "entity_id" } } },
+							{ key2: { terms: { field: "score" } } },
+						],
 					},
 					aggs: {
 						daily: {
@@ -34,9 +37,9 @@ describe("Composite Aggregations", () => {
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			page: {
-				after_key: Record<string, unknown>;
+				after_key: Record<"entity" | "key2", unknown>;
 				buckets: Array<{
-					key: Record<string, unknown>;
+					key: Record<"entity" | "key2", unknown>;
 					doc_count: number;
 					daily: {
 						buckets: Array<{
