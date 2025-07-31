@@ -1,5 +1,17 @@
 # @vahor/typed-es
 
+## 0.0.12
+
+### Patch Changes
+
+- [#55](https://github.com/Vahor/typed-es/pull/55) [`2a7c602`](https://github.com/Vahor/typed-es/commit/2a7c60206854ea7a2f7daf2e1878dd3ee77f932d) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `fields` key in query
+
+- [#56](https://github.com/Vahor/typed-es/pull/56) [`9076363`](https://github.com/Vahor/typed-es/commit/907636352de06c05716a2c3698514861892fc64e) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `docvalue_fields`
+
+- [#49](https://github.com/Vahor/typed-es/pull/49) [`5bb7d36`](https://github.com/Vahor/typed-es/commit/5bb7d366b57561a7a00265562447ec125bbcefd2) Thanks [@Vahor](https://github.com/Vahor)! - fix `top_hits` agg output type
+
+- [#52](https://github.com/Vahor/typed-es/pull/52) [`4f4c1b7`](https://github.com/Vahor/typed-es/commit/4f4c1b77af17d384f7ea867ffe258bd8957907e8) Thanks [@Vahor](https://github.com/Vahor)! - add `value_as_string?: string` in every agg function
+
 ## 0.0.11
 
 ### Patch Changes
