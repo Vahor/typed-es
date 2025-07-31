@@ -5,54 +5,31 @@ import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
 import type { TermsAggs } from "./aggregations/terms";
 import type { TopHitsAggs } from "./aggregations/top_hits";
-import type { Prettify, UnionToIntersection } from "./types/helpers";
+import type { IsNever, Prettify, UnionToIntersection } from "./types/helpers";
 import type {
 	ExpandAll,
 	JoinKeys,
 	RecursiveDotNotation,
 } from "./types/object-to-dot-notation";
+import type {
+	ExtractQuery_Source,
+	ExtractQueryFields,
+} from "./types/requested-fields";
 import type { WildcardSearch } from "./types/wildcard-search";
 
 export type PossibleFields<Index, Indexes> = Index extends keyof Indexes
 	? JoinKeys<Indexes[Index]>
 	: never;
+
+export type PossibleFieldsWithWildcards<Index, Indexes> =
+	| PossibleFields<Index, Indexes>
+	| AnyString;
+
 export type TypeOfField<
 	Field extends string,
 	Indexes,
 	Index extends keyof Indexes,
 > = RecursiveDotNotation<Indexes[Index], Field>;
-
-type InferSource<T, Key extends string> = T extends {
-	[k in Key]: (infer A)[];
-}
-	? A
-	: never;
-
-export type RequestedFields<
-	Query extends Partial<{ _source: unknown; index: string | string[] }>,
-	Indexes,
-	Index extends string = RequestedIndex<Query>,
-	AllFields = Index extends keyof Indexes ? keyof Indexes[Index] : never,
-	Source = Query["_source"],
-> = Source extends readonly (infer Fields extends string)[]
-	? Fields
-	: Source extends {
-				includes?: string[];
-				include?: string[];
-				excludes?: string[];
-				exclude?: string[];
-			}
-		? Exclude<
-				// TODO: check if we can do this better
-					| InferSource<Source, "includes">
-					| InferSource<Source, "include"> extends never
-					? AllFields
-					: InferSource<Source, "includes"> | InferSource<Source, "include">,
-				InferSource<Source, "excludes"> | InferSource<Source, "exclude">
-			>
-		: Source extends false
-			? never
-			: AllFields;
 
 export type RequestedIndex<Query> = "index" extends keyof Query
 	? Query["index"] extends string
@@ -96,7 +73,7 @@ export type AggregationOutput<
 	CurrentAggregationKey extends keyof ExtractAggs<Query>,
 	Index extends string = RequestedIndex<Query>,
 	Agg = UnionToIntersection<ExtractAggs<Query>[CurrentAggregationKey]>,
-> = CurrentAggregationKey extends never
+> = IsNever<CurrentAggregationKey> extends true
 	? never
 	:
 			| CompositeAggs<BaseQuery, E, Index, Agg>
@@ -118,29 +95,44 @@ export type QueryTotal<Query extends SearchRequest> = HasOption<
 		? number
 		: estypes.SearchTotalHits;
 
-type OverrideSearchResponse<Query extends SearchRequest, T, V> = Prettify<
-	Omit<estypes.SearchResponse<T, V>, "hits" | "aggregations"> & {
-		hits: Omit<estypes.SearchHitsMetadata<T>, "total" | "hits"> & {
+type OverrideSearchResponse<
+	Query extends SearchRequest,
+	T_Source,
+	T_Fields,
+	T_Aggs,
+	T_Doc = UnionToIntersection<T_Source | T_Fields>,
+> = Prettify<
+	Omit<estypes.SearchResponse<T_Doc, T_Aggs>, "hits" | "aggregations"> & {
+		hits: Omit<estypes.SearchHitsMetadata<T_Doc>, "total" | "hits"> & {
 			total: QueryTotal<Query>;
 			hits: Array<
-				Omit<estypes.SearchHitsMetadata<T>["hits"][number], "_source"> & {
-					_source: Query["_source"] extends false ? never : T;
+				Omit<
+					estypes.SearchHitsMetadata<T_Doc>["hits"][number],
+					"_source" | "fields"
+				> & {
+					_source: Query["_source"] extends false ? never : T_Source;
+					fields: "fields" extends keyof Query ? T_Fields : never;
 				}
 			>;
 		};
 	} & {
-		aggregations: ExtractAggs<Query> extends never ? never : NonNullable<V>;
+		aggregations: IsNever<ExtractAggs<Query>> extends true
+			? never
+			: NonNullable<T_Aggs>;
 	}
 >;
 
 export type ElasticsearchOutputFields<
-	QueryWithSource extends Record<"_source", unknown>,
+	QueryWithSource extends Partial<{ _source: unknown; fields: unknown }>,
 	E extends ElasticsearchIndexes,
 	Index extends string,
+	Type extends "_source" | "fields",
 > = ExpandAll<{
 	[K in WildcardSearch<
 		PossibleFields<Index, E>,
-		RequestedFields<QueryWithSource, E, Index>
+		Type extends "_source"
+			? ExtractQuery_Source<QueryWithSource, E, Index>
+			: ExtractQueryFields<QueryWithSource>
 	>]: TypeOfField<K, E, Index>;
 }>;
 
@@ -151,12 +143,8 @@ export type ElasticsearchOutput<
 > = Index extends keyof E
 	? OverrideSearchResponse<
 			Query,
-			ExpandAll<{
-				[K in WildcardSearch<
-					PossibleFields<Index, E>,
-					RequestedFields<Query, E, Index>
-				>]: TypeOfField<K, E, Index>;
-			}>,
+			ElasticsearchOutputFields<Query, E, Index, "_source">,
+			ElasticsearchOutputFields<Query, E, Index, "fields">,
 			{
 				[K in ExtractAggsKey<Query>]: AggregationOutput<
 					Query,
@@ -176,20 +164,27 @@ type AnyString = string & {};
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	SearchRequest,
-	"index" | "_source"
+	"index" | "_source" | "fields"
 > &
 	{
 		[K in keyof Indexes]: {
 			index: K;
 			_source?:
-				| Array<PossibleFields<K, Indexes> | AnyString>
+				| Array<PossibleFieldsWithWildcards<K, Indexes>>
 				| false
 				| {
-						includes?: Array<PossibleFields<K, Indexes> | AnyString>;
-						include?: Array<PossibleFields<K, Indexes> | AnyString>;
-						excludes?: Array<PossibleFields<K, Indexes> | AnyString>;
-						exclude?: Array<PossibleFields<K, Indexes> | AnyString>;
+						includes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
+						include?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
+						excludes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
+						exclude?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
 				  };
+			fields?: Array<
+				| PossibleFieldsWithWildcards<K, Indexes>
+				| {
+						field: PossibleFieldsWithWildcards<K, Indexes>;
+						format?: string;
+				  }
+			>;
 		};
 	}[keyof Indexes];
 

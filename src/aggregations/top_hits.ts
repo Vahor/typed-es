@@ -21,7 +21,7 @@ export type TopHitsAggs<
 				hits: PrettyArray<{
 					_index: Index;
 					_id: string;
-					_source: ElasticsearchOutputFields<T, E, Index>;
+					_source: ElasticsearchOutputFields<T, E, Index, "_source">;
 					sort: Array<unknown>;
 					_score: number | null;
 				}>;
