@@ -8,7 +8,7 @@ Automatically add output types to your Elasticsearch queries.
 
 ## Features
 - **Automatic type based on options**: Automatically infers output types from query options (e.g., returning `total` count).  
-- **Automatic output type based on `_source` and aggregations**: Derives precise types from specified `_source` fields and aggregation configurations.  
+- **Automatic output type based on `_source` and aggregations**: Derives precise types from specified `_source`, `fields` and `aggregations` configurations.  
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
