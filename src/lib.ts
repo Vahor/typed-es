@@ -84,12 +84,10 @@ type ObjectKeysWithSpecificKeys<T, TargetKeys extends string> = {
 export type NextAggsParentKey<
 	Query extends Record<string, unknown>,
 	Aggs = ExtractAggs<Query>,
-> =
-	| ObjectKeysWithSpecificKeys<Aggs, "top_hits">
-	| ObjectKeysWithSpecificKeys<Aggs, "date_histogram">
-	| ObjectKeysWithSpecificKeys<Aggs, "terms">
-	| ObjectKeysWithSpecificKeys<Aggs, AggFunction>
-	| ObjectKeysWithSpecificKeys<Aggs, BucketAggFunction>;
+> = ObjectKeysWithSpecificKeys<
+	Aggs,
+	"top_hits" | "date_histogram" | "terms" | AggFunction | BucketAggFunction
+>;
 
 export type AggregationOutput<
 	BaseQuery extends SearchRequest,
