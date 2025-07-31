@@ -127,14 +127,20 @@ export type ElasticsearchOutputFields<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Type extends "_source" | "fields",
-> = ExpandAll<{
-	[K in WildcardSearch<
-		PossibleFields<Index, E>,
-		Type extends "_source"
-			? ExtractQuery_Source<QueryWithSource, E, Index>
-			: ExtractQueryFields<QueryWithSource>
-	>]: TypeOfField<K, E, Index>;
-}>;
+	//
+	Output = {
+		[K in WildcardSearch<
+			PossibleFields<Index, E>,
+			Type extends "_source"
+				? ExtractQuery_Source<QueryWithSource, E, Index>
+				: ExtractQueryFields<QueryWithSource>
+		>]: TypeOfField<K, E, Index>;
+	},
+> = Type extends "_source"
+	? ExpandAll<Output>
+	: {
+			[K in keyof Output]: Array<Output[K]>;
+		};
 
 export type ElasticsearchOutput<
 	Query extends SearchRequest,

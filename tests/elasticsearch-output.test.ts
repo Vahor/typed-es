@@ -171,9 +171,7 @@ describe("Should return the correct type", () => {
 				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
-					shipping_address: {
-						street: string;
-					};
+					"shipping_address.street": string[];
 				}>();
 			});
 
@@ -186,9 +184,7 @@ describe("Should return the correct type", () => {
 				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
-					shipping_address: {
-						city: string;
-					};
+					"shipping_address.city": string[];
 				}>();
 				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 					shipping_address: {
@@ -209,10 +205,8 @@ describe("Should return the correct type", () => {
 				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
-					shipping_address: {
-						street: string;
-					};
-					created_at: string;
+					"shipping_address.street": string[];
+					created_at: string[];
 				}>();
 			});
 		});
