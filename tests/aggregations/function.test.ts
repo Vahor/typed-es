@@ -34,6 +34,8 @@ describe("Leaf Function Aggregations", () => {
 			aggs: {
 				value: {
 					// HACK: adding as "min" to make sure it's not a string
+					// HACK: Type assertion needed because TypeScript can't infer the dynamic key
+					// All functions in the union return the same structure, so "min" is used as representative
 					[fn as "min"]: { field: "total" },
 				},
 			},
