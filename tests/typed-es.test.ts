@@ -1,11 +1,7 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import {
-	type RequestedFields,
-	type RequestedIndex,
-	typedEs,
-} from "../src/index";
-import { type CustomIndexes, client } from "./shared";
+import { type RequestedIndex, typedEs } from "../src/index";
+import { client } from "./shared";
 
 describe("typedEs Function", () => {
 	describe("Should enforce correct index", () => {
@@ -34,16 +30,6 @@ describe("typedEs Function", () => {
 			});
 		});
 
-		test("with valid fields", () => {
-			const query = typedEs(client, {
-				index: "demo",
-				_source: ["score", "date"],
-			});
-			expectTypeOf<
-				RequestedFields<typeof query, CustomIndexes>
-			>().toEqualTypeOf<"score" | "date">();
-		});
-
 		test("with invalid fields", () => {
 			typedEs(client, {
 				index: "demo",
@@ -65,6 +51,32 @@ describe("typedEs Function", () => {
 					include: ["score"],
 					excludes: ["score"],
 					exclude: ["score"],
+				},
+			});
+		});
+	});
+
+	describe("should enforce correct fields", () => {
+		test("with valid fields", () => {
+			const query = typedEs(client, {
+				index: "demo",
+				fields: ["score", "date"],
+			});
+			expectTypeOf<RequestedIndex<typeof query>>().toEqualTypeOf<"demo">();
+		});
+
+		test("with invalid fields", () => {
+			typedEs(client, {
+				index: "demo",
+				fields: ["score", { field: "invalid", format: "yyyy-MM-dd" }],
+			});
+		});
+		test("with an object", () => {
+			typedEs(client, {
+				index: "demo",
+				// @ts-expect-error: should be an array
+				fields: {
+					includes: ["score"],
 				},
 			});
 		});

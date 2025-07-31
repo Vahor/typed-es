@@ -11,3 +11,5 @@ export type UnionToIntersection<U> = (
 ) extends (k: infer I) => void
 	? Prettify<I>
 	: never;
+
+export type IsNever<T> = [T] extends [never] ? true : false;
