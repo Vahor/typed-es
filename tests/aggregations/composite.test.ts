@@ -112,4 +112,67 @@ describe("Composite Aggregations", () => {
 			};
 		}>();
 	});
+
+	test("with conditional aggregations", () => {
+		const fn = "" as "min" | "max" | "sum" | "avg" | "last";
+		const query = typedEs(client, {
+			index: "orders",
+			_source: false,
+			rest_total_hits_as_int: true,
+			aggs: {
+				pagination: {
+					composite: {
+						after: undefined,
+						sources: [
+							{ entity: { terms: { field: "entity_id" } } },
+							{ key2: { terms: { field: "score" } } },
+						],
+					},
+					aggs: {
+						value: {
+							...(fn === "last"
+								? {
+										top_hits: {
+											_source: ["total"],
+											size: 1,
+										},
+									}
+								: { [fn as "min"]: { field: "total" } }),
+						},
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			pagination: {
+				after_key: Record<"entity" | "key2", unknown>;
+				buckets: Array<{
+					key: Record<"entity" | "key2", unknown>;
+					doc_count: number;
+					value:
+						| {
+								value: number;
+						  }
+						| {
+								hits: Array<{
+									total: number;
+									max_score: number | null;
+									hits: Array<{
+										_index: "orders";
+										_id: string;
+										_source: {
+											total: number;
+										};
+										sort: Array<unknown>;
+										_score: number | null;
+									}>;
+								}>;
+						  };
+				}>;
+			};
+		}>();
+	});
 });

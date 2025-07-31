@@ -1,4 +1,5 @@
 import type { ExtractAggs, RequestedIndex, SearchRequest } from "..";
+import type { UnionToIntersection } from "../types/helpers";
 
 type ExtractAggField<Agg> = {
 	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {
@@ -22,7 +23,7 @@ export type FunctionAggs<
 	Indexes,
 	Key extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
-	Agg = ExtractAggField<ExtractAggs<Query>[Key]>,
+	Agg = ExtractAggField<UnionToIntersection<ExtractAggs<Query>[Key]>>,
 > = Agg extends { fn: string; field: string }
 	? {
 			value: Agg["fn"] extends AggFunctionsNumber
