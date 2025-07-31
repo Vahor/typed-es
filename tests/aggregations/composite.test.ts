@@ -145,15 +145,32 @@ describe("Composite Aggregations", () => {
 		});
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
+
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			pagination: {
 				after_key: Record<"entity" | "key2", unknown>;
 				buckets: Array<{
 					key: Record<"entity" | "key2", unknown>;
 					doc_count: number;
-					value: {
-						value: number;
-					};
+					value:
+						| {
+								value: number;
+						  }
+						| {
+								hits: Array<{
+									total: number;
+									max_score: number | null;
+									hits: Array<{
+										_index: "orders";
+										_id: string;
+										_source: {
+											total: number;
+										};
+										sort: Array<unknown>;
+										_score: number | null;
+									}>;
+								}>;
+						  };
 				}>;
 			};
 		}>();

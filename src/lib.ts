@@ -5,7 +5,7 @@ import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
 import type { TermsAggs } from "./aggregations/terms";
 import type { TopHitsAggs } from "./aggregations/top_hits";
-import type { Prettify } from "./types/helpers";
+import type { Prettify, UnionToIntersection } from "./types/helpers";
 import type {
 	ExpandAll,
 	JoinKeys,
@@ -75,7 +75,7 @@ export type ExtractAggsKey<Query extends SearchRequest> =
 
 type ObjectKeysWithSpecificKeys<T, TargetKeys extends string> = {
 	[k in keyof T]: T[k] extends Record<string, unknown>
-		? TargetKeys extends keyof T[k]
+		? TargetKeys extends keyof UnionToIntersection<T[k]>
 			? k
 			: never
 		: never;
