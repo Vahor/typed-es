@@ -14,5 +14,6 @@ export type BucketAggs<
 > = BucketAgg extends { path: string }
 	? {
 			value: unknown;
+			value_as_string?: string;
 		}
 	: never;

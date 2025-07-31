@@ -50,11 +50,13 @@ describe("Date Histogram Aggregations", () => {
 							doc_count: number;
 							score_value: {
 								value: number;
+								value_as_string?: string;
 							};
 						}>;
 					};
 					yearly_avg: {
 						value: unknown;
+						value_as_string?: string;
 					};
 				}>;
 			};

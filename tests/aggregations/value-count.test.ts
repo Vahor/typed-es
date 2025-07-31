@@ -21,6 +21,7 @@ describe("Value Count Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			"my-agg-name": {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
