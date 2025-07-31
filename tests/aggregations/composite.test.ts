@@ -135,7 +135,7 @@ describe("Composite Aggregations", () => {
 										top_hits: {
 											_source: ["total"],
 											size: 1,
-										},
+										} as const,
 									}
 								: { [fn as "min"]: { field: "total" } }),
 						},
@@ -157,7 +157,7 @@ describe("Composite Aggregations", () => {
 								value: number;
 						  }
 						| {
-								hits: Array<{
+								hits: {
 									total: number;
 									max_score: number | null;
 									hits: Array<{
@@ -169,7 +169,7 @@ describe("Composite Aggregations", () => {
 										sort: Array<unknown>;
 										_score: number | null;
 									}>;
-								}>;
+								};
 						  };
 				}>;
 			};
