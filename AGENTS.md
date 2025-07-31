@@ -4,7 +4,7 @@
 
 - **Build**: `bun run build` (uses build.ts)
 - **Format**: `bunx @biomejs/biome check ./ --write`
-- **Typecheck**: `tsc --noEmit --declaration`
+- **Typecheck**: `bun typecheck`
 - **Test**: `bun test` (uses Bun test runner)
 - **Test single file**: `bun test tests/index.test.ts`
 
@@ -16,7 +16,7 @@
 - **Naming**: camelCase for variables/functions, PascalCase for types/interfaces
 - **Comments**: Avoid comments unless necessary for complex type logic
 - **Error handling**: Use TypeScript's type system for compile-time safety
-- **File structure**: Single index.ts in src/, tests in tests/ directory
+- **File structure**: Code in src/, tests in tests/ directory
 
 ## Project Specifics
 

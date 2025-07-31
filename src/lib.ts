@@ -95,15 +95,16 @@ export type AggregationOutput<
 	E extends ElasticsearchIndexes,
 	CurrentAggregationKey extends keyof ExtractAggs<Query>,
 	Index extends string = RequestedIndex<Query>,
+	Agg = UnionToIntersection<ExtractAggs<Query>[CurrentAggregationKey]>,
 > = CurrentAggregationKey extends never
 	? never
 	:
-			| CompositeAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
-			| DateHistogramAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
-			| TermsAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
-			| TopHitsAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
-			| FunctionAggs<Query, E, CurrentAggregationKey, Index>
-			| BucketAggs<Query, CurrentAggregationKey>;
+			| CompositeAggs<BaseQuery, E, Index, Agg>
+			| DateHistogramAggs<BaseQuery, E, Index, Agg>
+			| TermsAggs<BaseQuery, E, Index, Agg>
+			| TopHitsAggs<BaseQuery, E, Index, Agg>
+			| FunctionAggs<Index, Agg>
+			| BucketAggs<Agg>;
 
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
