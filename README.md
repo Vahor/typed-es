@@ -8,7 +8,7 @@ Automatically add output types to your Elasticsearch queries.
 
 ## Features
 - **Automatic type based on options**: Automatically infers output types from query options (e.g., returning `total` count).  
-- **Automatic output type based on `_source` and aggregations**: Derives precise types from specified `_source`, `fields` and `aggregations` configurations.  
+- **Automatic output type based on requested fields and aggregations**: Derives precise types from specified `_source`, `fields` and `aggregations` configurations.  
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
@@ -29,18 +29,24 @@ const client = new Client({/* config */}) as unknown as TypedClient<Indexes>;
 
 // Query with _source (wildcard), aggregation, and options
 const query = typedEs(client, {
-  index: "my-index",
-  _source: ["id", "*_at"], 
-  track_total_hits: true,
-  rest_total_hits_as_int: true, // Ensures total value is returned as a number
-  aggs: { 
-    name_counts: { terms: { field: "name" } }
-  }
+	index: "my-index",
+	_source: ["id", "na*"],
+	fields: [
+		{
+			field: "created_at",
+			format: "yyyy-MM-dd",
+		},
+	],
+	track_total_hits: true,
+	rest_total_hits_as_int: true, // Ensures total value is returned as a number
+	aggs: {
+		name_counts: { terms: { field: "name" } },
+	},
 });
 
 const result = await client.search(query);
 const total = result.hits.total; // number
-const firstHit = result.hits.hits[0]!._source; // { id: number; created_at: string }
+const firstHit = result.hits.hits[0]; // { _source: { id: number; name: string}, fields: { created_at: string[] } }
 const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ key: unknown; doc_count: number; }>
 ```
 
@@ -55,7 +61,7 @@ To highlight the benefits, here's a comparison with/without the library:
 ```ts
 const result = await client.search(query);
 const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
-const firstHit = result.hits.hits[0]!._source; // unknown
+const firstHit = result.hits.hits[0]._source; // unknown
 const aggregationBuckets = result.aggregations!.name_counts.buckets; // any, ts error: Object is possibly 'undefined'.
 ```
 
@@ -63,7 +69,7 @@ const aggregationBuckets = result.aggregations!.name_counts.buckets; // any, ts 
 
 ```ts
 const result = await client.search<
-  { id: number; created_at: string },
+  { id: number; created_at: string; },
   {
     name_counts: {
       buckets: Array<{ key: string; doc_count: number }>;
@@ -72,7 +78,7 @@ const result = await client.search<
 >(query);
 
 const total = result.hits.total; // number | estypes.SearchTotalHits | undefined
-const firstHit = result.hits.hits[0]!._source; // { id: number; created_at: string; } | undefined
+const firstHit = result.hits.hits[0]; // { _source: { id: number; created_at: string; } | undefined, fields: Record<string, unknown> }
 const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ key: string; doc_count: number; }>
 ```
 
@@ -82,7 +88,7 @@ const aggregationBuckets = result.aggregations!.name_counts.buckets; // Array<{ 
 // Automatic type inference - no manual definitions needed
 const result = await client.search(query);
 const total = result.hits.total; // number
-const firstHit = result.hits.hits[0]?._source; // { id: number; created_at: string }
+const firstHit = result.hits.hits[0]._source; // { id: number; created_at: string }
 const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ key: unknown; doc_count: number }> 
 ```
 
