@@ -13,3 +13,8 @@ export type UnionToIntersection<U> = (
 	: never;
 
 export type IsNever<T> = [T] extends [never] ? true : false;
+
+export type GetField<
+	T extends Record<string, unknown>,
+	Key extends string,
+> = Key extends keyof T ? T[Key] : never;
