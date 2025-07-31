@@ -68,9 +68,13 @@ describe("Leaf Function Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			value: {
-				value: number;
-			};
+			value:
+				| {
+						value: number;
+				  }
+				| {
+						value: number;
+				  };
 		}>();
 	});
 
@@ -80,15 +84,16 @@ describe("Leaf Function Aggregations", () => {
 			index: "orders",
 			size: 0,
 			_source: false,
+			rest_total_hits_as_int: true,
 			aggs: {
 				value: {
 					...(fn === "last"
-						? {
+						? ({
 								top_hits: {
 									_source: ["total"],
 									size: 1,
 								},
-							}
+							} as const)
 						: { [fn as "min"]: { field: "total" } }),
 				},
 			},
@@ -101,7 +106,19 @@ describe("Leaf Function Aggregations", () => {
 						value: number;
 				  }
 				| {
-						hits: Array<any>;
+						hits: Array<{
+							total: number;
+							max_score: number | null;
+							hits: Array<{
+								_index: "orders";
+								_id: string;
+								_source: {
+									total: number;
+								};
+								sort: Array<unknown>;
+								_score: number | null;
+							}>;
+						}>;
 				  };
 		}>();
 	});

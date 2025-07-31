@@ -5,7 +5,7 @@ import type {
 	QueryTotal,
 	SearchRequest,
 } from "..";
-import type { PrettyArray } from "../types/helpers";
+import type { PrettyArray, UnionToIntersection } from "../types/helpers";
 
 export type TopHitsAggs<
 	BaseQuery extends SearchRequest,
@@ -13,7 +13,7 @@ export type TopHitsAggs<
 	E extends ElasticsearchIndexes,
 	Key extends keyof ExtractAggs<Query>,
 	Index extends string,
-> = ExtractAggs<Query>[Key] extends {
+> = UnionToIntersection<ExtractAggs<Query>[Key]> extends {
 	top_hits: infer T extends Record<string, unknown>;
 }
 	? {
