@@ -22,9 +22,11 @@ describe("Leaf Function Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			min_value: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
+
 	test("with generic function", () => {
 		const fn = "" as "min" | "max" | "sum" | "avg";
 		const query = typedEs(client, {
@@ -45,6 +47,7 @@ describe("Leaf Function Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
@@ -73,9 +76,11 @@ describe("Leaf Function Aggregations", () => {
 			value:
 				| {
 						value: number;
+						value_as_string?: string;
 				  }
 				| {
 						value: number;
+						value_as_string?: string;
 				  };
 		}>();
 	});
@@ -106,6 +111,7 @@ describe("Leaf Function Aggregations", () => {
 			value:
 				| {
 						value: number;
+						value_as_string?: string;
 				  }
 				| {
 						hits: {

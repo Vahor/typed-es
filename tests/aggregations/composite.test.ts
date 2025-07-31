@@ -48,6 +48,7 @@ describe("Composite Aggregations", () => {
 							doc_count: number;
 							score_value: {
 								value: number;
+								value_as_string?: string;
 							};
 						}>;
 					};
@@ -98,9 +99,11 @@ describe("Composite Aggregations", () => {
 					doc_count: number;
 					max_date: {
 						value: number;
+						value_as_string?: string;
 					};
 					min_date: {
 						value: number;
+						value_as_string?: string;
 					};
 					terms_field: {
 						buckets: Array<{
@@ -155,6 +158,7 @@ describe("Composite Aggregations", () => {
 					value:
 						| {
 								value: number;
+								value_as_string?: string;
 						  }
 						| {
 								hits: {

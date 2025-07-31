@@ -21,6 +21,7 @@ export type FunctionAggs<
 	FieldAgg = ExtractAggField<Agg>,
 > = FieldAgg extends { fn: string; field: string }
 	? {
+			value_as_string?: string;
 			value: FieldAgg["fn"] extends AggFunctionsNumber
 				? number
 				: FieldAgg["fn"] extends "stats"
