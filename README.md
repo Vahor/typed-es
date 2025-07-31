@@ -8,14 +8,13 @@ Automatically add output types to your Elasticsearch queries.
 
 ## Features
 - **Automatic type based on options**: Automatically infers output types from query options (e.g., returning `total` count).  
-- **Automatic output type based on requested fields and aggregations**: Derives precise types from specified `_source`, `fields` and `aggregations` configurations.  
+- **Automatic output type based on requested fields and aggregations**: Derives precise types from specified `_source`, `fields`, `docvalue_fields` and `aggregations` configurations.  
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
 
 ## Example Usage
 ```ts
-// Example: Using all features together
 type MyIndex = {
    "my-index": {
       id: number;
@@ -27,7 +26,7 @@ type MyIndex = {
 // Having to use `as unknown` is less than ideal, but as we're overriding types, typescript isn't very happy
 const client = new Client({/* config */}) as unknown as TypedClient<Indexes>;
 
-// Query with _source (wildcard), aggregation, and options
+// Query with _source (wildcard), fields, aggregation, and options
 const query = typedEs(client, {
 	index: "my-index",
 	_source: ["id", "na*"],

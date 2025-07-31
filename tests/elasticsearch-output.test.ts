@@ -210,6 +210,57 @@ describe("Should return the correct type", () => {
 				}>();
 			});
 		});
+
+		describe("docvalue_fields", () => {
+			test("with docvalue_fields", () => {
+				const query = typedEs(client, {
+					index: "orders",
+					_source: false,
+					docvalue_fields: ["shipping_address.street"],
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Hits = Output["hits"]["hits"][0];
+				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
+					"shipping_address.street": string[];
+				}>();
+			});
+
+			test("with docvalue_fields and _source", () => {
+				const query = typedEs(client, {
+					index: "orders",
+					_source: ["shipping_address.street"],
+					docvalue_fields: ["shipping_address.city"],
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Hits = Output["hits"]["hits"][0];
+				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
+					"shipping_address.city": string[];
+				}>();
+				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
+					shipping_address: {
+						street: string;
+					};
+				}>();
+			});
+
+			test("with docvalue_fields and fields and _source and wildcard", () => {
+				const query = typedEs(client, {
+					index: "orders",
+					_source: ["*_at"],
+					docvalue_fields: ["shipping_address.city"],
+					fields: ["shipping_address.street"],
+				});
+				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Hits = Output["hits"]["hits"][0];
+				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
+					"shipping_address.street": string[];
+					"shipping_address.city": string[];
+				}>();
+				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
+					created_at: string;
+				}>();
+			});
+		});
 	});
 
 	describe("aggregations", () => {

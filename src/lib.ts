@@ -111,7 +111,11 @@ type OverrideSearchResponse<
 					"_source" | "fields"
 				> & {
 					_source: Query["_source"] extends false ? never : T_Source;
-					fields: "fields" extends keyof Query ? T_Fields : never;
+					fields: "fields" extends keyof Query
+						? T_Fields
+						: "docvalue_fields" extends keyof Query
+							? T_Fields
+							: never;
 				}
 			>;
 		};
@@ -170,7 +174,7 @@ type AnyString = string & {};
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	SearchRequest,
-	"index" | "_source" | "fields"
+	"index" | "_source" | "fields" | "docvalue_fields"
 > &
 	{
 		[K in keyof Indexes]: {
@@ -185,6 +189,13 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 						exclude?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
 				  };
 			fields?: Array<
+				| PossibleFieldsWithWildcards<K, Indexes>
+				| {
+						field: PossibleFieldsWithWildcards<K, Indexes>;
+						format?: string;
+				  }
+			>;
+			docvalue_fields?: Array<
 				| PossibleFieldsWithWildcards<K, Indexes>
 				| {
 						field: PossibleFieldsWithWildcards<K, Indexes>;

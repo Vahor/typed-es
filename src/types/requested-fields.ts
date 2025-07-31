@@ -1,5 +1,5 @@
 import type { RequestedIndex } from "../lib";
-import type { IsNever } from "./helpers";
+import type { GetField, IsNever } from "./helpers";
 
 type InferSource<T, Key extends string> = T extends {
 	[k in Key]: (infer A)[];
@@ -35,7 +35,7 @@ export type ExtractQuery_Source<
 
 export type ExtractQueryFields<
 	Query extends Record<string, unknown>,
-	Fields = Query["fields"],
+	Fields = GetField<Query, "fields"> | GetField<Query, "docvalue_fields">,
 > = Fields extends readonly (infer FieldsItem extends
 	| string
 	| { field: string })[]
