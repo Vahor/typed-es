@@ -46,7 +46,7 @@ describe("Top Hits Aggregations", () => {
 					key: unknown;
 					doc_count: number;
 					top_sales_hits: {
-						hits: Array<{
+						hits: {
 							total: number;
 							max_score: number | null;
 							hits: Array<{
@@ -60,7 +60,7 @@ describe("Top Hits Aggregations", () => {
 								sort: Array<unknown>;
 								_score: number | null;
 							}>;
-						}>;
+						};
 					};
 				}>;
 			};

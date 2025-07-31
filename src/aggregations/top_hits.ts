@@ -15,7 +15,7 @@ export type TopHitsAggs<
 	top_hits: infer T extends Record<string, unknown>;
 }
 	? {
-			hits: PrettyArray<{
+			hits: {
 				total: QueryTotal<BaseQuery>;
 				max_score: number | null;
 				hits: PrettyArray<{
@@ -25,6 +25,6 @@ export type TopHitsAggs<
 					sort: Array<unknown>;
 					_score: number | null;
 				}>;
-			}>;
+			};
 		}
 	: never;

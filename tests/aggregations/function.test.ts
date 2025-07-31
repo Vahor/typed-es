@@ -108,7 +108,7 @@ describe("Leaf Function Aggregations", () => {
 						value: number;
 				  }
 				| {
-						hits: Array<{
+						hits: {
 							total: number;
 							max_score: number | null;
 							hits: Array<{
@@ -120,7 +120,7 @@ describe("Leaf Function Aggregations", () => {
 								sort: Array<unknown>;
 								_score: number | null;
 							}>;
-						}>;
+						};
 				  };
 		}>();
 	});
