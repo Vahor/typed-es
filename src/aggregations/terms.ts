@@ -1,7 +1,6 @@
 import type {
 	AggregationOutput,
 	ElasticsearchIndexes,
-	ExtractAggs,
 	NextAggsParentKey,
 	SearchRequest,
 } from "..";
@@ -9,20 +8,19 @@ import type { PrettyArray } from "../types/helpers";
 
 export type TermsAggs<
 	BaseQuery extends SearchRequest,
-	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
-	Key extends keyof ExtractAggs<Query>,
 	Index extends string,
-> = ExtractAggs<Query>[Key] extends { terms: unknown }
+	Agg,
+> = Agg extends { terms: unknown }
 	? {
 			buckets: PrettyArray<
 				{
 					key: unknown;
 					doc_count: number;
 				} & {
-					[k in NextAggsParentKey<ExtractAggs<Query>[Key]>]: AggregationOutput<
+					[k in NextAggsParentKey<Agg>]: AggregationOutput<
 						BaseQuery,
-						ExtractAggs<Query>[Key],
+						Agg,
 						E,
 						k,
 						Index

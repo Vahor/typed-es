@@ -1,6 +1,3 @@
-import type { ExtractAggs, RequestedIndex, SearchRequest } from "..";
-import type { UnionToIntersection } from "../types/helpers";
-
 type ExtractAggField<Agg> = {
 	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {
 		field: infer F;
@@ -19,16 +16,14 @@ type AggFunctionsNumber =
 export type AggFunction = "last" | "first" | "stats" | AggFunctionsNumber;
 
 export type FunctionAggs<
-	Query extends SearchRequest,
-	Indexes,
-	Key extends keyof ExtractAggs<Query>,
-	Index = RequestedIndex<Query>,
-	Agg = ExtractAggField<UnionToIntersection<ExtractAggs<Query>[Key]>>,
-> = Agg extends { fn: string; field: string }
+	Index extends string,
+	Agg,
+	FieldAgg = ExtractAggField<Agg>,
+> = FieldAgg extends { fn: string; field: string }
 	? {
-			value: Agg["fn"] extends AggFunctionsNumber
+			value: FieldAgg["fn"] extends AggFunctionsNumber
 				? number
-				: Agg["fn"] extends "stats"
+				: FieldAgg["fn"] extends "stats"
 					? {
 							count: number;
 							min: number;
@@ -37,6 +32,6 @@ export type FunctionAggs<
 							sum: number;
 						}
 					: // @ts-expect-error: Index should be in keyof Indexes, This is fine
-						TypeOfField<Agg["field"], Indexes, Index>;
+						TypeOfField<FieldAgg["field"], Indexes, Index>;
 		}
 	: never;

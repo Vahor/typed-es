@@ -1,11 +1,10 @@
 import type {
 	AggregationOutput,
 	ElasticsearchIndexes,
-	ExtractAggs,
 	NextAggsParentKey,
 	SearchRequest,
 } from "..";
-import type { PrettyArray, UnionToIntersection } from "../types/helpers";
+import type { PrettyArray } from "../types/helpers";
 
 type CompositeSources = Array<Record<string, unknown>>;
 
@@ -15,11 +14,9 @@ type ExtractSourcesKeys<Sources extends CompositeSources> = {
 
 export type CompositeAggs<
 	BaseQuery extends SearchRequest,
-	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
-	Key extends keyof ExtractAggs<Query>,
 	Index extends string,
-	Agg = UnionToIntersection<ExtractAggs<Query>[Key]>,
+	Agg,
 > = Agg extends {
 	composite: { sources: infer Sources extends CompositeSources };
 }
