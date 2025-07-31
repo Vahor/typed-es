@@ -78,7 +78,7 @@ describe("Leaf Function Aggregations", () => {
 		}>();
 	});
 
-	test("with conditional generic function and differnt aggs", () => {
+	test("with conditional generic function and different aggs", () => {
 		const fn = "" as "min" | "max" | "sum" | "avg" | "last";
 		const query = typedEs(client, {
 			index: "orders",
