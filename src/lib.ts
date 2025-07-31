@@ -104,7 +104,7 @@ export type AggregationOutput<
 			| DateHistogramAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
 			| TermsAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
 			| TopHitsAggs<BaseQuery, Query, E, CurrentAggregationKey, Index>
-			| FunctionAggs<Query, ElasticsearchIndexes, Index>
+			| FunctionAggs<Query, E, CurrentAggregationKey, Index>
 			| BucketAggs<Query, CurrentAggregationKey>;
 
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
