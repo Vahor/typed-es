@@ -2,4 +2,4 @@
 "@vahor/typed-es": patch
 ---
 
-add support for `fields` key in query
+Add support for `fields` key in query
