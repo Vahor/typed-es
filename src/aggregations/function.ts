@@ -1,14 +1,12 @@
 import type { ExtractAggs, RequestedIndex, SearchRequest } from "..";
 
 type ExtractAggField<Agg> = {
-	[K in keyof Agg]: {
-		[Fn in Extract<keyof Agg[K], AggFunction>]: Agg[K][Fn] extends {
-			field: infer F;
-		}
-			? { fn: Fn; field: F }
-			: never;
-	}[Extract<keyof Agg[K], AggFunction>];
-}[keyof Agg];
+	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {
+		field: infer F;
+	}
+		? { fn: Fn; field: F }
+		: never;
+}[Extract<keyof Agg, AggFunction>];
 type AggFunctionsNumber =
 	| "sum"
 	| "avg"
@@ -22,8 +20,9 @@ export type AggFunction = "last" | "first" | "stats" | AggFunctionsNumber;
 export type FunctionAggs<
 	Query extends SearchRequest,
 	Indexes,
+	Key extends keyof ExtractAggs<Query>,
 	Index = RequestedIndex<Query>,
-	Agg = ExtractAggField<ExtractAggs<Query>>,
+	Agg = ExtractAggField<ExtractAggs<Query>[Key]>,
 > = Agg extends { fn: string; field: string }
 	? {
 			value: Agg["fn"] extends AggFunctionsNumber

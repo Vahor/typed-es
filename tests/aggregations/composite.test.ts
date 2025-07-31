@@ -59,4 +59,57 @@ describe("Composite Aggregations", () => {
 			score: number;
 		}>();
 	});
+
+	test("with multiple aggregations", () => {
+		const query = typedEs(client, {
+			index: "orders",
+			_source: false,
+			size: 0,
+			aggs: {
+				pagination: {
+					composite: {
+						after: undefined,
+						sources: [
+							{ entity: { terms: { field: "entity_id" } } },
+							{ key2: { terms: { field: "score" } } },
+						],
+					},
+					aggs: {
+						max_date: {
+							max: { field: "created_at" },
+						},
+						min_date: {
+							min: { field: "created_at" },
+						},
+						terms_field: {
+							terms: { field: "product_ids" },
+						},
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			pagination: {
+				after_key: Record<"entity" | "key2", unknown>;
+				buckets: Array<{
+					key: Record<"entity" | "key2", unknown>;
+					doc_count: number;
+					max_date: {
+						value: number;
+					};
+					min_date: {
+						value: number;
+					};
+					terms_field: {
+						buckets: Array<{
+							key: unknown;
+							doc_count: number;
+						}>;
+					};
+				}>;
+			};
+		}>();
+	});
 });
