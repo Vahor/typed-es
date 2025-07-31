@@ -1,5 +1,16 @@
 # @vahor/typed-es
 
+## 0.0.11
+
+### Patch Changes
+
+- [#43](https://github.com/Vahor/typed-es/pull/43) [`72eb350`](https://github.com/Vahor/typed-es/commit/72eb3505f90529fcb32168f3e81d2d886ca7576e) Thanks [@Vahor](https://github.com/Vahor)! - Add support for generic functions in aggregations.
+
+  Check tests in `tests/aggregations/function.test.ts` for examples.
+  To make the generic function work you'll need to add `as const` in the conditional part.
+
+- [#41](https://github.com/Vahor/typed-es/pull/41) [`fb3bfe3`](https://github.com/Vahor/typed-es/commit/fb3bfe36c74f039277eda137a42628eae58366d9) Thanks [@Vahor](https://github.com/Vahor)! - improve leaf type detection
+
 ## 0.0.10
 
 ### Patch Changes
