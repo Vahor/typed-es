@@ -1,3 +1,5 @@
+import type { ElasticsearchIndexes } from "..";
+
 type ExtractAggField<Agg> = {
 	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {
 		field: infer F;
@@ -16,6 +18,7 @@ type AggFunctionsNumber =
 export type AggFunction = "last" | "first" | "stats" | AggFunctionsNumber;
 
 export type FunctionAggs<
+	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,
 	FieldAgg = ExtractAggField<Agg>,
@@ -33,6 +36,6 @@ export type FunctionAggs<
 							sum: number;
 						}
 					: // @ts-expect-error: Index should be in keyof Indexes, This is fine
-						TypeOfField<FieldAgg["field"], Indexes, Index>;
+						TypeOfField<FieldAgg["field"], E, Index>;
 		}
 	: never;
