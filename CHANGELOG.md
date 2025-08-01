@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.0.13
+
+### Patch Changes
+
+- [#63](https://github.com/Vahor/typed-es/pull/63) [`31e63d3`](https://github.com/Vahor/typed-es/commit/31e63d3e496afaf2acf81e761859d4cbab77e454) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `top_metrics` agg
+
+- [#61](https://github.com/Vahor/typed-es/pull/61) [`da81d18`](https://github.com/Vahor/typed-es/commit/da81d188ad1e2307dfd6a60ff02ef93c81d9af5e) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `scripted_metric` agg
+
 ## 0.0.12
 
 ### Patch Changes
