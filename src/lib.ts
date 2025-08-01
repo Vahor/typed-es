@@ -3,6 +3,7 @@ import type { BucketAggFunction, BucketAggs } from "./aggregations/bucket_agg";
 import type { CompositeAggs } from "./aggregations/composite";
 import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
+import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
 import type { TermsAggs } from "./aggregations/terms";
 import type { TopHitsAggs } from "./aggregations/top_hits";
 import type { IsNever, Prettify, UnionToIntersection } from "./types/helpers";
@@ -63,7 +64,12 @@ export type NextAggsParentKey<
 	Aggs = ExtractAggs<Query>,
 > = ObjectKeysWithSpecificKeys<
 	Aggs,
-	"top_hits" | "date_histogram" | "terms" | AggFunction | BucketAggFunction
+	| "top_hits"
+	| "date_histogram"
+	| "terms"
+	| "scripted_metric"
+	| AggFunction
+	| BucketAggFunction
 >;
 
 export type AggregationOutput<
@@ -81,6 +87,7 @@ export type AggregationOutput<
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| FunctionAggs<Index, Agg>
+			| ScriptedMetricAggs<Agg>
 			| BucketAggs<Agg>;
 
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
