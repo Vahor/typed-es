@@ -40,9 +40,7 @@
 		"expect-type": "^1.2.2",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.1.2",
-		"pkg-pr-new": "^0.0.54"
-	},
-	"peerDependencies": {
+		"pkg-pr-new": "^0.0.54",
 		"typescript": "^5.9.2"
 	},
 	"scripts": {
