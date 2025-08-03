@@ -150,11 +150,6 @@ export type ElasticsearchOutputFields<
 	RequestedFields = Type extends "_source"
 		? ExtractQuery_Source<QueryWithSource, E, Index>
 		: ExtractQueryFields<QueryWithSource>,
-	_PossibleFields = PossibleFields<
-		Index,
-		E,
-		Type extends "fields" ? true : false
-	>,
 	Output = {
 		[K in WildcardSearch<
 			PossibleFields<Index, E, Type extends "fields" ? true : false>,
