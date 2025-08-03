@@ -1,5 +1,18 @@
 # @vahor/typed-es
 
+## 0.0.14
+
+### Patch Changes
+
+- [#73](https://github.com/Vahor/typed-es/pull/73) [`294dc14`](https://github.com/Vahor/typed-es/commit/294dc148be9d97b65625ab871ee9d1da4cba8328) Thanks [@Vahor](https://github.com/Vahor)! - set type of invalid field to `unknown`
+
+  `field.keyword` now gives `field: unknown` in the output
+  `invalid` gives `invalid: unknown` in the output
+
+  Valid fields and nested valid fields still give the correct type
+
+- [#71](https://github.com/Vahor/typed-es/pull/71) [`c7db764`](https://github.com/Vahor/typed-es/commit/c7db764e215a237750979e2aad35b2b425048562) Thanks [@Vahor](https://github.com/Vahor)! - `field` and `docvalues_fields` should only return leaf types
+
 ## 0.0.13
 
 ### Patch Changes
