@@ -24,4 +24,22 @@ describe("Field Extraction", () => {
 
 		expectTypeOf<Value>().toEqualTypeOf<Expected>();
 	});
+
+	test("can be limited to leaf fields", () => {
+		type Value = PossibleFields<"orders", CustomIndexes, true>;
+		type Expected =
+			| "id"
+			| "user_id"
+			| "product_ids"
+			| "total"
+			| "status"
+			| "created_at"
+			| "shipping_address.street"
+			| "shipping_address.city"
+			| "shipping_address.country"
+			| "shipping_address.postal_code"
+			| "shipping_address.again.and_again.last_time";
+
+		expectTypeOf<Value>().toEqualTypeOf<Expected>();
+	});
 });

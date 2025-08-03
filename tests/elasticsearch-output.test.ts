@@ -248,7 +248,7 @@ describe("Should return the correct type", () => {
 					index: "orders",
 					_source: ["*_at"],
 					docvalue_fields: ["shipping_address.city"],
-					fields: ["shipping_address.street"],
+					fields: ["shipping_address.street", "shipping_address"],
 				});
 				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
