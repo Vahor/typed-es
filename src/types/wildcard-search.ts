@@ -14,3 +14,11 @@ export type WildcardSearch<Words, Search> = Words extends infer W extends string
 			: never
 		: never
 	: never;
+
+// Return search if it doesn't match any words
+export type InverseWildcardSearch<Words, Search> =
+	Search extends infer S extends string
+		? WildcardSearch<Words, S> extends true
+			? S
+			: never
+		: never;
