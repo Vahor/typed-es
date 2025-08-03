@@ -2,14 +2,14 @@ import type { UnionToIntersection } from "./helpers";
 
 type Primitive = string | number | boolean | bigint | symbol | null | undefined;
 
-export type JoinKeys<T, Prefix extends string = ""> = {
+export type JoinKeys<T, OnlyLeaf = false, Prefix extends string = ""> = {
 	[K in keyof T]: T[K] extends Function
 		? `${Prefix}${Extract<K, string>}`
 		: T[K] extends Primitive | Array<Primitive> | Date
 			? `${Prefix}${Extract<K, string>}`
 			:
-					| `${Prefix}${Extract<K, string>}`
-					| JoinKeys<T[K], `${Prefix}${Extract<K, string>}.`>;
+					| (OnlyLeaf extends true ? never : `${Prefix}${Extract<K, string>}`)
+					| JoinKeys<T[K], OnlyLeaf, `${Prefix}${Extract<K, string>}.`>;
 }[keyof T];
 
 // Inverse steps

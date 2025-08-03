@@ -19,12 +19,14 @@ import type {
 } from "./types/requested-fields";
 import type { WildcardSearch } from "./types/wildcard-search";
 
-export type PossibleFields<Index, Indexes> = Index extends keyof Indexes
-	? JoinKeys<Indexes[Index]>
-	: never;
+export type PossibleFields<
+	Index,
+	Indexes,
+	OnlyLeaf = false,
+> = Index extends keyof Indexes ? JoinKeys<Indexes[Index], OnlyLeaf> : never;
 
-export type PossibleFieldsWithWildcards<Index, Indexes> =
-	| PossibleFields<Index, Indexes>
+export type PossibleFieldsWithWildcards<Index, Indexes, OnlyLeaf = false> =
+	| PossibleFields<Index, Indexes, OnlyLeaf>
 	| AnyString;
 
 export type TypeOfField<
@@ -144,7 +146,7 @@ export type ElasticsearchOutputFields<
 	//
 	Output = {
 		[K in WildcardSearch<
-			PossibleFields<Index, E>,
+			PossibleFields<Index, E, Type extends "fields" ? true : false>,
 			Type extends "_source"
 				? ExtractQuery_Source<QueryWithSource, E, Index>
 				: ExtractQueryFields<QueryWithSource>
@@ -199,16 +201,16 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 						exclude?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
 				  };
 			fields?: Array<
-				| PossibleFieldsWithWildcards<K, Indexes>
+				| PossibleFieldsWithWildcards<K, Indexes, true>
 				| {
-						field: PossibleFieldsWithWildcards<K, Indexes>;
+						field: PossibleFieldsWithWildcards<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
 			docvalue_fields?: Array<
-				| PossibleFieldsWithWildcards<K, Indexes>
+				| PossibleFieldsWithWildcards<K, Indexes, true>
 				| {
-						field: PossibleFieldsWithWildcards<K, Indexes>;
+						field: PossibleFieldsWithWildcards<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
