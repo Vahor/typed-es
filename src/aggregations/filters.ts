@@ -1,9 +1,4 @@
-import type {
-	AggregationOutput,
-	ElasticsearchIndexes,
-	NextAggsParentKey,
-	SearchRequest,
-} from "..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "..";
 import type { Prettify, PrettyArray } from "../types/helpers";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation
@@ -31,15 +26,7 @@ export type FiltersAggs<
 				buckets: PrettyArray<
 					{
 						doc_count: number;
-					} & {
-						[k in NextAggsParentKey<Agg>]: AggregationOutput<
-							BaseQuery,
-							Agg,
-							E,
-							k,
-							Index
-						>;
-					}
+					} & AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
 			}
 		: Filters extends Record<infer Keys, unknown>
@@ -50,30 +37,14 @@ export type FiltersAggs<
 							{
 								key: KeysAndOBK<Keys, Agg>;
 								doc_count: number;
-							} & {
-								[k in NextAggsParentKey<Agg>]: AggregationOutput<
-									BaseQuery,
-									Agg,
-									E,
-									k,
-									Index
-								>;
-							}
+							} & AppendSubAggs<BaseQuery, E, Index, Agg>
 						>;
 					}
 				: {
 						buckets: Prettify<{
 							[K in KeysAndOBK<Keys, Agg>]: {
 								doc_count: number;
-							} & {
-								[k in NextAggsParentKey<Agg>]: AggregationOutput<
-									BaseQuery,
-									Agg,
-									E,
-									k,
-									Index
-								>;
-							};
+							} & AppendSubAggs<BaseQuery, E, Index, Agg>;
 						}>;
 					}
 			: never
