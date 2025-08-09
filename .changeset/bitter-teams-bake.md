@@ -2,4 +2,4 @@
 "@vahor/typed-es": patch
 ---
 
-Add support for `range` aggregation
+Add support for the `range` aggregation
