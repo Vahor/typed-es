@@ -1,5 +1,17 @@
 # @vahor/typed-es
 
+## 0.0.16
+
+### Patch Changes
+
+- [#79](https://github.com/Vahor/typed-es/pull/79) [`4d783a7`](https://github.com/Vahor/typed-es/commit/4d783a71ebeafe73c36c46be7578e66a8b20de40) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `range` aggregation
+
+- [#84](https://github.com/Vahor/typed-es/pull/84) [`b11c57e`](https://github.com/Vahor/typed-es/commit/b11c57ee5c50b73f109cdeecfdfa7fd85b43ecf9) Thanks [@Vahor](https://github.com/Vahor)! - Add `keyed` option support on `date_histogram` aggregation
+
+- [#81](https://github.com/Vahor/typed-es/pull/81) [`7226880`](https://github.com/Vahor/typed-es/commit/72268805a7a2320552222d08f222585198173c84) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `histogram` aggregation based on the [Elasticsearch histogram aggregation docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation)
+
+- [#82](https://github.com/Vahor/typed-es/pull/82) [`38d655b`](https://github.com/Vahor/typed-es/commit/38d655bd0f38276462caa6f41532368144016f1d) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `date_range` agg based on https://elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
+
 ## 0.0.15
 
 ### Patch Changes
