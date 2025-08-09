@@ -1,0 +1,141 @@
+import { describe, test } from "bun:test";
+import { expectTypeOf } from "expect-type";
+import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import { type CustomIndexes, client } from "../shared";
+
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
+describe("DateRange Aggregations", () => {
+	test("with from-to", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				range: {
+					date_range: {
+						field: "date",
+						format: "MM-yyyy",
+						ranges: [
+							{ to: "2016/02/01" },
+							{ from: "2016/02/01", to: "now/d" },
+							{ from: "now/d" },
+						],
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			range: {
+				buckets: [
+					{
+						to: number;
+						to_as_string: string;
+						doc_count: number;
+						key: `*-${string}`;
+					},
+					{
+						from: number;
+						from_as_string: string;
+						to: number;
+						to_as_string: string;
+						doc_count: number;
+						key: `${string}-${string}`;
+					},
+					{
+						from: number;
+						from_as_string: string;
+						doc_count: number;
+						key: `${string}-*`;
+					},
+				];
+			};
+		}>();
+	});
+
+	test("with keyed", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				range: {
+					date_range: {
+						field: "date",
+						format: "MM-yyy",
+						ranges: [{ to: "now-10M/M" }, { from: "now-10M/M" }],
+						keyed: true,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			range: {
+				buckets: {
+					[x: `*-${string}`]: {
+						doc_count: number;
+						to: number;
+						to_as_string: string;
+					};
+					[x: `${string}-*`]: {
+						doc_count: number;
+						from: number;
+						from_as_string: string;
+					};
+				};
+			};
+		}>();
+	});
+
+	test("with keyed and custom key", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				range: {
+					date_range: {
+						field: "date",
+						format: "MM-yyy",
+						ranges: [
+							{ from: "01-2015", to: "03-2015", key: "quarter_01" },
+							{ from: "03-2015", to: "06-2015", key: "quarter_02" },
+							{ from: "06-2015", key: "quarter_03_to_now" },
+						],
+						keyed: true,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			range: {
+				buckets: {
+					quarter_01: {
+						doc_count: number;
+						from: number;
+						from_as_string: string;
+						to: number;
+						to_as_string: string;
+					};
+					quarter_02: {
+						doc_count: number;
+						to: number;
+						to_as_string: string;
+						from: number;
+						from_as_string: string;
+					};
+					quarter_03_to_now: {
+						doc_count: number;
+						from: number;
+						from_as_string: string;
+					};
+				};
+			};
+		}>();
+	});
+});
