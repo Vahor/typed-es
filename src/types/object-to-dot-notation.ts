@@ -25,13 +25,12 @@ export type RecursiveDotNotation<
 		? T[Path]
 		: never;
 
-type ExpandDottedKey<Key extends string, Value> = Value extends Primitive
-	? Key extends `${infer K}.${infer Rest}`
-		? { [P in K]: ExpandDottedKey<Rest, Value> }
-		: { [P in Key]: Value }
-	: Key extends `${infer K}.${string}`
-		? { [P in K]: unknown }
-		: { [P in Key]: unknown };
+type ExpandDottedKey<
+	Key extends string,
+	Value,
+> = Key extends `${infer K}.${infer Rest}`
+	? { [P in K]: ExpandDottedKey<Rest, Value> }
+	: { [P in Key]: Value };
 
 export type ExpandAll<T> = UnionToIntersection<
 	{

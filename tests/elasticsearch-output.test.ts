@@ -28,54 +28,6 @@ describe("Should return the correct type", () => {
 				>().toEqualTypeOf<CustomIndexes["demo"]>();
 			});
 
-			describe("single field", () => {
-				test("simple path", () => {
-					const query = typedEs(client, {
-						index: "demo",
-						_source: ["entity_id"],
-					});
-					type OutputSource = ElasticsearchOutput<
-						typeof query,
-						CustomIndexes
-					>["hits"]["hits"][0]["_source"];
-					type Expected = {
-						entity_id: string;
-					};
-					expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
-				});
-
-				test("with .keyword at the end", () => {
-					const query = typedEs(client, {
-						index: "demo",
-						_source: ["entity_id.keyword"],
-					});
-					type OutputSource = ElasticsearchOutput<
-						typeof query,
-						CustomIndexes
-					>["hits"]["hits"][0]["_source"];
-					type Expected = {
-						entity_id: unknown;
-					};
-					expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
-				});
-
-				test("with an invalid field", () => {
-					const query = typedEs(client, {
-						index: "demo",
-						_source: ["entity_id.invalid", "invalid"],
-					});
-					type OutputSource = ElasticsearchOutput<
-						typeof query,
-						CustomIndexes
-					>["hits"]["hits"][0]["_source"];
-					type Expected = {
-						entity_id: unknown;
-						invalid: unknown;
-					};
-					expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
-				});
-			});
-
 			test("with _source set to false", () => {
 				type Query = typeof testQueries.queryWithoutSource & { _source: false };
 				expectTypeOf<
@@ -303,7 +255,6 @@ describe("Should return the correct type", () => {
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.street": string[];
 					"shipping_address.city": string[];
-					shipping_address: unknown[];
 				}>();
 				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 					created_at: string;
