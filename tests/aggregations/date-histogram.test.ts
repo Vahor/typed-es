@@ -1,7 +1,6 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
 import { type ElasticsearchOutput, typedEs } from "../../src/index";
-import type { AnyString } from "../../src/types/helpers";
 import { type CustomIndexes, client } from "../shared";
 
 describe("Date Histogram Aggregations", () => {
@@ -38,16 +37,17 @@ describe("Date Histogram Aggregations", () => {
 		});
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
+
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			years: {
 				buckets: Array<{
 					key_as_string: string;
-					key: unknown;
+					key: number;
 					doc_count: number;
 					daily: {
 						buckets: Array<{
 							key_as_string: string;
-							key: unknown;
+							key: number;
 							doc_count: number;
 							score_value: {
 								value: number;
@@ -85,11 +85,11 @@ describe("Date Histogram Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			sales_over_time: {
 				buckets: Record<
-					"yyyy-MM-dd" | AnyString,
+					string,
 					{
 						doc_count: number;
 						key: number;
-						key_as_string: "yyyy-MM-dd" | AnyString;
+						key_as_string: string;
 					}
 				>;
 			};
