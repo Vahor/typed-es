@@ -74,19 +74,18 @@ describe("DateRange Aggregations", () => {
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			range: {
-				buckets: Record<
-					`*-${string}` | `${string}-*`,
-					| {
-							from: number;
-							from_as_string: string;
-							doc_count: number;
-					  }
-					| {
-							to: number;
-							to_as_string: string;
-							doc_count: number;
-					  }
-				>;
+				buckets: {
+					[x: `*-${string}`]: {
+						doc_count: number;
+						to: number;
+						to_as_string: string;
+					};
+					[x: `${string}-*`]: {
+						doc_count: number;
+						from: number;
+						from_as_string: string;
+					};
+				};
 			};
 		}>();
 	});
@@ -104,6 +103,7 @@ describe("DateRange Aggregations", () => {
 						ranges: [
 							{ from: "01-2015", to: "03-2015", key: "quarter_01" },
 							{ from: "03-2015", to: "06-2015", key: "quarter_02" },
+							{ from: "06-2015", key: "quarter_03_to_now" },
 						],
 						keyed: true,
 					},
@@ -114,19 +114,27 @@ describe("DateRange Aggregations", () => {
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			range: {
-				buckets: Record<
-					"quarter_01" | "quarter_02",
-					| {
-							from: number;
-							from_as_string: string;
-							doc_count: number;
-					  }
-					| {
-							to: number;
-							to_as_string: string;
-							doc_count: number;
-					  }
-				>;
+				buckets: {
+					quarter_01: {
+						doc_count: number;
+						from: number;
+						from_as_string: string;
+						to: number;
+						to_as_string: string;
+					};
+					quarter_02: {
+						doc_count: number;
+						to: number;
+						to_as_string: string;
+						from: number;
+						from_as_string: string;
+					};
+					quarter_03_to_now: {
+						doc_count: number;
+						from: number;
+						from_as_string: string;
+					};
+				};
 			};
 		}>();
 	});

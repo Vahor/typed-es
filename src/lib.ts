@@ -2,6 +2,7 @@ import type { estypes } from "@elastic/elasticsearch";
 import type { BucketAggFunction, BucketAggs } from "./aggregations/bucket_agg";
 import type { CompositeAggs } from "./aggregations/composite";
 import type { DateHistogramAggs } from "./aggregations/date_histogram";
+import type { DateRangeAggs } from "./aggregations/date_range";
 import type { FiltersAggs } from "./aggregations/filters";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
 import type { HistogramAggs } from "./aggregations/histogram";
@@ -81,6 +82,7 @@ export type NextAggsParentKey<
 	| "range"
 	| "filters"
 	| "histogram"
+	| "date_range"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -99,6 +101,7 @@ export type AggregationOutput<
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
+			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| FunctionAggs<E, Index, Agg>
