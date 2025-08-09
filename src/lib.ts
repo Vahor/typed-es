@@ -4,6 +4,7 @@ import type { CompositeAggs } from "./aggregations/composite";
 import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { FiltersAggs } from "./aggregations/filters";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
+import type { HistogramAggs } from "./aggregations/histogram";
 import type { RangeAggs } from "./aggregations/range";
 import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
 import type { TermsAggs } from "./aggregations/terms";
@@ -79,6 +80,7 @@ export type NextAggsParentKey<
 	| "top_metrics"
 	| "range"
 	| "filters"
+	| "histogram"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -100,6 +102,7 @@ export type AggregationOutput<
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| FunctionAggs<E, Index, Agg>
+			| HistogramAggs<BaseQuery, E, Index, Agg>
 			| ScriptedMetricAggs<Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
