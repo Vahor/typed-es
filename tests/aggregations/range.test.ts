@@ -1,12 +1,13 @@
 import { describe, test } from "bun:test";
+import { expectTypeOf } from "expect-type";
 import { type ElasticsearchOutput, typedEs } from "../../src/index";
-import { expectTypeOf } from "../helper";
 import { type CustomIndexes, client } from "../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
 describe("Range Aggregations", () => {
 	test("with from-to", () => {
 		const startRange = 100 as number;
+		const midRange = 200 as number;
 		const query = typedEs(client, {
 			index: "demo",
 			_source: false,
@@ -17,8 +18,9 @@ describe("Range Aggregations", () => {
 						field: "price",
 						ranges: [
 							{ to: startRange },
-							{ from: 100.0, to: 200.0 },
-							{ from: 200.0 },
+							{ from: startRange, to: midRange },
+							{ from: midRange, to: 500 },
+							{ from: 500.0 },
 						],
 					},
 				},
@@ -32,18 +34,24 @@ describe("Range Aggregations", () => {
 					{
 						key: `*-${number}`;
 						to: number;
-						doc_count: 2;
+						doc_count: number;
 					},
 					{
-						key: `${number}-200.0`;
+						key: `${number}-${number}`;
 						from: number;
-						to: 200.0;
-						doc_count: 2;
+						to: number;
+						doc_count: number;
 					},
 					{
-						key: "200.0-*";
-						from: 200.0;
-						doc_count: 3;
+						key: `${number}-500.0`;
+						from: number;
+						to: 500.0;
+						doc_count: number;
+					},
+					{
+						key: "500.0-*";
+						from: 500.0;
+						doc_count: number;
 					},
 				];
 			};
@@ -59,7 +67,11 @@ describe("Range Aggregations", () => {
 				price_ranges: {
 					range: {
 						field: "price",
-						ranges: [{ to: 100 }, { from: 100.0, to: 200.0 }, { from: 200.0 }],
+						ranges: [
+							{ to: 100.1 },
+							{ from: 100.1, to: 200.0 },
+							{ from: 200.0 },
+						],
 					},
 				},
 			},
@@ -70,20 +82,20 @@ describe("Range Aggregations", () => {
 			price_ranges: {
 				buckets: [
 					{
-						key: "*-100.0";
-						to: 100.0;
-						doc_count: 2;
+						key: "*-100.1";
+						to: 100.1;
+						doc_count: number;
 					},
 					{
-						key: "100.0-200.0";
-						from: 100.0;
+						key: "100.1-200.0";
+						from: 100.1;
 						to: 200.0;
-						doc_count: 2;
+						doc_count: number;
 					},
 					{
 						key: "200.0-*";
 						from: 200.0;
-						doc_count: 3;
+						doc_count: number;
 					},
 				];
 			};
@@ -112,16 +124,16 @@ describe("Range Aggregations", () => {
 				buckets: {
 					"*-100.0": {
 						to: 100.0;
-						doc_count: 2;
+						doc_count: number;
 					};
 					"100.0-200.0": {
 						from: 100.0;
 						to: 200.0;
-						doc_count: 2;
+						doc_count: number;
 					};
 					"200.0-*": {
 						from: 200.0;
-						doc_count: 3;
+						doc_count: number;
 					};
 				};
 			};
