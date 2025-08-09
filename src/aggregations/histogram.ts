@@ -10,7 +10,7 @@ type HistogramAggOutput<
 	doc_count: number;
 } & AppendSubAggs<BaseQuery, E, Index, Agg>;
 
-export type HistogramAgg<
+export type HistogramAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
