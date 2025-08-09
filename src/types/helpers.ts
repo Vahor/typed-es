@@ -32,3 +32,5 @@ export type IsFloatLiteral<T> = IsNumericLiteral<T> extends true
 			: false
 		: false
 	: false;
+
+export type AnyString = string & {};

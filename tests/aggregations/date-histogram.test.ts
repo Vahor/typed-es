@@ -1,6 +1,7 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
 import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import type { AnyString } from "../../src/types/helpers";
 import { type CustomIndexes, client } from "../shared";
 
 describe("Date Histogram Aggregations", () => {
@@ -59,6 +60,38 @@ describe("Date Histogram Aggregations", () => {
 						value_as_string?: string;
 					};
 				}>;
+			};
+		}>();
+	});
+
+	test("with keyed", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				sales_over_time: {
+					date_histogram: {
+						field: "date",
+						calendar_interval: "1M",
+						format: "yyyy-MM-dd",
+						keyed: true,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			sales_over_time: {
+				buckets: Record<
+					"yyyy-MM-dd" | AnyString,
+					{
+						doc_count: number;
+						key: number;
+						key_as_string: "yyyy-MM-dd" | AnyString;
+					}
+				>;
 			};
 		}>();
 	});

@@ -11,7 +11,12 @@ import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
 import type { TermsAggs } from "./aggregations/terms";
 import type { TopHitsAggs } from "./aggregations/top_hits";
 import type { TopMetricsAggs } from "./aggregations/top_metrics";
-import type { IsNever, Prettify, UnionToIntersection } from "./types/helpers";
+import type {
+	AnyString,
+	IsNever,
+	Prettify,
+	UnionToIntersection,
+} from "./types/helpers";
 import type {
 	ExpandAll,
 	JoinKeys,
@@ -210,8 +215,6 @@ export type ElasticsearchOutput<
 	: `Index '${Index}' not found`;
 
 export type SearchRequest = estypes.SearchRequest;
-
-type AnyString = string & {};
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	SearchRequest,
