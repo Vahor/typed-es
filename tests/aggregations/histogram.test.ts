@@ -22,7 +22,7 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			price_ranges: {
+			prices: {
 				buckets: Array<{
 					key: number;
 					doc_count: number;
@@ -49,7 +49,7 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			price_ranges: {
+			prices: {
 				buckets: Record<
 					`${number}`,
 					{
