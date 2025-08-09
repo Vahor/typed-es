@@ -77,6 +77,8 @@ export type NextAggsParentKey<
 	| "terms"
 	| "scripted_metric"
 	| "top_metrics"
+	| "range"
+	| "filters"
 	| AggFunction
 	| BucketAggFunction
 >;
