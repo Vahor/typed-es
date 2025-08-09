@@ -44,7 +44,7 @@ describe("Composite Aggregations", () => {
 					daily: {
 						buckets: Array<{
 							key_as_string: string;
-							key: unknown;
+							key: number;
 							doc_count: number;
 							score_value: {
 								value: number;

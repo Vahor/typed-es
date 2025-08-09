@@ -37,16 +37,17 @@ describe("Date Histogram Aggregations", () => {
 		});
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
+
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			years: {
 				buckets: Array<{
 					key_as_string: string;
-					key: unknown;
+					key: number;
 					doc_count: number;
 					daily: {
 						buckets: Array<{
 							key_as_string: string;
-							key: unknown;
+							key: number;
 							doc_count: number;
 							score_value: {
 								value: number;
@@ -59,6 +60,38 @@ describe("Date Histogram Aggregations", () => {
 						value_as_string?: string;
 					};
 				}>;
+			};
+		}>();
+	});
+
+	test("with keyed", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				sales_over_time: {
+					date_histogram: {
+						field: "date",
+						calendar_interval: "1M",
+						format: "yyyy-MM-dd",
+						keyed: true,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			sales_over_time: {
+				buckets: Record<
+					string,
+					{
+						doc_count: number;
+						key: number;
+						key_as_string: string;
+					}
+				>;
 			};
 		}>();
 	});
