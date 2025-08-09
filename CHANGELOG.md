@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.15
+
+### Patch Changes
+
+- [#75](https://github.com/Vahor/typed-es/pull/75) [`971cefb`](https://github.com/Vahor/typed-es/commit/971cefb33df88ae9ff8eba7a4ff1df5985e11440) Thanks [@Vahor](https://github.com/Vahor)! - Add `filters` aggregation based on https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation.
+
 ## 0.0.14
 
 ### Patch Changes
