@@ -18,3 +18,17 @@ export type GetField<
 	T extends Record<string, unknown>,
 	Key extends string,
 > = Key extends keyof T ? T[Key] : never;
+
+export type IsNumericLiteral<T> = T extends number
+	? number extends T
+		? false // it's just "number"
+		: true // it's a literal
+	: false;
+
+export type IsFloatLiteral<T> = IsNumericLiteral<T> extends true
+	? T extends number // only here to make type narrowing work
+		? `${T}` extends `${string}.${string}`
+			? true
+			: false
+		: false
+	: false;

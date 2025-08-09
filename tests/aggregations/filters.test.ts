@@ -1,6 +1,6 @@
 import { describe, test } from "bun:test";
+import { expectTypeOf } from "expect-type";
 import { type ElasticsearchOutput, typedEs } from "../../src/index";
-import { expectTypeOf } from "../helper";
 import { type CustomIndexes, client } from "../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation

@@ -1,9 +1,4 @@
-import type {
-	AggregationOutput,
-	ElasticsearchIndexes,
-	NextAggsParentKey,
-	SearchRequest,
-} from "..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "..";
 import type { PrettyArray } from "../types/helpers";
 
 type CompositeSources = Array<Record<string, unknown>>;
@@ -26,15 +21,7 @@ export type CompositeAggs<
 				{
 					key: Record<ExtractSourcesKeys<Sources>, unknown>;
 					doc_count: number;
-				} & {
-					[k in NextAggsParentKey<Agg>]: AggregationOutput<
-						BaseQuery,
-						Agg,
-						E,
-						k,
-						Index
-					>;
-				}
+				} & AppendSubAggs<BaseQuery, E, Index, Agg>
 			>;
 		}
 	: never;

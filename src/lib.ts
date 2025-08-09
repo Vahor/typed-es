@@ -4,6 +4,7 @@ import type { CompositeAggs } from "./aggregations/composite";
 import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { FiltersAggs } from "./aggregations/filters";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
+import type { RangeAggs } from "./aggregations/range";
 import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
 import type { TermsAggs } from "./aggregations/terms";
 import type { TopHitsAggs } from "./aggregations/top_hits";
@@ -73,10 +74,11 @@ export type NextAggsParentKey<
 	Aggs,
 	| "top_hits"
 	| "date_histogram"
-	| "filters"
 	| "terms"
 	| "scripted_metric"
 	| "top_metrics"
+	| "range"
+	| "filters"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -94,12 +96,30 @@ export type AggregationOutput<
 			| CompositeAggs<BaseQuery, E, Index, Agg>
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
+			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| FunctionAggs<E, Index, Agg>
 			| ScriptedMetricAggs<Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
+
+export type AppendSubAggs<
+	BaseQuery extends SearchRequest,
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Agg extends Record<string, unknown>,
+> = IsNever<NextAggsParentKey<Agg>> extends true
+	? {}
+	: {
+			[k in NextAggsParentKey<Agg>]: AggregationOutput<
+				BaseQuery,
+				Agg,
+				E,
+				k,
+				Index
+			>;
+		};
 
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 

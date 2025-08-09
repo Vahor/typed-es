@@ -1,9 +1,4 @@
-import type {
-	AggregationOutput,
-	ElasticsearchIndexes,
-	NextAggsParentKey,
-	SearchRequest,
-} from "..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "..";
 import type { PrettyArray } from "../types/helpers";
 
 export type TermsAggs<
@@ -17,15 +12,7 @@ export type TermsAggs<
 				{
 					key: unknown;
 					doc_count: number;
-				} & {
-					[k in NextAggsParentKey<Agg>]: AggregationOutput<
-						BaseQuery,
-						Agg,
-						E,
-						k,
-						Index
-					>;
-				}
+				} & AppendSubAggs<BaseQuery, E, Index, Agg>
 			>;
 		}
 	: never;
