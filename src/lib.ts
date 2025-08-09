@@ -21,10 +21,7 @@ import type {
 	ExtractQuery_Source,
 	ExtractQueryFields,
 } from "./types/requested-fields";
-import type {
-	InverseWildcardSearch,
-	WildcardSearch,
-} from "./types/wildcard-search";
+import type { WildcardSearch } from "./types/wildcard-search";
 
 export type PossibleFields<
 	Index,
@@ -176,19 +173,13 @@ export type ElasticsearchOutputFields<
 	Index extends string,
 	Type extends "_source" | "fields",
 	//
-	RequestedFields = Type extends "_source"
-		? ExtractQuery_Source<QueryWithSource, E, Index>
-		: ExtractQueryFields<QueryWithSource>,
 	Output = {
 		[K in WildcardSearch<
 			PossibleFields<Index, E, Type extends "fields" ? true : false>,
-			RequestedFields
+			Type extends "_source"
+				? ExtractQuery_Source<QueryWithSource, E, Index>
+				: ExtractQueryFields<QueryWithSource>
 		>]: TypeOfField<K, E, Index>;
-	} & {
-		[K in InverseWildcardSearch<
-			PossibleFields<Index, E, Type extends "fields" ? true : false>,
-			RequestedFields
-		>]: unknown;
 	},
 > = Type extends "_source"
 	? ExpandAll<Output>
