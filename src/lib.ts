@@ -182,13 +182,13 @@ type IsParentKeyALeaf<
 	K extends string,
 	E extends ElasticsearchIndexes,
 	Index extends string,
-	KeyWithoutParent = RemoveLastDot<K>,
-> = KeyWithoutParent extends string
-	? TypeOfField<KeyWithoutParent, E, Index> extends Primitive
-		? IsNever<TypeOfField<KeyWithoutParent, E, Index>> extends true
-			? false
-			: true
-		: false
+	ParentKey = RemoveLastDot<K>,
+> = ParentKey extends string
+	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
+		? false
+		: TypeOfField<ParentKey, E, Index> extends Primitive
+			? true
+			: false
 	: false;
 
 export type ElasticsearchOutputFields<
