@@ -1,5 +1,105 @@
 # @vahor/typed-es
 
+## 0.0.17
+
+### Patch Changes
+
+- [#88](https://github.com/Vahor/typed-es/pull/88) [`55a87b8`](https://github.com/Vahor/typed-es/commit/55a87b881d63035302fd7f5e7275823cd0d73398) Thanks [@Vahor](https://github.com/Vahor)! - Using an invalid field in an aggregation will now cause an "error" instead of returning unknown of assuming "number".
+
+  For example, with this index:
+
+  ```typescript
+  type Indexes = {
+    index_name: {
+      score: number;
+    };
+  };
+  ```
+
+  When requesting
+
+  ```typescript
+  {
+  			aggs: {
+  				min_value: {
+  					min: {
+  						field: "price",
+  					},
+  				},
+  			},
+  }
+  ```
+
+  You'll get:
+
+  ```typescript
+  {
+  aggregations: {
+      min_value: {
+          message: `Field 'price' cannot be used in aggregation on 'index_name'`;
+          aggregation: {
+              min: {
+                  field: "price",
+              },
+          };
+      }
+  }
+  ```
+
+- [#85](https://github.com/Vahor/typed-es/pull/85) [`423714f`](https://github.com/Vahor/typed-es/commit/423714fbfcd20b845c000e16b96e2c237c20fc2f) Thanks [@Vahor](https://github.com/Vahor)! - Add `unknown` types to custom fields.
+
+  Custom object properties are not supported. This only works on leaf types.
+  Example:
+
+  ```typescript
+  type Index = {
+    index_name: {
+      name: string;
+      object: {
+        nested: number;
+      };
+    };
+  };
+  ```
+
+  With an Elasticsearch mapping like:
+
+  ```json
+  {
+      "properties": {
+          "name": {
+              "type": "text",
+              "fields": {
+                  "keyword": {
+                      "type": "keyword"
+                  }
+              }
+          }
+              ...
+      }
+  }
+  ```
+
+  You can now request
+
+  ```typescript
+  _source: [
+    "name.keyword",
+    "object.nested.something",
+    "invalid",
+    "object.variant",
+  ];
+  ```
+
+  and the output will be:
+
+  ```typescript
+  { name: unknown, object: { nested: unknown} }
+  ```
+
+  As `invalid` is not a valid field, it will be ignored.
+  And as `object` is an object, `variant` can't be a valid field on it. (only leaf types can have custom variants)
+
 ## 0.0.16
 
 ### Patch Changes
