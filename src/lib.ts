@@ -19,14 +19,20 @@ import type {
 } from "./types/helpers";
 import type {
 	ExpandAll,
+	FLAT_UNKNOWN,
 	JoinKeys,
+	Primitive,
 	RecursiveDotNotation,
+	RemoveLastDot,
 } from "./types/object-to-dot-notation";
 import type {
 	ExtractQuery_Source,
 	ExtractQueryFields,
 } from "./types/requested-fields";
-import type { WildcardSearch } from "./types/wildcard-search";
+import type {
+	InverseWildcardSearch,
+	WildcardSearch,
+} from "./types/wildcard-search";
 
 export type PossibleFields<
 	Index,
@@ -172,24 +178,47 @@ type OverrideSearchResponse<
 	}
 >;
 
+type IsParentKeyALeaf<
+	K extends string,
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	ParentKey = RemoveLastDot<K>,
+> = ParentKey extends string
+	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
+		? false
+		: TypeOfField<ParentKey, E, Index> extends Primitive
+			? true
+			: false
+	: false;
+
 export type ElasticsearchOutputFields<
 	QueryWithSource extends Partial<{ _source: unknown; fields: unknown }>,
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Type extends "_source" | "fields",
 	//
+	RequestedFields = Type extends "_source"
+		? ExtractQuery_Source<QueryWithSource, E, Index>
+		: ExtractQueryFields<QueryWithSource>,
 	Output = {
 		[K in WildcardSearch<
 			PossibleFields<Index, E, Type extends "fields" ? true : false>,
-			Type extends "_source"
-				? ExtractQuery_Source<QueryWithSource, E, Index>
-				: ExtractQueryFields<QueryWithSource>
+			RequestedFields
 		>]: TypeOfField<K, E, Index>;
+	} & {
+		[K in InverseWildcardSearch<
+			PossibleFields<Index, E, Type extends "fields" ? true : false>,
+			RequestedFields
+		> as IsParentKeyALeaf<K, E, Index> extends true ? K : never]: FLAT_UNKNOWN;
 	},
 > = Type extends "_source"
 	? ExpandAll<Output>
 	: {
-			[K in keyof Output]: Array<Output[K]>;
+			[K in keyof Output as Output[K] extends FLAT_UNKNOWN
+				? RemoveLastDot<K>
+				: K]: Output[K] extends FLAT_UNKNOWN
+				? Array<unknown>
+				: Array<Output[K]>;
 		};
 
 export type ElasticsearchOutput<

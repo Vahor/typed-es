@@ -28,6 +28,102 @@ describe("Should return the correct type", () => {
 				>().toEqualTypeOf<CustomIndexes["demo"]>();
 			});
 
+			describe("handle custom fields", () => {
+				describe("on direct values", () => {
+					// not an object
+					test("on an existing field but with .keyword at the end", () => {
+						const query = typedEs(client, {
+							index: "demo",
+							_source: ["entity_id.keyword"],
+							fields: ["score.some_format"],
+						});
+						type OutputSource = ElasticsearchOutput<
+							typeof query,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"];
+						type OutputFields = ElasticsearchOutput<
+							typeof query,
+							CustomIndexes
+						>["hits"]["hits"][0]["fields"];
+						type ExpectedSource = {
+							entity_id: unknown;
+						};
+						type ExpectedFields = {
+							score: unknown[];
+						};
+						expectTypeOf<OutputSource>().toEqualTypeOf<ExpectedSource>();
+						expectTypeOf<OutputFields>().toEqualTypeOf<ExpectedFields>();
+					});
+
+					test("on an unknown field", () => {
+						const query = typedEs(client, {
+							index: "demo",
+							_source: ["entity_id.keyword", "invalid"],
+						});
+						type OutputSource = ElasticsearchOutput<
+							typeof query,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"];
+						type Expected = {
+							entity_id: unknown;
+						};
+						expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
+					});
+				});
+
+				describe("on objects", () => {
+					test("on a leaf field", () => {
+						const query = typedEs(client, {
+							index: "orders",
+							_source: ["shipping_address.postal_code.keyword"],
+						});
+						type OutputSource = ElasticsearchOutput<
+							typeof query,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"];
+						type Expected = {
+							shipping_address: {
+								postal_code: unknown;
+							};
+						};
+						expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
+					});
+
+					test("on the object itself", () => {
+						const query = typedEs(client, {
+							index: "orders",
+							_source: ["shipping_address.keyword"],
+						});
+						type OutputSource = ElasticsearchOutput<
+							typeof query,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"];
+						type Expected = {};
+						expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
+					});
+
+					test("on the object itself, but also querying for a leaf field", () => {
+						const query = typedEs(client, {
+							index: "orders",
+							_source: [
+								"shipping_address.keyword",
+								"shipping_address.postal_code.keyword",
+							],
+						});
+						type OutputSource = ElasticsearchOutput<
+							typeof query,
+							CustomIndexes
+						>["hits"]["hits"][0]["_source"];
+						type Expected = {
+							shipping_address: {
+								postal_code: unknown;
+							};
+						};
+						expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
+					});
+				});
+			});
+
 			test("with _source set to false", () => {
 				type Query = typeof testQueries.queryWithoutSource & { _source: false };
 				expectTypeOf<
