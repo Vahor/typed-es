@@ -33,4 +33,10 @@ export type IsFloatLiteral<T> = IsNumericLiteral<T> extends true
 		: false
 	: false;
 
+export type IsStringLiteral<T> = T extends string
+	? string extends T
+		? false // it's just "string"
+		: true // it's a literal
+	: false;
+
 export type AnyString = string & {};

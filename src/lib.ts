@@ -14,6 +14,7 @@ import type { TopMetricsAggs } from "./aggregations/top_metrics";
 import type {
 	AnyString,
 	IsNever,
+	IsStringLiteral,
 	Prettify,
 	UnionToIntersection,
 } from "./types/helpers";
@@ -34,19 +35,62 @@ import type {
 	WildcardSearch,
 } from "./types/wildcard-search";
 
+type WithVariants<T extends string> = `${T}.${string}` | T;
+type FilterToOnlyLeaf<
+	T extends string,
+	E extends ElasticsearchIndexes,
+	Index,
+> = Index extends string
+	? keyof {
+			[K in T as IsParentKeyALeaf<K, E, Index> extends true ? K : never]: K;
+		}
+	: never;
+
 export type PossibleFields<
 	Index,
-	Indexes,
+	Indexes extends ElasticsearchIndexes,
 	OnlyLeaf = false,
-> = Index extends keyof Indexes ? JoinKeys<Indexes[Index], OnlyLeaf> : never;
+	AllowVariants = false,
+> = Index extends keyof Indexes
+	? AllowVariants extends true
+		?
+				| FilterToOnlyLeaf<
+						WithVariants<JoinKeys<Indexes[Index], OnlyLeaf>>,
+						Indexes,
+						Index
+				  >
+				| JoinKeys<Indexes[Index], OnlyLeaf>
+		: JoinKeys<Indexes[Index], OnlyLeaf>
+	: never;
 
-export type PossibleFieldsWithWildcards<Index, Indexes, OnlyLeaf = false> =
-	| PossibleFields<Index, Indexes, OnlyLeaf>
-	| AnyString;
+export type CanBeUsedInAggregation<
+	Field extends string,
+	Index extends string,
+	E extends ElasticsearchIndexes,
+> = IsStringLiteral<Field> extends false
+	? true
+	: Field extends PossibleFields<Index, E, true, true>
+		? true
+		: false;
+
+export type InvalidFieldInAggregation<
+	Field extends string,
+	Index extends string,
+	Aggregation,
+> = {
+	message: `Field '${Field}' cannot be used in aggregation on '${Index}'`;
+	aggregation: Aggregation;
+};
+
+export type PossibleFieldsWithWildcards<
+	Index,
+	Indexes extends ElasticsearchIndexes,
+	OnlyLeaf = false,
+> = PossibleFields<Index, Indexes, OnlyLeaf> | AnyString;
 
 export type TypeOfField<
 	Field extends string,
-	Indexes,
+	Indexes extends ElasticsearchIndexes,
 	Index extends keyof Indexes,
 > = RecursiveDotNotation<Indexes[Index], Field>;
 
@@ -186,7 +230,7 @@ type IsParentKeyALeaf<
 > = ParentKey extends string
 	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
 		? false
-		: TypeOfField<ParentKey, E, Index> extends Primitive
+		: TypeOfField<ParentKey, E, Index> extends Primitive | Array<Primitive>
 			? true
 			: false
 	: false;

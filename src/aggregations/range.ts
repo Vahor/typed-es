@@ -1,4 +1,10 @@
-import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "..";
+import type {
+	AppendSubAggs,
+	CanBeUsedInAggregation,
+	ElasticsearchIndexes,
+	InvalidFieldInAggregation,
+	SearchRequest,
+} from "..";
 import type {
 	IsFloatLiteral,
 	IsNumericLiteral,
@@ -58,21 +64,23 @@ export type RangeAggs<
 	Agg,
 > = Agg extends {
 	range: {
-		field: string;
+		field: infer Field extends string;
 		keyed?: infer Keyed;
 		ranges: infer Ranges;
 	};
 }
-	? Ranges extends readonly RangeSpec[]
-		? Keyed extends true
-			? {
-					buckets: RangeOutputToObject<
-						RangeOutput<BaseQuery, E, Index, Agg, Ranges>
-					>;
-				}
-			: {
-					// array default (keyed: false)
-					buckets: RangeOutput<BaseQuery, E, Index, Agg, Ranges>;
-				}
-		: never
+	? CanBeUsedInAggregation<Field, Index, E> extends true
+		? Ranges extends readonly RangeSpec[]
+			? Keyed extends true
+				? {
+						buckets: RangeOutputToObject<
+							RangeOutput<BaseQuery, E, Index, Agg, Ranges>
+						>;
+					}
+				: {
+						// array default (keyed: false)
+						buckets: RangeOutput<BaseQuery, E, Index, Agg, Ranges>;
+					}
+			: never
+		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;

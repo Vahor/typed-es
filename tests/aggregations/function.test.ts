@@ -1,6 +1,10 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import {
+	type ElasticsearchOutput,
+	type InvalidFieldInAggregation,
+	typedEs,
+} from "../../src/index";
 import { type CustomIndexes, client } from "../shared";
 
 describe("Leaf Function Aggregations", () => {
@@ -128,6 +132,30 @@ describe("Leaf Function Aggregations", () => {
 							}>;
 						};
 				  };
+		}>();
+	});
+
+	test("fails when using an invalid field", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				min_value: {
+					min: {
+						field: "price",
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			min_value: InvalidFieldInAggregation<
+				"price",
+				"demo",
+				(typeof query)["aggs"]["min_value"]
+			>;
 		}>();
 	});
 });

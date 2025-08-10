@@ -1,6 +1,10 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import {
+	type ElasticsearchOutput,
+	type InvalidFieldInAggregation,
+	typedEs,
+} from "../../src/index";
 import { type CustomIndexes, client } from "../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
@@ -136,6 +140,33 @@ describe("DateRange Aggregations", () => {
 					};
 				};
 			};
+		}>();
+	});
+
+	test("fails when using an invalid field", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				range: {
+					date_range: {
+						field: "invalid",
+						format: "MM-yyy",
+						ranges: [{ from: "01-2015", to: "03-2015", key: "quarter_01" }],
+						keyed: true,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			range: InvalidFieldInAggregation<
+				"invalid",
+				"demo",
+				(typeof query)["aggs"]["range"]
+			>;
 		}>();
 	});
 });
