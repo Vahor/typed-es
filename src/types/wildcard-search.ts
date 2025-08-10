@@ -1,3 +1,5 @@
+import type { IsNever } from "expect-type";
+
 type ReplaceStarWithString<T extends string> =
 	T extends `${infer Left}*${infer Right}`
 		? `${Left}${string}${ReplaceStarWithString<Right>}`
@@ -18,7 +20,7 @@ export type WildcardSearch<Words, Search> = Words extends infer W extends string
 // Return search if it doesn't match any words
 export type InverseWildcardSearch<Words, Search> =
 	Search extends infer S extends string
-		? WildcardSearch<Words, S> extends true
+		? IsNever<WildcardSearch<Words, S>> extends true
 			? S
 			: never
 		: never;
