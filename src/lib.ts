@@ -229,10 +229,10 @@ type IsParentKeyALeaf<
 	ParentKey = RemoveLastDot<K>,
 > = ParentKey extends string
 	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
-		? "never"
+		? false
 		: TypeOfField<ParentKey, E, Index> extends Primitive | Array<Primitive>
 			? true
-			: TypeOfField<ParentKey, E, Index>
+			: false
 	: false;
 
 export type ElasticsearchOutputFields<
