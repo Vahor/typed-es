@@ -4,7 +4,7 @@ import type { PossibleFields } from "../src/index";
 import type { CustomIndexes } from "./shared";
 
 describe("Field Extraction", () => {
-	describe("only leaf", () => {
+	describe("defaults (includes non-leaf)", () => {
 		test("handle nested fields", () => {
 			type Value = PossibleFields<"orders", CustomIndexes>;
 			type Expected =
