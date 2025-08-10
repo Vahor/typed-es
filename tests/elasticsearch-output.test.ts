@@ -49,7 +49,7 @@ describe("Should return the correct type", () => {
 							entity_id: unknown;
 						};
 						type ExpectedFields = {
-							score: unknown;
+							score: unknown[];
 						};
 						expectTypeOf<OutputSource>().toEqualTypeOf<ExpectedSource>();
 						expectTypeOf<OutputFields>().toEqualTypeOf<ExpectedFields>();
@@ -66,7 +66,6 @@ describe("Should return the correct type", () => {
 						>["hits"]["hits"][0]["_source"];
 						type Expected = {
 							entity_id: unknown;
-							invalid: unknown;
 						};
 						expectTypeOf<OutputSource>().toEqualTypeOf<Expected>();
 					});
