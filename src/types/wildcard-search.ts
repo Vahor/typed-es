@@ -1,4 +1,4 @@
-import type { IsNever } from "expect-type";
+import type { IsNever } from "./helpers";
 
 type ReplaceStarWithString<T extends string> =
 	T extends `${infer Left}*${infer Right}`
