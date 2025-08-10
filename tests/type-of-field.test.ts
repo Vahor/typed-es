@@ -1,5 +1,4 @@
-import { describe, test } from "bun:test";
-import { expectTypeOf } from "expect-type";
+import { describe, expectTypeOf, test } from "bun:test";
 import type { TypeOfField } from "../src/index";
 import type { CustomIndexes } from "./shared";
 

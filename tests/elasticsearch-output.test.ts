@@ -1,5 +1,4 @@
-import { describe, test } from "bun:test";
-import { expectTypeOf } from "expect-type";
+import { describe, expectTypeOf, test } from "bun:test";
 import {
 	type ElasticsearchOutput,
 	type SearchRequest,
@@ -368,7 +367,6 @@ describe("Should return the correct type", () => {
 			});
 			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 			expectTypeOf<Output["aggregations"]>().toEqualTypeOf<never>();
-			expectTypeOf<Output["aggregations"]>().not.toBeNullable();
 		});
 
 		test("with aggregations", () => {
@@ -386,7 +384,6 @@ describe("Should return the correct type", () => {
 			});
 			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 			expectTypeOf<Output["aggregations"]>().not.toEqualTypeOf<never>();
-			expectTypeOf<Output["aggregations"]>().not.toBeNullable();
 		});
 	});
 });

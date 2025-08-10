@@ -1,5 +1,4 @@
-import { describe, test } from "bun:test";
-import { expectTypeOf } from "expect-type";
+import { describe, expectTypeOf, test } from "bun:test";
 import type { RemoveLastDot } from "../src/types/object-to-dot-notation";
 
 describe("RemoveLastDot", () => {
