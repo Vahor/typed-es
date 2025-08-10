@@ -1,6 +1,5 @@
-import { describe, test } from "bun:test";
+import { describe, expectTypeOf, test } from "bun:test";
 import type { estypes } from "@elastic/elasticsearch";
-import { expectTypeOf } from "expect-type";
 import { type ElasticsearchOutput, typedEs } from "../src/index";
 import { type CustomIndexes, client } from "./shared";
 
