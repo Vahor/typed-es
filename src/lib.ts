@@ -14,6 +14,7 @@ import type { TopMetricsAggs } from "./aggregations/top_metrics";
 import type {
 	AnyString,
 	IsNever,
+	IsStringLiteral,
 	Prettify,
 	UnionToIntersection,
 } from "./types/helpers";
@@ -41,9 +42,7 @@ type FilterToOnlyLeaf<
 	Index,
 > = Index extends string
 	? keyof {
-			[K in T as IsParentKeyALeaf<K, E, Index, RemoveLastDot<K>> extends true
-				? K
-				: never]: K;
+			[K in T as IsParentKeyALeaf<K, E, Index> extends true ? K : never]: K;
 		}
 	: never;
 
@@ -64,6 +63,25 @@ export type PossibleFields<
 		: JoinKeys<Indexes[Index], OnlyLeaf>
 	: never;
 
+export type CanBeUsedInAggregation<
+	Field extends string,
+	Index extends string,
+	E extends ElasticsearchIndexes,
+> = IsStringLiteral<Field> extends false
+	? true
+	: Field extends PossibleFields<Index, E, true, true>
+		? true
+		: false;
+
+export type InvalidFieldInAggregation<
+	Field extends string,
+	Index extends string,
+	Aggregation,
+> = {
+	message: `Field '${Field}' cannot be used in aggregation on '${Index}'`;
+	aggregation: Aggregation;
+};
+
 export type PossibleFieldsWithWildcards<
 	Index,
 	Indexes extends ElasticsearchIndexes,
@@ -72,7 +90,7 @@ export type PossibleFieldsWithWildcards<
 
 export type TypeOfField<
 	Field extends string,
-	Indexes,
+	Indexes extends ElasticsearchIndexes,
 	Index extends keyof Indexes,
 > = RecursiveDotNotation<Indexes[Index], Field>;
 
@@ -211,10 +229,10 @@ type IsParentKeyALeaf<
 	ParentKey = RemoveLastDot<K>,
 > = ParentKey extends string
 	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
-		? false
+		? "never"
 		: TypeOfField<ParentKey, E, Index> extends Primitive | Array<Primitive>
 			? true
-			: false
+			: TypeOfField<ParentKey, E, Index>
 	: false;
 
 export type ElasticsearchOutputFields<

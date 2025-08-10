@@ -142,7 +142,7 @@ describe("Filters Aggregations", () => {
 						},
 					},
 					aggs: {
-						avg_price: { avg: { field: "price" } },
+						avg_price: { avg: { field: "score" } },
 						sort_by_avg_price: {
 							bucket_sort: { sort: { avg_price: "asc" } },
 						},

@@ -1,4 +1,10 @@
-import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "..";
+import type {
+	AppendSubAggs,
+	CanBeUsedInAggregation,
+	ElasticsearchIndexes,
+	InvalidFieldInAggregation,
+	SearchRequest,
+} from "..";
 import type { PrettyArray } from "../types/helpers";
 
 export type DateHistogramAggs<
@@ -8,29 +14,31 @@ export type DateHistogramAggs<
 	Agg,
 > = Agg extends {
 	date_histogram: {
-		field: string;
+		field: infer Field extends string;
 		keyed?: infer Keyed;
 	};
 }
-	? Keyed extends true
-		? {
-				buckets: Record<
-					string,
-					{
-						key_as_string: string;
-						key: number;
-						doc_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
-				>;
-			}
-		: // array default (keyed: false)
-			{
-				buckets: PrettyArray<
-					{
-						key_as_string: string;
-						key: number;
-						doc_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
-				>;
-			}
+	? CanBeUsedInAggregation<Field, Index, E> extends true
+		? Keyed extends true
+			? {
+					buckets: Record<
+						string,
+						{
+							key_as_string: string;
+							key: number;
+							doc_count: number;
+						} & AppendSubAggs<BaseQuery, E, Index, Agg>
+					>;
+				}
+			: // array default (keyed: false)
+				{
+					buckets: PrettyArray<
+						{
+							key_as_string: string;
+							key: number;
+							doc_count: number;
+						} & AppendSubAggs<BaseQuery, E, Index, Agg>
+					>;
+				}
+		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;

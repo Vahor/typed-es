@@ -29,23 +29,6 @@ describe("Field Extraction", () => {
 		test("can't use variants with non-leaf fields", () => {
 			type Value = PossibleFields<"orders", CustomIndexes, false, true>;
 			type Expected =
-				| "total"
-				| `shipping_address.city.${string}`
-				| "id"
-				| "user_id"
-				| "product_ids"
-				| "status"
-				| "created_at"
-				| `total.${string}`
-				| `id.${string}`
-				| `user_id.${string}`
-				| `product_ids.${string}`
-				| `status.${string}`
-				| `created_at.${string}`
-				| `shipping_address.street.${string}`
-				| `shipping_address.country.${string}`
-				| `shipping_address.postal_code.${string}`
-				| `shipping_address.again.and_again.last_time.${string}`
 				| "id"
 				| "user_id"
 				| "product_ids"

@@ -22,7 +22,7 @@ describe("Composite Aggregations", () => {
 					aggs: {
 						daily: {
 							date_histogram: {
-								field: "@timestamp",
+								field: "date",
 								calendar_interval: "day",
 							},
 							aggs: {

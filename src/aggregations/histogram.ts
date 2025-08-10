@@ -1,4 +1,10 @@
-import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "..";
+import type {
+	AppendSubAggs,
+	CanBeUsedInAggregation,
+	ElasticsearchIndexes,
+	InvalidFieldInAggregation,
+	SearchRequest,
+} from "..";
 
 type HistogramAggOutput<
 	BaseQuery extends SearchRequest,
@@ -17,20 +23,22 @@ export type HistogramAggs<
 	Agg,
 > = Agg extends {
 	histogram: {
-		field: string;
+		field: infer Field extends string;
 		interval: number;
 		keyed?: infer Keyed;
 	};
 }
-	? Keyed extends true
-		? {
-				buckets: Record<
-					`${number}`,
-					HistogramAggOutput<BaseQuery, E, Index, Agg>
-				>;
-			}
-		: {
-				// array default (keyed: false)
-				buckets: Array<HistogramAggOutput<BaseQuery, E, Index, Agg>>;
-			}
+	? CanBeUsedInAggregation<Field, Index, E> extends true
+		? Keyed extends true
+			? {
+					buckets: Record<
+						`${number}`,
+						HistogramAggOutput<BaseQuery, E, Index, Agg>
+					>;
+				}
+			: {
+					// array default (keyed: false)
+					buckets: Array<HistogramAggOutput<BaseQuery, E, Index, Agg>>;
+				}
+		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;

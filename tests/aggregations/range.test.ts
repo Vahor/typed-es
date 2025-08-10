@@ -1,6 +1,10 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import {
+	type ElasticsearchOutput,
+	type InvalidFieldInAggregation,
+	typedEs,
+} from "../../src/index";
 import { type CustomIndexes, client } from "../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
@@ -15,7 +19,7 @@ describe("Range Aggregations", () => {
 			aggs: {
 				price_ranges: {
 					range: {
-						field: "price",
+						field: "score",
 						ranges: [
 							{ to: startRange },
 							{ from: startRange, to: midRange },
@@ -66,7 +70,7 @@ describe("Range Aggregations", () => {
 			aggs: {
 				price_ranges: {
 					range: {
-						field: "price",
+						field: "score",
 						ranges: [
 							{ to: 100.1 },
 							{ from: 100.1, to: 200.0 },
@@ -110,7 +114,7 @@ describe("Range Aggregations", () => {
 			aggs: {
 				price_ranges: {
 					range: {
-						field: "price",
+						field: "score",
 						keyed: true,
 						ranges: [{ to: 100 }, { from: 100, to: 200 }, { from: 200 }],
 					},
@@ -137,6 +141,32 @@ describe("Range Aggregations", () => {
 					};
 				};
 			};
+		}>();
+	});
+
+	test("fails when using an invalid field", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				price_ranges: {
+					range: {
+						field: "invalid",
+						keyed: true,
+						ranges: [{ to: 100 }, { from: 100, to: 200 }, { from: 200 }],
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			price_ranges: InvalidFieldInAggregation<
+				"invalid",
+				"demo",
+				(typeof query)["aggs"]["price_ranges"]
+			>;
 		}>();
 	});
 });

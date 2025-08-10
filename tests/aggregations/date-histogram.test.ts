@@ -1,6 +1,10 @@
 import { describe, test } from "bun:test";
 import { expectTypeOf } from "expect-type";
-import { type ElasticsearchOutput, typedEs } from "../../src/index";
+import {
+	type ElasticsearchOutput,
+	type InvalidFieldInAggregation,
+	typedEs,
+} from "../../src/index";
 import { type CustomIndexes, client } from "../shared";
 
 describe("Date Histogram Aggregations", () => {
@@ -12,13 +16,13 @@ describe("Date Histogram Aggregations", () => {
 			aggs: {
 				years: {
 					date_histogram: {
-						field: "@timestamp",
+						field: "date",
 						calendar_interval: "year",
 					},
 					aggregations: {
 						daily: {
 							date_histogram: {
-								field: "@timestamp",
+								field: "date",
 								calendar_interval: "day",
 							},
 							aggs: {
@@ -93,6 +97,32 @@ describe("Date Histogram Aggregations", () => {
 					}
 				>;
 			};
+		}>();
+	});
+
+	test("fails when using an invalid field", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				sales_over_time: {
+					date_histogram: {
+						field: "invalid",
+						calendar_interval: "1M",
+						format: "yyyy-MM-dd",
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			sales_over_time: InvalidFieldInAggregation<
+				"invalid",
+				"demo",
+				(typeof query)["aggs"]["sales_over_time"]
+			>;
 		}>();
 	});
 });
