@@ -1,5 +1,15 @@
 # @vahor/typed-es
 
+## 0.0.18
+
+### Patch Changes
+
+- [#101](https://github.com/Vahor/typed-es/pull/101) [`e3675bf`](https://github.com/Vahor/typed-es/commit/e3675bf21a9821dba8a5686a5459830919156ee1) Thanks [@Vahor](https://github.com/Vahor)! - Move `stats` aggregation in his own agg file
+
+- [#103](https://github.com/Vahor/typed-es/pull/103) [`c342581`](https://github.com/Vahor/typed-es/commit/c3425810f994119e60bae0460f11019a5bfce3e1) Thanks [@Vahor](https://github.com/Vahor)! - Add `extended_stats` aggregation support
+
+- [#105](https://github.com/Vahor/typed-es/pull/105) [`66189a9`](https://github.com/Vahor/typed-es/commit/66189a9d99e2b4b90322e6c1925dd8bb67f4b878) Thanks [@Vahor](https://github.com/Vahor)! - Add `geo_centroid` aggregation support.
+
 ## 0.0.17
 
 ### Patch Changes
