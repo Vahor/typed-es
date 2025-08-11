@@ -42,7 +42,7 @@ describe("Top Hits Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			top_tags: {
 				buckets: Array<{
-					key: unknown;
+					key: string | number;
 					doc_count: number;
 					top_sales_hits: {
 						hits: {

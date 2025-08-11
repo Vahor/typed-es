@@ -6,27 +6,16 @@ import {
 } from "../../src/index";
 import { type CustomIndexes, client } from "../shared";
 
-describe("Terms Aggregations", () => {
-	test("without other aggs", () => {
+describe("Geo Centroid Aggregation", () => {
+	test("simple", () => {
 		const query = typedEs(client, {
 			index: "orders",
-			_source: false,
 			size: 0,
+			_source: false,
 			aggs: {
-				number_agg: {
-					terms: {
-						field: "user_id",
-					},
-				},
-				string_agg: {
-					terms: {
-						field: "product_ids",
-					},
-				},
-				string_enum_agg: {
-					terms: {
-						field: "status",
-						size: 10,
+				centroid: {
+					geo_centroid: {
+						field: "shipping_address.geo_point",
 					},
 				},
 			},
@@ -34,22 +23,46 @@ describe("Terms Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			number_agg: {
-				buckets: Array<{
-					key: number;
-					doc_count: number;
-				}>;
+			centroid: {
+				location: {
+					lat: number;
+					lon: number;
+				};
+				count: number;
 			};
-			string_agg: {
+		}>();
+	});
+
+	test("in a nested query", () => {
+		const query = typedEs(client, {
+			index: "orders",
+			size: 0,
+			_source: false,
+			aggs: {
+				cities: {
+					terms: { field: "shipping_address.city" },
+					aggs: {
+						centroid: {
+							geo_centroid: { field: "shipping_address.geo_point" },
+						},
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			cities: {
 				buckets: Array<{
 					key: string | number;
 					doc_count: number;
-				}>;
-			};
-			string_enum_agg: {
-				buckets: Array<{
-					key: "pending" | "completed" | "cancelled";
-					doc_count: number;
+					centroid: {
+						location: {
+							lat: number;
+							lon: number;
+						};
+						count: number;
+					};
 				}>;
 			};
 		}>();
@@ -61,8 +74,8 @@ describe("Terms Aggregations", () => {
 			_source: false,
 			size: 0,
 			aggs: {
-				terms_agg: {
-					terms: {
+				centroid: {
+					geo_centroid: {
 						field: "invalid",
 					},
 				},
@@ -71,10 +84,10 @@ describe("Terms Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			terms_agg: InvalidFieldInAggregation<
+			centroid: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["terms_agg"]
+				(typeof query)["aggs"]["centroid"]
 			>;
 		}>();
 	});
