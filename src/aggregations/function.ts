@@ -20,7 +20,7 @@ type AggFunctionsNumber =
 	| "value_count"
 	| "cardinality";
 
-export type AggFunction = "stats" | AggFunctionsNumber;
+export type AggFunction = AggFunctionsNumber;
 
 export type FunctionAggs<
 	E extends ElasticsearchIndexes,
@@ -33,15 +33,7 @@ export type FunctionAggs<
 				value_as_string?: string;
 				value: FieldAgg["fn"] extends AggFunctionsNumber
 					? number
-					: FieldAgg["fn"] extends "stats"
-						? {
-								count: number;
-								min: number;
-								max: number;
-								avg: number;
-								sum: number;
-							}
-						: TypeOfField<FieldAgg["field"], E, Index>;
+					: TypeOfField<FieldAgg["field"], E, Index>;
 			}
 		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;
