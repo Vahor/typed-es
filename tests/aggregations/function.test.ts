@@ -66,10 +66,10 @@ describe("Leaf Function Aggregations", () => {
 					...(fn === "max"
 						? {
 								max: {
-									field: "total",
+									field: "total" as const,
 								},
 							}
-						: { [fn as "min"]: { field: "total" } }),
+						: { [fn as "min"]: { field: "total" as const } }),
 				},
 			},
 		});
@@ -104,7 +104,7 @@ describe("Leaf Function Aggregations", () => {
 									size: 1,
 								},
 							} as const)
-						: { [fn as "min"]: { field: "total" } }),
+						: { [fn as "min"]: { field: "total" as const } }),
 				},
 			},
 		});
@@ -155,6 +155,169 @@ describe("Leaf Function Aggregations", () => {
 				"demo",
 				(typeof query)["aggs"]["min_value"]
 			>;
+		}>();
+	});
+
+	test("output type should be correct for all agg functions", () => {
+		const query = typedEs(client, {
+			index: "test_types",
+			size: 0,
+			_source: false,
+			aggs: {
+				str_min: {
+					min: {
+						field: "name",
+					},
+				},
+				num_min: {
+					min: {
+						field: "price",
+					},
+				},
+				date_min: {
+					min: {
+						field: "timestamp",
+					},
+				},
+				//
+				str_max: {
+					max: {
+						field: "name",
+					},
+				},
+				num_max: {
+					max: {
+						field: "price",
+					},
+				},
+				date_max: {
+					max: {
+						field: "timestamp",
+					},
+				},
+				//
+				num_avg: {
+					avg: {
+						field: "price",
+					},
+				},
+				date_avg: {
+					avg: {
+						field: "timestamp",
+					},
+				},
+				//
+				num_sum: {
+					sum: {
+						field: "price",
+					},
+				},
+				date_sum: {
+					sum: {
+						field: "timestamp",
+					},
+				},
+				//
+				str_value_count: {
+					value_count: {
+						field: "name",
+					},
+				},
+				num_value_count: {
+					value_count: {
+						field: "price",
+					},
+				},
+				date_value_count: {
+					value_count: {
+						field: "timestamp",
+					},
+				},
+				//
+				str_cardinality: {
+					cardinality: {
+						field: "name",
+					},
+				},
+				num_cardinality: {
+					cardinality: {
+						field: "price",
+					},
+				},
+				date_cardinality: {
+					cardinality: {
+						field: "timestamp",
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			str_min: {
+				value: number | string;
+				value_as_string?: string;
+			};
+			num_min: {
+				value: number;
+				value_as_string?: string;
+			};
+			date_min: {
+				value: number | string;
+				value_as_string?: string;
+			};
+			str_max: {
+				value: number | string;
+				value_as_string?: string;
+			};
+			num_max: {
+				value: number;
+				value_as_string?: string;
+			};
+			date_max: {
+				value: number | string;
+				value_as_string?: string;
+			};
+			num_avg: {
+				value: number;
+				value_as_string?: string;
+			};
+			date_avg: {
+				value: number | string;
+				value_as_string?: string;
+			};
+			num_sum: {
+				value: number;
+				value_as_string?: string;
+			};
+			date_sum: {
+				value: number | string;
+				value_as_string?: string;
+			};
+			str_value_count: {
+				value: number;
+				value_as_string?: string;
+			};
+			num_value_count: {
+				value: number;
+				value_as_string?: string;
+			};
+			date_value_count: {
+				value: number;
+				value_as_string?: string;
+			};
+			str_cardinality: {
+				value: number;
+				value_as_string?: string;
+			};
+			num_cardinality: {
+				value: number;
+				value_as_string?: string;
+			};
+			date_cardinality: {
+				value: number;
+				value_as_string?: string;
+			};
 		}>();
 	});
 });

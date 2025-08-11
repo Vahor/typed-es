@@ -12,15 +12,10 @@ type ExtractAggField<Agg> = {
 		? { fn: Fn; field: F }
 		: never;
 }[Extract<keyof Agg, AggFunction>];
-type AggFunctionsNumber =
-	| "sum"
-	| "avg"
-	| "max"
-	| "min"
-	| "value_count"
-	| "cardinality";
 
-export type AggFunction = AggFunctionsNumber;
+type AggFunctionsNumber = "value_count" | "cardinality";
+
+export type AggFunction = AggFunctionsNumber | "sum" | "avg" | "max" | "min";
 
 export type FunctionAggs<
 	E extends ElasticsearchIndexes,
@@ -33,7 +28,9 @@ export type FunctionAggs<
 				value_as_string?: string;
 				value: FieldAgg["fn"] extends AggFunctionsNumber
 					? number
-					: TypeOfField<FieldAgg["field"], E, Index>;
+					: TypeOfField<FieldAgg["field"], E, Index> extends number
+						? number
+						: number | string;
 			}
 		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;
