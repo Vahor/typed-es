@@ -26,9 +26,13 @@ describe("Stats Aggregation", () => {
 			total_stats: {
 				count: number;
 				min: number;
+				min_as_string?: string;
 				max: number;
+				max_as_string?: string;
 				avg: number;
+				avg_as_string?: string;
 				sum: number;
+				sum_as_string?: string;
 			};
 		}>();
 	});
