@@ -106,7 +106,7 @@ describe("Composite Aggregations", () => {
 					};
 					terms_field: {
 						buckets: Array<{
-							key: unknown;
+							key: string | number;
 							doc_count: number;
 						}>;
 					};

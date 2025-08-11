@@ -14,6 +14,7 @@ describe("Field Extraction", () => {
 				| "status"
 				| "created_at"
 				| "shipping_address"
+				| "shipping_address.geo_point"
 				| "shipping_address.street"
 				| "shipping_address.city"
 				| "shipping_address.country"
@@ -35,6 +36,7 @@ describe("Field Extraction", () => {
 				| "status"
 				| "created_at"
 				| "shipping_address"
+				| "shipping_address.geo_point"
 				| "shipping_address.street"
 				| "shipping_address.city"
 				| "shipping_address.country"
@@ -48,6 +50,7 @@ describe("Field Extraction", () => {
 				| `status.${string}`
 				| `product_ids.${string}`
 				| `created_at.${string}`
+				| `shipping_address.geo_point.${string}`
 				| `shipping_address.street.${string}`
 				| `shipping_address.city.${string}`
 				| `shipping_address.country.${string}`
@@ -67,6 +70,7 @@ describe("Field Extraction", () => {
 				| "total"
 				| "status"
 				| "created_at"
+				| "shipping_address.geo_point"
 				| "shipping_address.street"
 				| "shipping_address.city"
 				| "shipping_address.country"
@@ -85,6 +89,7 @@ describe("Field Extraction", () => {
 				| "total"
 				| "status"
 				| "created_at"
+				| "shipping_address.geo_point"
 				| "shipping_address.street"
 				| "shipping_address.city"
 				| "shipping_address.country"
@@ -96,6 +101,7 @@ describe("Field Extraction", () => {
 				| `status.${string}`
 				| `product_ids.${string}`
 				| `created_at.${string}`
+				| `shipping_address.geo_point.${string}`
 				| `shipping_address.street.${string}`
 				| `shipping_address.city.${string}`
 				| `shipping_address.country.${string}`

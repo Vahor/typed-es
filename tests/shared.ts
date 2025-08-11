@@ -14,12 +14,13 @@ export type CustomIndexes = {
 	};
 	orders: {
 		id: string;
-		user_id: string;
+		user_id: number;
 		product_ids: string[];
 		total: number;
 		status: "pending" | "completed" | "cancelled";
 		created_at: string;
 		shipping_address: {
+			geo_point: string;
 			street: string;
 			city: string;
 			country: string;
