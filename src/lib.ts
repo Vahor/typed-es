@@ -3,6 +3,7 @@ import type { BucketAggFunction, BucketAggs } from "./aggregations/bucket_agg";
 import type { CompositeAggs } from "./aggregations/composite";
 import type { DateHistogramAggs } from "./aggregations/date_histogram";
 import type { DateRangeAggs } from "./aggregations/date_range";
+import type { ExtendedStatsAggs } from "./aggregations/extended_stats";
 import type { FiltersAggs } from "./aggregations/filters";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
 import type { HistogramAggs } from "./aggregations/histogram";
@@ -79,7 +80,7 @@ export type InvalidFieldInAggregation<
 	Index extends string,
 	Aggregation,
 > = {
-	message: `Field '${Field}' cannot be used in aggregation on '${Index}'`;
+	error: `Field '${Field}' cannot be used in aggregation on '${Index}'`;
 	aggregation: Aggregation;
 };
 
@@ -137,6 +138,7 @@ export type NextAggsParentKey<
 	| "histogram"
 	| "date_range"
 	| "stats"
+	| "extended_stats"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -162,6 +164,7 @@ export type AggregationOutput<
 			| HistogramAggs<BaseQuery, E, Index, Agg>
 			| ScriptedMetricAggs<Agg>
 			| StatsAggs<E, Index, Agg>
+			| ExtendedStatsAggs<E, Index, Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
 
