@@ -31,6 +31,12 @@ export type CustomIndexes = {
 			};
 		};
 	};
+	test_types: {
+		id: string;
+		price: number;
+		name: string;
+		timestamp: Date;
+	};
 };
 
 export const client: TypedClient<CustomIndexes> = undefined as any;
