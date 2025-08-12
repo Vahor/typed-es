@@ -86,10 +86,10 @@ describe("GeoLine Aggregation", () => {
 			_source: false,
 			size: 0,
 			aggs: {
-				viewport: {
-					geo_bounds: {
-						field: "invalid",
-						wrap_longitude: true,
+				line: {
+					geo_line: {
+						point: { field: "invalid" },
+						sort: { field: "date" },
 					},
 				},
 			},
@@ -97,10 +97,10 @@ describe("GeoLine Aggregation", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			viewport: InvalidFieldInAggregation<
+			line: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["viewport"]
+				(typeof query)["aggs"]["line"]
 			>;
 		}>();
 	});
