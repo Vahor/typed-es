@@ -42,3 +42,27 @@ export type IsStringLiteral<T> = T extends string
 export type AnyString = string & {};
 
 export type OrLowercase<T extends string> = Lowercase<T> | T;
+
+export type ToString<T> = T extends string | number | boolean | undefined | null
+	? `${T}`
+	: T extends Function
+		? "function"
+		: T extends Array<any>
+			? `Array`
+			: T extends object
+				? "object"
+				: T extends any
+					? "any"
+					: "unknown";
+
+export type IsSomeSortOf<T, U> = T extends U
+	? true
+	: U extends T
+		? true
+		: false;
+
+export type ToDecimal<N> = IsFloatLiteral<N> extends true
+	? ToString<N>
+	: IsNumericLiteral<N> extends true
+		? `${ToString<N>}.0`
+		: never;

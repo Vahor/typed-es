@@ -5,26 +5,18 @@ import type {
 	InvalidFieldInAggregation,
 	SearchRequest,
 } from "..";
-import type {
-	IsFloatLiteral,
-	IsNumericLiteral,
-	Prettify,
-} from "../types/helpers";
+import type { IsNever, Prettify, ToDecimal, ToString } from "../types/helpers";
 
 type RangeSpec = {
 	from?: number | undefined;
 	to?: number | undefined;
 };
 
-type ToString<T> = T extends number ? `${T}` : string;
-
-type FormatToKey<N> = IsFloatLiteral<N> extends true
-	? ToString<N>
-	: IsNumericLiteral<N> extends true
-		? `${ToString<N>}.0`
-		: undefined extends N
-			? "*"
-			: ToString<N>;
+type FormatToKey<N> = IsNever<ToDecimal<N>> extends false
+	? ToDecimal<N>
+	: undefined extends N
+		? "*"
+		: ToString<N>;
 
 type RangeOutput<
 	BaseQuery extends SearchRequest,

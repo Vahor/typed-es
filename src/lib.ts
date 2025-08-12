@@ -10,6 +10,7 @@ import type { GeoBoundsAggs } from "./aggregations/geo_bounds";
 import type { GeoCentroidAggs } from "./aggregations/geo_centroid";
 import type { GeoLineAggs } from "./aggregations/geo_line";
 import type { HistogramAggs } from "./aggregations/histogram";
+import type { PercentilesAggs } from "./aggregations/percentiles";
 import type { RangeAggs } from "./aggregations/range";
 import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
 import type { StatsAggs } from "./aggregations/stats";
@@ -21,6 +22,7 @@ import type {
 	IsNever,
 	IsStringLiteral,
 	Prettify,
+	ToString,
 	UnionToIntersection,
 } from "./types/helpers";
 import type {
@@ -87,6 +89,19 @@ export type InvalidFieldInAggregation<
 	aggregation: Aggregation;
 };
 
+export type InvalidFieldTypeInAggregation<
+	Field extends string,
+	Index extends string,
+	Aggregation,
+	got,
+	expected,
+> = {
+	error: `Field '${Field}' cannot be used in aggregation on '${Index}' because it is of type '${ToString<got>}' but expected '${ToString<expected>}'`;
+	aggregation: Aggregation;
+	got: got;
+	expected: expected;
+};
+
 export type PossibleFieldsWithWildcards<
 	Index,
 	Indexes extends ElasticsearchIndexes,
@@ -145,6 +160,7 @@ export type NextAggsParentKey<
 	| "geo_centroid"
 	| "geo_bounds"
 	| "geo_line"
+	| "percentiles"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -175,6 +191,7 @@ export type AggregationOutput<
 			| GeoCentroidAggs<E, Index, Agg>
 			| GeoBoundsAggs<E, Index, Agg>
 			| GeoLineAggs<E, Index, Agg>
+			| PercentilesAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
 
 export type AppendSubAggs<
