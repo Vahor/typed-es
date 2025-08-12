@@ -41,6 +41,8 @@ describe("Top Hits Aggregations", () => {
 
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			top_tags: {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
 				buckets: Array<{
 					key: string | number;
 					doc_count: number;

@@ -35,18 +35,24 @@ describe("Terms Aggregations", () => {
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			number_agg: {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
 				buckets: Array<{
 					key: number;
 					doc_count: number;
 				}>;
 			};
 			string_agg: {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
 				buckets: Array<{
 					key: string | number;
 					doc_count: number;
 				}>;
 			};
 			string_enum_agg: {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
 				buckets: Array<{
 					key: "pending" | "completed" | "cancelled";
 					doc_count: number;
