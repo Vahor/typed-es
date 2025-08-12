@@ -40,3 +40,5 @@ export type IsStringLiteral<T> = T extends string
 	: false;
 
 export type AnyString = string & {};
+
+export type OrLowercase<T extends string> = Lowercase<T> | T;

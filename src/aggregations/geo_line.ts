@@ -3,6 +3,7 @@ import type {
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
 } from "..";
+import type { OrLowercase } from "../types/helpers";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line
 export type GeoLineAggs<
@@ -20,7 +21,7 @@ export type GeoLineAggs<
 		};
 		include_sort?: boolean;
 		size?: number;
-		sort_order?: "ASC" | "DESC";
+		sort_order?: OrLowercase<"ASC" | "DESC">;
 	};
 }
 	? CanBeUsedInAggregation<Field, Index, E> extends true
