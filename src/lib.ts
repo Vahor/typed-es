@@ -8,6 +8,7 @@ import type { FiltersAggs } from "./aggregations/filters";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
 import type { GeoBoundsAggs } from "./aggregations/geo_bounds";
 import type { GeoCentroidAggs } from "./aggregations/geo_centroid";
+import type { GeoLineAggs } from "./aggregations/geo_line";
 import type { HistogramAggs } from "./aggregations/histogram";
 import type { RangeAggs } from "./aggregations/range";
 import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
@@ -143,6 +144,7 @@ export type NextAggsParentKey<
 	| "extended_stats"
 	| "geo_centroid"
 	| "geo_bounds"
+	| "geo_line"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -172,6 +174,7 @@ export type AggregationOutput<
 			| TopMetricsAggs<E, Index, Agg>
 			| GeoCentroidAggs<E, Index, Agg>
 			| GeoBoundsAggs<E, Index, Agg>
+			| GeoLineAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
 
 export type AppendSubAggs<

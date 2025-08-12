@@ -105,6 +105,8 @@ describe("Composite Aggregations", () => {
 						value_as_string?: string;
 					};
 					terms_field: {
+						doc_count_error_upper_bound: number;
+						sum_other_doc_count: number;
 						buckets: Array<{
 							key: string | number;
 							doc_count: number;

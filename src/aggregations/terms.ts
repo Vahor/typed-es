@@ -16,6 +16,8 @@ export type TermsAggs<
 > = Agg extends { terms: { field: infer Field extends string } }
 	? CanBeUsedInAggregation<Field, Index, E> extends true
 		? {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
 				buckets: PrettyArray<
 					{
 						key: number extends TypeOfField<Field, E, Index>
