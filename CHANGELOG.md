@@ -1,5 +1,15 @@
 # @vahor/typed-es
 
+## 0.0.19
+
+### Patch Changes
+
+- [#109](https://github.com/Vahor/typed-es/pull/109) [`2e01516`](https://github.com/Vahor/typed-es/commit/2e015169bbfc562e72cfa8db69f68a2c9e215ec4) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `geo_line` aggregation
+
+- [#110](https://github.com/Vahor/typed-es/pull/110) [`90a94dc`](https://github.com/Vahor/typed-es/commit/90a94dc8f677c8e5b190e55a7a87ddb05c6417c3) Thanks [@Vahor](https://github.com/Vahor)! - Add `percentiles` aggregations support.
+
+- [#106](https://github.com/Vahor/typed-es/pull/106) [`0e2a57e`](https://github.com/Vahor/typed-es/commit/0e2a57e70ba1b08dfa70d3b05cd9a21093e8e874) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `geo_bounds` aggregations.
+
 ## 0.0.18
 
 ### Patch Changes
