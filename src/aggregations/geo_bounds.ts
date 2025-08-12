@@ -4,23 +4,29 @@ import type {
 	InvalidFieldInAggregation,
 } from "..";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation
-export type GeoCentroidAggs<
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation
+export type GeoBoundsAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,
 > = Agg extends {
-	geo_centroid: {
+	geo_bounds: {
 		field: infer Field extends string;
+		wrap_longitude?: boolean;
 	};
 }
 	? CanBeUsedInAggregation<Field, Index, E> extends true
 		? {
-				location: {
-					lat: number;
-					lon: number;
+				bounds: {
+					top_left: {
+						lat: number;
+						lon: number;
+					};
+					bottom_right: {
+						lat: number;
+						lon: number;
+					};
 				};
-				count: number;
 			}
 		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;

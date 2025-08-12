@@ -6,6 +6,7 @@ import type { DateRangeAggs } from "./aggregations/date_range";
 import type { ExtendedStatsAggs } from "./aggregations/extended_stats";
 import type { FiltersAggs } from "./aggregations/filters";
 import type { AggFunction, FunctionAggs } from "./aggregations/function";
+import type { GeoBoundsAggs } from "./aggregations/geo_bounds";
 import type { GeoCentroidAggs } from "./aggregations/geo_centroid";
 import type { HistogramAggs } from "./aggregations/histogram";
 import type { RangeAggs } from "./aggregations/range";
@@ -141,6 +142,7 @@ export type NextAggsParentKey<
 	| "stats"
 	| "extended_stats"
 	| "geo_centroid"
+	| "geo_bounds"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -169,6 +171,7 @@ export type AggregationOutput<
 			| ExtendedStatsAggs<E, Index, Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| GeoCentroidAggs<E, Index, Agg>
+			| GeoBoundsAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
 
 export type AppendSubAggs<
