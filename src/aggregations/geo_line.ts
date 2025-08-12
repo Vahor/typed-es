@@ -18,7 +18,7 @@ export type GeoLineAggs<
 		sort?: {
 			field: string;
 		};
-		include_start?: boolean;
+		include_sort?: boolean;
 		size?: number;
 		sort_order?: "ASC" | "DESC";
 	};
