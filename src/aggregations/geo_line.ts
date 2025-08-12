@@ -29,7 +29,7 @@ export type GeoLineAggs<
 				type: "Feature";
 				geometry: {
 					type: "LineString";
-					coordinates: Array<[number, number]>;
+					coordinates: Array<[lon: number, lat: number]>;
 				};
 				properties: {
 					complete: boolean;
