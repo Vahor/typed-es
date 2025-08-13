@@ -38,6 +38,10 @@ export type CustomIndexes = {
 		name: string;
 		timestamp: Date;
 	};
+	reviews: {
+		id: string;
+		rating: number;
+	};
 };
 
 export const client: TypedClient<CustomIndexes> = undefined as any;
