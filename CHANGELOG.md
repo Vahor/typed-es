@@ -1,5 +1,15 @@
 # @vahor/typed-es
 
+## 0.0.20
+
+### Patch Changes
+
+- [#113](https://github.com/Vahor/typed-es/pull/113) [`e9e8f2b`](https://github.com/Vahor/typed-es/commit/e9e8f2be8483a0ccbcca8b0997de4ea36c00691f) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `median_absolute_deviation` aggregation.
+
+- [#114](https://github.com/Vahor/typed-es/pull/114) [`b814619`](https://github.com/Vahor/typed-es/commit/b814619983789e24c371589779cb1ecb0e8455c5) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `string_stats` aggregation.
+
+- [#111](https://github.com/Vahor/typed-es/pull/111) [`d4ca90b`](https://github.com/Vahor/typed-es/commit/d4ca90b98cbad93af9c3c6dcc5a8aea28a905eda) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `percentile_ranks` aggregation.
+
 ## 0.0.19
 
 ### Patch Changes
