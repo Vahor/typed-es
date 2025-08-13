@@ -16,6 +16,7 @@ import type { PercentilesAggs } from "./aggregations/percentiles";
 import type { RangeAggs } from "./aggregations/range";
 import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
 import type { StatsAggs } from "./aggregations/stats";
+import type { StringStatsAggs } from "./aggregations/string_stats";
 import type { TermsAggs } from "./aggregations/terms";
 import type { TopHitsAggs } from "./aggregations/top_hits";
 import type { TopMetricsAggs } from "./aggregations/top_metrics";
@@ -166,6 +167,7 @@ export type NextAggsParentKey<
 	| "percentiles"
 	| "percentile_ranks"
 	| "median_absolute_deviation"
+	| "string_stats"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -199,6 +201,7 @@ export type AggregationOutput<
 			| PercentilesAggs<E, Index, Agg>
 			| PercentileRanksAggs<E, Index, Agg>
 			| MedianAbsoluteDeviationAggs<E, Index, Agg>
+			| StringStatsAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
 
 export type AppendSubAggs<
