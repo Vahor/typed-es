@@ -10,6 +10,7 @@ import type { GeoBoundsAggs } from "./aggregations/geo_bounds";
 import type { GeoCentroidAggs } from "./aggregations/geo_centroid";
 import type { GeoLineAggs } from "./aggregations/geo_line";
 import type { HistogramAggs } from "./aggregations/histogram";
+import type { PercentileRanksAggs } from "./aggregations/percentile_ranks";
 import type { PercentilesAggs } from "./aggregations/percentiles";
 import type { RangeAggs } from "./aggregations/range";
 import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
@@ -161,6 +162,7 @@ export type NextAggsParentKey<
 	| "geo_bounds"
 	| "geo_line"
 	| "percentiles"
+	| "percentile_ranks"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -192,6 +194,7 @@ export type AggregationOutput<
 			| GeoBoundsAggs<E, Index, Agg>
 			| GeoLineAggs<E, Index, Agg>
 			| PercentilesAggs<E, Index, Agg>
+			| PercentileRanksAggs<E, Index, Agg>
 			| BucketAggs<Agg>;
 
 export type AppendSubAggs<
