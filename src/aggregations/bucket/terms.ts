@@ -5,9 +5,10 @@ import type {
 	InvalidFieldInAggregation,
 	SearchRequest,
 	TypeOfField,
-} from "..";
-import type { IsStringLiteral, PrettyArray } from "../types/helpers";
+} from "../..";
+import type { IsStringLiteral, PrettyArray } from "../../types/helpers";
 
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation
 export type TermsAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

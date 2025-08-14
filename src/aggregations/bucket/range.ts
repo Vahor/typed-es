@@ -4,8 +4,13 @@ import type {
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
 	SearchRequest,
-} from "..";
-import type { IsNever, Prettify, ToDecimal, ToString } from "../types/helpers";
+} from "../..";
+import type {
+	IsNever,
+	Prettify,
+	ToDecimal,
+	ToString,
+} from "../../types/helpers";
 
 type RangeSpec = {
 	from?: number | undefined;
@@ -49,6 +54,7 @@ type RangeOutputToObject<Ranges> = Ranges extends readonly { key: string }[]
 		}
 	: never;
 
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
 export type RangeAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

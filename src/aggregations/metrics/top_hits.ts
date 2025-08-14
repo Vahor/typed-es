@@ -3,9 +3,10 @@ import type {
 	ElasticsearchOutputFields,
 	QueryTotal,
 	SearchRequest,
-} from "..";
-import type { PrettyArray } from "../types/helpers";
+} from "../..";
+import type { PrettyArray } from "../../types/helpers";
 
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-hits-aggregation
 export type TopHitsAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

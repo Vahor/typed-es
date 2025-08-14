@@ -4,8 +4,8 @@ import type {
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
 	SearchRequest,
-} from "..";
-import type { Prettify } from "../types/helpers";
+} from "../..";
+import type { Prettify } from "../../types/helpers";
 
 type RangeSpec = {
 	from?: string | undefined;
@@ -52,6 +52,7 @@ type RangeOutputToObject<Ranges> = Ranges extends readonly { key: string }[]
 		}
 	: never;
 
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
 export type DateRangeAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

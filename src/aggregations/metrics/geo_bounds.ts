@@ -2,7 +2,7 @@ import type {
 	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
-} from "..";
+} from "../..";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation
 export type GeoBoundsAggs<

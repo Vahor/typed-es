@@ -3,7 +3,7 @@ import type {
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
 	TypeOfField,
-} from "..";
+} from "../..";
 
 type ExtractAggField<Agg> = {
 	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {

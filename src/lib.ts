@@ -1,25 +1,31 @@
 import type { estypes } from "@elastic/elasticsearch";
-import type { BucketAggFunction, BucketAggs } from "./aggregations/bucket_agg";
-import type { CompositeAggs } from "./aggregations/composite";
-import type { DateHistogramAggs } from "./aggregations/date_histogram";
-import type { DateRangeAggs } from "./aggregations/date_range";
-import type { ExtendedStatsAggs } from "./aggregations/extended_stats";
-import type { FiltersAggs } from "./aggregations/filters";
-import type { AggFunction, FunctionAggs } from "./aggregations/function";
-import type { GeoBoundsAggs } from "./aggregations/geo_bounds";
-import type { GeoCentroidAggs } from "./aggregations/geo_centroid";
-import type { GeoLineAggs } from "./aggregations/geo_line";
-import type { HistogramAggs } from "./aggregations/histogram";
-import type { MedianAbsoluteDeviationAggs } from "./aggregations/median_absolute_deviation";
-import type { PercentileRanksAggs } from "./aggregations/percentile_ranks";
-import type { PercentilesAggs } from "./aggregations/percentiles";
-import type { RangeAggs } from "./aggregations/range";
-import type { ScriptedMetricAggs } from "./aggregations/scripted_metric";
-import type { StatsAggs } from "./aggregations/stats";
-import type { StringStatsAggs } from "./aggregations/string_stats";
-import type { TermsAggs } from "./aggregations/terms";
-import type { TopHitsAggs } from "./aggregations/top_hits";
-import type { TopMetricsAggs } from "./aggregations/top_metrics";
+import type {
+	BucketAggFunction,
+	BucketAggs,
+} from "./aggregations/bucket/bucket_agg";
+import type { CompositeAggs } from "./aggregations/bucket/composite";
+import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
+import type { DateRangeAggs } from "./aggregations/bucket/date_range";
+import type { FiltersAggs } from "./aggregations/bucket/filters";
+import type { HistogramAggs } from "./aggregations/bucket/histogram";
+import type { RangeAggs } from "./aggregations/bucket/range";
+import type { TermsAggs } from "./aggregations/bucket/terms";
+import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
+import type {
+	AggFunction,
+	FunctionAggs,
+} from "./aggregations/metrics/function";
+import type { GeoBoundsAggs } from "./aggregations/metrics/geo_bounds";
+import type { GeoCentroidAggs } from "./aggregations/metrics/geo_centroid";
+import type { GeoLineAggs } from "./aggregations/metrics/geo_line";
+import type { MedianAbsoluteDeviationAggs } from "./aggregations/metrics/median_absolute_deviation";
+import type { PercentileRanksAggs } from "./aggregations/metrics/percentile_ranks";
+import type { PercentilesAggs } from "./aggregations/metrics/percentiles";
+import type { ScriptedMetricAggs } from "./aggregations/metrics/scripted_metric";
+import type { StatsAggs } from "./aggregations/metrics/stats";
+import type { StringStatsAggs } from "./aggregations/metrics/string_stats";
+import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
+import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type {
 	AnyString,
 	IsNever,

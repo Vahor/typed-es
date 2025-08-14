@@ -4,8 +4,8 @@ import type {
 	InvalidFieldInAggregation,
 	InvalidFieldTypeInAggregation,
 	TypeOfField,
-} from "..";
-import type { IsSomeSortOf, Prettify } from "../types/helpers";
+} from "../..";
+import type { IsSomeSortOf, Prettify } from "../../types/helpers";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation
 export type StringStatsAggs<
