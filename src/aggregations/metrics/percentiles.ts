@@ -4,8 +4,10 @@ import type {
 	InvalidFieldInAggregation,
 	InvalidFieldTypeInAggregation,
 	TypeOfField,
-} from "..";
-import type { IsSomeSortOf, ToDecimal } from "../types/helpers";
+} from "../..";
+import type { IsSomeSortOf, ToDecimal } from "../../types/helpers";
+
+type DefaultPercents = [1, 5, 25, 50, 75, 95, 99];
 
 type PercentilesValues<Percents extends readonly number[]> = {
 	[index in keyof Percents]: {
@@ -20,15 +22,15 @@ type PercentilesValuesToObject<Values> = Values extends { key: string }[]
 		}
 	: never;
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-rank-aggregation
-export type PercentileRanksAggs<
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-aggregation
+export type PercentilesAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,
 > = Agg extends {
-	percentile_ranks: {
+	percentiles: {
 		field: infer Field extends string;
-		values: infer Values extends number[];
+		percents?: infer Percents;
 		keyed?: infer Keyed;
 	};
 }
@@ -36,10 +38,16 @@ export type PercentileRanksAggs<
 		? IsSomeSortOf<TypeOfField<Field, E, Index>, number> extends true
 			? Keyed extends false
 				? {
-						values: PercentilesValues<Values>;
+						values: PercentilesValues<
+							Percents extends number[] ? Percents : DefaultPercents
+						>;
 					}
 				: {
-						values: PercentilesValuesToObject<PercentilesValues<Values>>;
+						values: PercentilesValuesToObject<
+							PercentilesValues<
+								Percents extends number[] ? Percents : DefaultPercents
+							>
+						>;
 					}
 			: InvalidFieldTypeInAggregation<
 					Field,

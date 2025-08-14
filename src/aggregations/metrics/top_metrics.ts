@@ -1,5 +1,5 @@
-import type { ElasticsearchIndexes, TypeOfField } from "../lib";
-import type { PrettyArray } from "../types/helpers";
+import type { ElasticsearchIndexes, TypeOfField } from "../../lib";
+import type { PrettyArray } from "../../types/helpers";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics
 export type TopMetricsAggs<

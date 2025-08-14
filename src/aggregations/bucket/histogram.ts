@@ -4,7 +4,7 @@ import type {
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
 	SearchRequest,
-} from "..";
+} from "../..";
 
 type HistogramAggOutput<
 	BaseQuery extends SearchRequest,
@@ -16,6 +16,7 @@ type HistogramAggOutput<
 	doc_count: number;
 } & AppendSubAggs<BaseQuery, E, Index, Agg>;
 
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation
 export type HistogramAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

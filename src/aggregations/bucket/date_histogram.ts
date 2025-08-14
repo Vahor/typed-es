@@ -4,9 +4,10 @@ import type {
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
 	SearchRequest,
-} from "..";
-import type { PrettyArray } from "../types/helpers";
+} from "../..";
+import type { PrettyArray } from "../../types/helpers";
 
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation
 export type DateHistogramAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
