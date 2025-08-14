@@ -4,8 +4,8 @@ import {
 	type InvalidFieldInAggregation,
 	type InvalidFieldTypeInAggregation,
 	typedEs,
-} from "../../src/index";
-import { type CustomIndexes, client } from "../shared";
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
 
 describe("Median Absolute Deviation Aggregation", () => {
 	test("simple", () => {

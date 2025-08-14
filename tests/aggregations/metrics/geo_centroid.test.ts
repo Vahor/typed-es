@@ -3,21 +3,19 @@ import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
 	typedEs,
-} from "../../src/index";
-import { type CustomIndexes, client } from "../shared";
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation
-describe("Histogram Aggregations", () => {
-	test("default", () => {
+describe("Geo Centroid Aggregation", () => {
+	test("simple", () => {
 		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
+			index: "orders",
 			size: 0,
+			_source: false,
 			aggs: {
-				prices: {
-					histogram: {
-						field: "score",
-						interval: 50,
+				centroid: {
+					geo_centroid: {
+						field: "shipping_address.geo_point",
 					},
 				},
 			},
@@ -25,26 +23,28 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			prices: {
-				buckets: Array<{
-					key: number;
-					doc_count: number;
-				}>;
+			centroid: {
+				location: {
+					lat: number;
+					lon: number;
+				};
+				count: number;
 			};
 		}>();
 	});
 
-	test("with keyed", () => {
+	test("in a nested query", () => {
 		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
+			index: "orders",
 			size: 0,
+			_source: false,
 			aggs: {
-				prices: {
-					histogram: {
-						field: "score",
-						interval: 50,
-						keyed: true,
+				cities: {
+					terms: { field: "shipping_address.city" },
+					aggs: {
+						centroid: {
+							geo_centroid: { field: "shipping_address.geo_point" },
+						},
 					},
 				},
 			},
@@ -52,14 +52,20 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			prices: {
-				buckets: Record<
-					`${number}`,
-					{
-						key: number;
-						doc_count: number;
-					}
-				>;
+			cities: {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
+				buckets: Array<{
+					key: string | number;
+					doc_count: number;
+					centroid: {
+						location: {
+							lat: number;
+							lon: number;
+						};
+						count: number;
+					};
+				}>;
 			};
 		}>();
 	});
@@ -70,10 +76,9 @@ describe("Histogram Aggregations", () => {
 			_source: false,
 			size: 0,
 			aggs: {
-				prices: {
-					histogram: {
+				centroid: {
+					geo_centroid: {
 						field: "invalid",
-						interval: 50,
 					},
 				},
 			},
@@ -81,10 +86,10 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			prices: InvalidFieldInAggregation<
+			centroid: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["prices"]
+				(typeof query)["aggs"]["centroid"]
 			>;
 		}>();
 	});

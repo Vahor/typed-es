@@ -1,0 +1,91 @@
+import { describe, expectTypeOf, test } from "bun:test";
+import {
+	type ElasticsearchOutput,
+	type InvalidFieldInAggregation,
+	typedEs,
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
+
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation
+describe("Histogram Aggregations", () => {
+	test("default", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				prices: {
+					histogram: {
+						field: "score",
+						interval: 50,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			prices: {
+				buckets: Array<{
+					key: number;
+					doc_count: number;
+				}>;
+			};
+		}>();
+	});
+
+	test("with keyed", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				prices: {
+					histogram: {
+						field: "score",
+						interval: 50,
+						keyed: true,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			prices: {
+				buckets: Record<
+					`${number}`,
+					{
+						key: number;
+						doc_count: number;
+					}
+				>;
+			};
+		}>();
+	});
+
+	test("fails when using an invalid field", () => {
+		const query = typedEs(client, {
+			index: "demo",
+			_source: false,
+			size: 0,
+			aggs: {
+				prices: {
+					histogram: {
+						field: "invalid",
+						interval: 50,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			prices: InvalidFieldInAggregation<
+				"invalid",
+				"demo",
+				(typeof query)["aggs"]["prices"]
+			>;
+		}>();
+	});
+});
