@@ -193,7 +193,7 @@ export type AggregationOutput<
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
-			| GeoTileGridAggs<E, Index, Agg>
+			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			//

@@ -58,6 +58,40 @@ describe("Geotile Aggregations", () => {
 		}>();
 	});
 
+	test("supports nested sub-aggregations in buckets", () => {
+		const query = typedEs(client, {
+			index: "orders",
+			size: 0,
+			_source: false,
+			aggs: {
+				grid: {
+					geotile_grid: { field: "shipping_address.geo_point", precision: 8 },
+					aggs: {
+						by_status: { terms: { field: "status" } },
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			grid: {
+				buckets: Array<{
+					key: `8/${number}/${number}`;
+					doc_count: number;
+					by_status: {
+						doc_count_error_upper_bound: number;
+						sum_other_doc_count: number;
+						buckets: Array<{
+							key: "pending" | "completed" | "cancelled";
+							doc_count: number;
+						}>;
+					};
+				}>;
+			};
+		}>();
+	});
+
 	test("fails when using an invalid field", () => {
 		const query = typedEs(client, {
 			index: "demo",
