@@ -3,21 +3,19 @@ import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
 	typedEs,
-} from "../../src/index";
-import { type CustomIndexes, client } from "../shared";
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation
-describe("Histogram Aggregations", () => {
-	test("default", () => {
+describe("Geotile Aggregations", () => {
+	test("with default values", () => {
 		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
+			index: "orders",
 			size: 0,
-			aggs: {
-				prices: {
-					histogram: {
-						field: "score",
-						interval: 50,
+			_source: false,
+			aggregations: {
+				"large-grid": {
+					geotile_grid: {
+						field: "shipping_address.geo_point",
 					},
 				},
 			},
@@ -25,26 +23,25 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			prices: {
+			"large-grid": {
 				buckets: Array<{
-					key: number;
+					key: `7/${number}/${number}`;
 					doc_count: number;
 				}>;
 			};
 		}>();
 	});
 
-	test("with keyed", () => {
+	test("with higher precision", () => {
 		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
+			index: "orders",
 			size: 0,
-			aggs: {
-				prices: {
-					histogram: {
-						field: "score",
-						interval: 50,
-						keyed: true,
+			_source: false,
+			aggregations: {
+				"large-grid": {
+					geotile_grid: {
+						field: "shipping_address.geo_point",
+						precision: 22,
 					},
 				},
 			},
@@ -52,14 +49,11 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			prices: {
-				buckets: Record<
-					`${number}`,
-					{
-						key: number;
-						doc_count: number;
-					}
-				>;
+			"large-grid": {
+				buckets: Array<{
+					key: `22/${number}/${number}`;
+					doc_count: number;
+				}>;
 			};
 		}>();
 	});
@@ -70,10 +64,9 @@ describe("Histogram Aggregations", () => {
 			_source: false,
 			size: 0,
 			aggs: {
-				prices: {
-					histogram: {
+				invalid_stats: {
+					geotile_grid: {
 						field: "invalid",
-						interval: 50,
 					},
 				},
 			},
@@ -81,10 +74,10 @@ describe("Histogram Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			prices: InvalidFieldInAggregation<
+			invalid_stats: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["prices"]
+				(typeof query)["aggs"]["invalid_stats"]
 			>;
 		}>();
 	});

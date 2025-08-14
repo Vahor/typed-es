@@ -7,6 +7,7 @@ import type { CompositeAggs } from "./aggregations/bucket/composite";
 import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
 import type { DateRangeAggs } from "./aggregations/bucket/date_range";
 import type { FiltersAggs } from "./aggregations/bucket/filters";
+import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { TermsAggs } from "./aggregations/bucket/terms";
@@ -162,6 +163,7 @@ export type NextAggsParentKey<
 	| "geo_bounds"
 	| "geo_centroid"
 	| "geo_line"
+	| "geotile_grid"
 	| "histogram"
 	| "median_absolute_deviation"
 	| "percentile_ranks"
@@ -191,6 +193,7 @@ export type AggregationOutput<
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
+			| GeoTileGridAggs<E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			//

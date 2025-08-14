@@ -3,8 +3,8 @@ import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
 	typedEs,
-} from "../../src/index";
-import { type CustomIndexes, client } from "../shared";
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
 
 describe("Extended Stats Aggregations", () => {
 	test("with extended_stats on number field", () => {

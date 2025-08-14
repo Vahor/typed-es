@@ -3,20 +3,19 @@ import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
 	typedEs,
-} from "../../src/index";
-import { type CustomIndexes, client } from "../shared";
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
 
-describe("GeoLine Aggregation", () => {
+describe("Geo Centroid Aggregation", () => {
 	test("simple", () => {
 		const query = typedEs(client, {
 			index: "orders",
 			size: 0,
 			_source: false,
 			aggs: {
-				line: {
-					geo_line: {
-						point: { field: "shipping_address.geo_point" },
-						sort: { field: "date" },
+				centroid: {
+					geo_centroid: {
+						field: "shipping_address.geo_point",
 					},
 				},
 			},
@@ -24,33 +23,27 @@ describe("GeoLine Aggregation", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			line: {
-				type: "Feature";
-				geometry: {
-					type: "LineString";
-					coordinates: Array<[number, number]>;
+			centroid: {
+				location: {
+					lat: number;
+					lon: number;
 				};
-				properties: {
-					complete: boolean;
-				};
+				count: number;
 			};
 		}>();
 	});
 
-	test("with terms aggregation", () => {
+	test("in a nested query", () => {
 		const query = typedEs(client, {
 			index: "orders",
 			size: 0,
 			_source: false,
-			aggregations: {
-				path: {
+			aggs: {
+				cities: {
 					terms: { field: "shipping_address.city" },
-					aggregations: {
-						museum_tour: {
-							geo_line: {
-								point: { field: "shipping_address.geo_point" },
-								sort: { field: "date" },
-							},
+					aggs: {
+						centroid: {
+							geo_centroid: { field: "shipping_address.geo_point" },
 						},
 					},
 				},
@@ -59,21 +52,18 @@ describe("GeoLine Aggregation", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			path: {
+			cities: {
 				doc_count_error_upper_bound: number;
 				sum_other_doc_count: number;
 				buckets: Array<{
 					key: string | number;
 					doc_count: number;
-					museum_tour: {
-						type: "Feature";
-						geometry: {
-							type: "LineString";
-							coordinates: Array<[number, number]>;
+					centroid: {
+						location: {
+							lat: number;
+							lon: number;
 						};
-						properties: {
-							complete: boolean;
-						};
+						count: number;
 					};
 				}>;
 			};
@@ -86,10 +76,9 @@ describe("GeoLine Aggregation", () => {
 			_source: false,
 			size: 0,
 			aggs: {
-				line: {
-					geo_line: {
-						point: { field: "invalid" },
-						sort: { field: "date" },
+				centroid: {
+					geo_centroid: {
+						field: "invalid",
 					},
 				},
 			},
@@ -97,10 +86,10 @@ describe("GeoLine Aggregation", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			line: InvalidFieldInAggregation<
+			centroid: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["line"]
+				(typeof query)["aggs"]["centroid"]
 			>;
 		}>();
 	});

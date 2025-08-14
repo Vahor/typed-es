@@ -3,8 +3,8 @@ import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
 	typedEs,
-} from "../../src/index";
-import { type CustomIndexes, client } from "../shared";
+} from "../../../src/index";
+import { type CustomIndexes, client } from "../../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
 describe("Range Aggregations", () => {
