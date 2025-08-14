@@ -149,25 +149,24 @@ export type NextAggsParentKey<
 	Aggs = ExtractAggs<Query>,
 > = ObjectKeysWithSpecificKeys<
 	Aggs,
-	// TODO: only keys that can have sub aggs should be here
-	| "top_hits"
 	| "date_histogram"
-	| "terms"
-	| "scripted_metric"
-	| "top_metrics"
-	| "range"
-	| "filters"
-	| "histogram"
 	| "date_range"
-	| "stats"
 	| "extended_stats"
-	| "geo_centroid"
+	| "filters"
 	| "geo_bounds"
+	| "geo_centroid"
 	| "geo_line"
-	| "percentiles"
-	| "percentile_ranks"
+	| "histogram"
 	| "median_absolute_deviation"
+	| "percentile_ranks"
+	| "percentiles"
+	| "range"
+	| "scripted_metric"
+	| "stats"
 	| "string_stats"
+	| "terms"
+	| "top_hits"
+	| "top_metrics"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -184,24 +183,26 @@ export type AggregationOutput<
 	:
 			| CompositeAggs<BaseQuery, E, Index, Agg>
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
+			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
-			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
-			| TopHitsAggs<BaseQuery, E, Index, Agg>
-			| FunctionAggs<E, Index, Agg>
-			| HistogramAggs<BaseQuery, E, Index, Agg>
-			| ScriptedMetricAggs<Agg>
-			| StatsAggs<E, Index, Agg>
+			//
 			| ExtendedStatsAggs<E, Index, Agg>
-			| TopMetricsAggs<E, Index, Agg>
-			| GeoCentroidAggs<E, Index, Agg>
+			| FunctionAggs<E, Index, Agg>
 			| GeoBoundsAggs<E, Index, Agg>
+			| GeoCentroidAggs<E, Index, Agg>
 			| GeoLineAggs<E, Index, Agg>
+			| HistogramAggs<BaseQuery, E, Index, Agg>
+			| MedianAbsoluteDeviationAggs<E, Index, Agg>
 			| PercentilesAggs<E, Index, Agg>
 			| PercentileRanksAggs<E, Index, Agg>
-			| MedianAbsoluteDeviationAggs<E, Index, Agg>
+			| ScriptedMetricAggs<Agg>
+			| StatsAggs<E, Index, Agg>
 			| StringStatsAggs<E, Index, Agg>
+			| TopHitsAggs<BaseQuery, E, Index, Agg>
+			| TopMetricsAggs<E, Index, Agg>
+			//
 			| BucketAggs<Agg>;
 
 export type AppendSubAggs<
