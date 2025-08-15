@@ -227,6 +227,7 @@ describe("Should return the correct type", () => {
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 						score: number;
+						score_array: number[];
 					}>();
 				});
 
@@ -239,6 +240,7 @@ describe("Should return the correct type", () => {
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 						score: number;
+						score_array: number[];
 					}>();
 				});
 				test("can use wildcard and non-wildcard", () => {

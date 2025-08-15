@@ -20,10 +20,24 @@ describe("WeightedAvg Aggregations", () => {
 						};
 					};
 				};
+				weighted_score_array: {
+					weighted_avg: {
+						value: {
+							field: "score_array";
+						};
+						weight: {
+							field: "weight";
+						};
+					};
+				};
 			}
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			weighted_score: {
+				value: number;
+				value_as_string?: string;
+			};
+			weighted_score_array: {
 				value: number;
 				value_as_string?: string;
 			};

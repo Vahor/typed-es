@@ -38,8 +38,21 @@ export type WeightedAvgAggs<
 						TypeOfField<WeightField, E, Index>,
 						number
 					>
-				: {
-						value: number;
-						value_as_string?: string;
-					}
+				: Not<
+							IsSomeSortOf<
+								TypeOfField<ValueField, E, Index>,
+								number | Array<number>
+							>
+						> extends true
+					? InvalidFieldTypeInAggregation<
+							ValueField,
+							Index,
+							Agg,
+							TypeOfField<ValueField, E, Index>,
+							number | Array<number>
+						>
+					: {
+							value: number;
+							value_as_string?: string;
+						}
 	: never;

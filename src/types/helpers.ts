@@ -55,11 +55,13 @@ export type ToString<T> = T extends string | number | boolean | undefined | null
 					? "any"
 					: "unknown";
 
-export type IsSomeSortOf<T, U> = T extends U
-	? true
-	: U extends T
+export type IsSomeSortOf<T, U, AllowNever = true> = IsNever<T> extends true
+	? AllowNever
+	: T extends U
 		? true
-		: false;
+		: U extends T
+			? true
+			: false;
 
 export type ToDecimal<N> = IsFloatLiteral<N> extends true
 	? ToString<N>
