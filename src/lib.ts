@@ -14,6 +14,7 @@ import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { TermsAggs } from "./aggregations/bucket/terms";
+import type { BoxplotAggs } from "./aggregations/metrics/boxplot";
 import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
 import type {
 	AggFunction,
@@ -172,6 +173,7 @@ export type NextAggsParentKey<
 	Aggs = ExtractAggs<Query>,
 > = ObjectKeysWithSpecificKeys<
 	Aggs,
+	| "boxplot"
 	| "date_histogram"
 	| "date_range"
 	| "extended_stats"
@@ -220,6 +222,7 @@ export type AggregationOutput<
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			//
+			| BoxplotAggs<E, Index, Agg>
 			| ExtendedStatsAggs<E, Index, Agg>
 			| FunctionAggs<E, Index, Agg>
 			| GeoBoundsAggs<E, Index, Agg>
