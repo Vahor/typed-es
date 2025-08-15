@@ -1,28 +1,20 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { InvalidFieldInAggregation } from "../../../src/index";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("Geo Centroid Aggregation", () => {
 	test("simple", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				centroid: {
 					geo_centroid: {
-						field: "shipping_address.geo_point",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "shipping_address.geo_point";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			centroid: {
 				location: {
 					lat: number;
@@ -34,24 +26,20 @@ describe("Geo Centroid Aggregation", () => {
 	});
 
 	test("in a nested query", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				cities: {
-					terms: { field: "shipping_address.city" },
+					terms: { field: "shipping_address.city" };
 					aggs: {
 						centroid: {
-							geo_centroid: { field: "shipping_address.geo_point" },
-						},
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+							geo_centroid: { field: "shipping_address.geo_point" };
+						};
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			cities: {
 				doc_count_error_upper_bound: number;
 				sum_other_doc_count: number;
@@ -71,25 +59,21 @@ describe("Geo Centroid Aggregation", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				centroid: {
 					geo_centroid: {
-						field: "invalid",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			centroid: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["centroid"]
+				Aggregations["input"]["centroid"]
 			>;
 		}>();
 	});
