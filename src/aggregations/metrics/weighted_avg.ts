@@ -15,10 +15,12 @@ export type WeightedAvgAggs<
 > = Agg extends {
 	weighted_avg: {
 		value: {
-			field: infer ValueField extends string;
+			field?: infer ValueField extends string;
+			script?: string;
 		};
 		weight: {
-			field: infer WeightField extends string;
+			field?: infer WeightField extends string;
+			script?: string;
 		};
 	};
 }
