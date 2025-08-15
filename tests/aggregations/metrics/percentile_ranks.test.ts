@@ -1,30 +1,24 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	type InvalidFieldTypeInAggregation,
-	typedEs,
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
 } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("PercentileRanks Aggregation", () => {
 	test("simple", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				load_time_ranks: {
 					percentile_ranks: {
-						field: "total",
-						values: [500, 600],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "total";
+						values: [500, 600];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			load_time_ranks: {
 				values: {
 					"500.0": number;
@@ -35,23 +29,19 @@ describe("PercentileRanks Aggregation", () => {
 	});
 
 	test("with keyed=false", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				load_time_ranks: {
 					percentile_ranks: {
-						field: "total",
-						values: [500, 600],
-						keyed: false,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "total";
+						values: [500, 600];
+						keyed: false;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			load_time_ranks: {
 				values: [
 					{
@@ -68,26 +58,22 @@ describe("PercentileRanks Aggregation", () => {
 	});
 
 	test("fails when using an invalid type field", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				load_time_ranks: {
 					percentile_ranks: {
-						field: "id",
-						values: [500, 600],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "id";
+						values: [500, 600];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			load_time_ranks: InvalidFieldTypeInAggregation<
 				"id",
 				"orders",
-				(typeof query)["aggs"]["load_time_ranks"],
+				Aggregations["input"]["load_time_ranks"],
 				string,
 				number
 			>;
@@ -95,26 +81,22 @@ describe("PercentileRanks Aggregation", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				load_time_ranks: {
 					percentile_ranks: {
-						field: "invalid",
-						values: [500, 600],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+						values: [500, 600];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			load_time_ranks: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["load_time_ranks"]
+				Aggregations["input"]["load_time_ranks"]
 			>;
 		}>();
 	});
