@@ -12,28 +12,28 @@ import type {
 	RangeInclusive,
 } from "../../types/helpers";
 
-type DefaultPrecision = 7;
+type DefaultPrecision = 6;
 type GetPrecision<P> = P extends number ? P : DefaultPrecision;
-type Range_0_29 = RangeInclusive<0, 29>;
+type Range_0_15 = RangeInclusive<0, 15>;
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation
-export type GeoTileGridAggs<
+// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation
+export type GeoHexGridAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,
 > = Agg extends {
-	geotile_grid: {
+	geohex_grid: {
 		field: infer Field extends string;
 		precision?: infer Precision;
 	};
 }
 	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<GetPrecision<Precision>, Range_0_29> extends true
+		? IsSomeSortOf<GetPrecision<Precision>, Range_0_15> extends true
 			? {
 					buckets: PrettyArray<
 						{
-							key: `${GetPrecision<Precision>}/${number}/${number}`;
+							key: string;
 							doc_count: number;
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
@@ -42,7 +42,7 @@ export type GeoTileGridAggs<
 					"precision",
 					Agg,
 					Precision,
-					Range_0_29
+					Range_0_15
 				>
 		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;

@@ -7,6 +7,7 @@ import type { CompositeAggs } from "./aggregations/bucket/composite";
 import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
 import type { DateRangeAggs } from "./aggregations/bucket/date_range";
 import type { FiltersAggs } from "./aggregations/bucket/filters";
+import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
 import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { RangeAggs } from "./aggregations/bucket/range";
@@ -107,7 +108,20 @@ export type InvalidFieldTypeInAggregation<
 	expected,
 > = {
 	error: `Field '${Field}' cannot be used in aggregation on '${Index}' because it is of type '${ToString<got>}' but expected '${ToString<expected>}'`;
+	field: Field;
 	aggregation: Aggregation;
+	got: got;
+	expected: expected;
+};
+
+export type InvalidPropertyTypeInAggregation<
+	PropertyName extends string,
+	Aggregation,
+	got,
+	expected,
+> = {
+	aggregation: Aggregation;
+	property: PropertyName;
 	got: got;
 	expected: expected;
 };
@@ -163,6 +177,7 @@ export type NextAggsParentKey<
 	| "geo_bounds"
 	| "geo_centroid"
 	| "geo_line"
+	| "geohex_grid"
 	| "geotile_grid"
 	| "histogram"
 	| "median_absolute_deviation"
@@ -193,6 +208,7 @@ export type AggregationOutput<
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
+			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
 			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
