@@ -10,10 +10,12 @@ export type SearchRequest = estypes.SearchRequest;
 export type CustomIndexes = {
 	demo: {
 		score: number;
+		score_array: Array<number>;
 		entity_id: string;
 		date: string;
 		ip: `${string}.${string}.${string}.${string}`;
 		load_time: number;
+		weight: number;
 	};
 	demo2: {
 		invalid: string;
