@@ -2,8 +2,10 @@ import { describe, expectTypeOf, test } from "bun:test";
 import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
+	type InvalidPropetyTypeInAggregation,
 	typedEs,
 } from "../../../src/index";
+import type { RangeInclusive } from "../../../src/types/helpers";
 import { type CustomIndexes, client } from "../../shared";
 
 describe("Geotile Aggregations", () => {
@@ -89,6 +91,32 @@ describe("Geotile Aggregations", () => {
 					};
 				}>;
 			};
+		}>();
+	});
+
+	test("fails when using a out of range precision", () => {
+		const query = typedEs(client, {
+			index: "orders",
+			_source: false,
+			size: 0,
+			aggs: {
+				invalid_stats: {
+					geotile_grid: {
+						field: "shipping_address.geo_point",
+						precision: 30,
+					},
+				},
+			},
+		});
+		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Aggregations = Output["aggregations"];
+		expectTypeOf<Aggregations>().toEqualTypeOf<{
+			invalid_stats: InvalidPropetyTypeInAggregation<
+				"precision",
+				(typeof query)["aggs"]["invalid_stats"],
+				30,
+				RangeInclusive<0, 29>
+			>;
 		}>();
 	});
 

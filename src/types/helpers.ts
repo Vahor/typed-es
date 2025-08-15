@@ -66,3 +66,13 @@ export type ToDecimal<N> = IsFloatLiteral<N> extends true
 	: IsNumericLiteral<N> extends true
 		? `${ToString<N>}.0`
 		: never;
+
+export type Enumerate<T extends number, Acc extends number[] = []> = T extends 0
+	? Acc
+	: Acc["length"] extends T
+		? Acc[number]
+		: Enumerate<T, [...Acc, Acc["length"]]>;
+
+export type RangeInclusive<T extends number, U extends number> =
+	| U
+	| Exclude<Enumerate<U>, Enumerate<T>>;
