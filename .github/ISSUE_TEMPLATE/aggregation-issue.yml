@@ -19,7 +19,7 @@ body:
         // Your input code here
         ```
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: expected-output
@@ -31,7 +31,7 @@ body:
         // Your expected output here
         ```
     validations:
-      required: true
+      required: false
 
   - type: input
     id: elasticsearch-docs
