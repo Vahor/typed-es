@@ -13,6 +13,7 @@ export type CustomIndexes = {
 		entity_id: string;
 		date: string;
 		ip: `${string}.${string}.${string}.${string}`;
+		load_time: number;
 	};
 	demo2: {
 		invalid: string;
