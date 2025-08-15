@@ -33,18 +33,18 @@ type RangeOutput<
 	[index in keyof Ranges]: Ranges[index] extends {
 		from?: infer F;
 		to?: infer T;
+		key?: infer K;
 	}
 		? Prettify<
 				{
-					key: `${FormatToKey<F>}-${FormatToKey<T>}`;
+					key: K extends string ? K : `${FormatToKey<F>}-${FormatToKey<T>}`;
 					doc_count: number;
 				} & {
 					[K in "from" as F extends number ? K : never]: F;
 				} & {
 					[K in "to" as T extends number ? K : never]: T;
-				}
-			> &
-				AppendSubAggs<BaseQuery, E, Index, Agg>
+				} & AppendSubAggs<BaseQuery, E, Index, Agg>
+			>
 		: never;
 };
 

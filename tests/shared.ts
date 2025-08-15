@@ -12,6 +12,7 @@ export type CustomIndexes = {
 		score: number;
 		entity_id: string;
 		date: string;
+		ip: `${string}.${string}.${string}.${string}`;
 	};
 	demo2: {
 		invalid: string;

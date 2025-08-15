@@ -127,6 +127,44 @@ describe("Range Aggregations", () => {
 		}>();
 	});
 
+	test("with keyed and custom key", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				price_ranges: {
+					range: {
+						field: "score";
+						keyed: true;
+						ranges: [
+							{ key: "cheap"; to: 100 },
+							{ key: "average"; from: 100; to: 200 },
+							{ key: "expensive"; from: 200 },
+						];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			price_ranges: {
+				buckets: {
+					cheap: {
+						to: 100.0;
+						doc_count: number;
+					};
+					average: {
+						from: 100.0;
+						to: 200.0;
+						doc_count: number;
+					};
+					expensive: {
+						from: 200.0;
+						doc_count: number;
+					};
+				};
+			};
+		}>();
+	});
+
 	test("fails when using an invalid field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",
@@ -146,6 +184,39 @@ describe("Range Aggregations", () => {
 				"demo",
 				Aggregations["input"]["price_ranges"]
 			>;
+		}>();
+	});
+
+	test("supports nested sub-aggregations in buckets", () => {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
+				with_sub: {
+					range: { field: "shipping_address.geo_point"; ranges: [{ to: 100 }] };
+					aggs: {
+						by_status: { terms: { field: "status" } };
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			with_sub: {
+				buckets: [
+					{
+						key: `*-100.0`;
+						doc_count: number;
+						to: 100.0;
+						by_status: {
+							doc_count_error_upper_bound: number;
+							sum_other_doc_count: number;
+							buckets: Array<{
+								key: "pending" | "completed" | "cancelled";
+								doc_count: number;
+							}>;
+						};
+					},
+				];
+			};
 		}>();
 	});
 });
