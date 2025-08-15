@@ -1,6 +1,14 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
-import type { TestAggregationOutput } from "../../shared";
+import {
+	type ElasticsearchOutput,
+	type InvalidFieldInAggregation,
+	typedEs,
+} from "../../../src/index";
+import {
+	type CustomIndexes,
+	client,
+	type TestAggregationOutput,
+} from "../../shared";
 
 describe("Leaf Function Aggregations", () => {
 	test("with min", () => {

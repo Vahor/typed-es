@@ -73,6 +73,7 @@ export type TestAggregationOutput<
 	aggregations: ElasticsearchOutput<
 		{
 			index: Index;
+			rest_total_hits_as_int: true;
 			_source: false;
 			size: 0;
 			aggregations: Aggregation;
