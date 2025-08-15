@@ -43,9 +43,8 @@ type RangeOutput<
 					[K in "from" as F extends number ? K : never]: F;
 				} & {
 					[K in "to" as T extends number ? K : never]: T;
-				}
-			> &
-				AppendSubAggs<BaseQuery, E, Index, Agg>
+				} & AppendSubAggs<BaseQuery, E, Index, Agg>
+			>
 		: never;
 };
 

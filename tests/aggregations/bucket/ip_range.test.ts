@@ -213,4 +213,40 @@ describe("IpRange Aggregations", () => {
 			>;
 		}>();
 	});
+
+	test("supports nested sub-aggregations in buckets", () => {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
+				with_sub: {
+					ip_range: {
+						field: "shipping_address.geo_point";
+						ranges: [{ to: "10.0.0.5" }];
+					};
+					aggs: {
+						by_status: { terms: { field: "status" } };
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			with_sub: {
+				buckets: [
+					{
+						key: `*-10.0.0.5`;
+						doc_count: number;
+						to: "10.0.0.5";
+						by_status: {
+							doc_count_error_upper_bound: number;
+							sum_other_doc_count: number;
+							buckets: Array<{
+								key: "pending" | "completed" | "cancelled";
+								doc_count: number;
+							}>;
+						};
+					},
+				];
+			};
+		}>();
+	});
 });

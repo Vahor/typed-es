@@ -59,9 +59,8 @@ type IpRangeOutput<
 						: M extends string
 							? K
 							: never]: M extends string ? string : T;
-				}
-			> &
-				AppendSubAggs<BaseQuery, E, Index, Agg>
+				} & AppendSubAggs<BaseQuery, E, Index, Agg>
+			>
 		: never;
 };
 

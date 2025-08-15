@@ -186,4 +186,37 @@ describe("Range Aggregations", () => {
 			>;
 		}>();
 	});
+
+	test("supports nested sub-aggregations in buckets", () => {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
+				with_sub: {
+					range: { field: "shipping_address.geo_point"; ranges: [{ to: 100 }] };
+					aggs: {
+						by_status: { terms: { field: "status" } };
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			with_sub: {
+				buckets: [
+					{
+						key: `*-100.0`;
+						doc_count: number;
+						to: 100.0;
+						by_status: {
+							doc_count_error_upper_bound: number;
+							sum_other_doc_count: number;
+							buckets: Array<{
+								key: "pending" | "completed" | "cancelled";
+								doc_count: number;
+							}>;
+						};
+					},
+				];
+			};
+		}>();
+	});
 });
