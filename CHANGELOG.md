@@ -1,5 +1,17 @@
 # @vahor/typed-es
 
+## 0.0.21
+
+### Patch Changes
+
+- [#124](https://github.com/Vahor/typed-es/pull/124) [`560feb3`](https://github.com/Vahor/typed-es/commit/560feb3f53d8df1035e30935a6e70e9ba2393a62) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `geohex_grid` bucket aggregation
+
+- [#121](https://github.com/Vahor/typed-es/pull/121) [`d83adbc`](https://github.com/Vahor/typed-es/commit/d83adbc6b88583d184b69c9c840d5bd682a047a1) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `geotile_grid` bucket agg
+
+- [#127](https://github.com/Vahor/typed-es/pull/127) [`76ce0c8`](https://github.com/Vahor/typed-es/commit/76ce0c8fc6aefce89be7af6a4e8857ef65bd960f) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `ip_prefix` bucket aggregation.
+
+- [#126](https://github.com/Vahor/typed-es/pull/126) [`91c06c3`](https://github.com/Vahor/typed-es/commit/91c06c364f0e349cac4ff44c010c31c15f4c8982) Thanks [@Vahor](https://github.com/Vahor)! - Add `ip_range` bucket agg support.
+
 ## 0.0.20
 
 ### Patch Changes
