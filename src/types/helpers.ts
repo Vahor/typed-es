@@ -85,6 +85,12 @@ export type AtLeastOneOf<
 	: never;
 
 export type Ipv4 = `${number}.${number}.${number}.${number}`;
-export type CirdIpv4 = `${Ipv4}/${number}`;
+export type CidrIpv4<T extends number = number> = `${Ipv4}/${T}`;
 export type Ipv6 = string;
-export type CirdIpv6 = `${Ipv6}/${number}`;
+export type CidrIpv6<T extends number = number> = `${Ipv6}/${T}`;
+
+export type KeyedArrayToObject<O> = O extends readonly { key: string }[]
+	? {
+			[K in O[number] as K["key"]]: Omit<K, "key">;
+		}
+	: never;

@@ -5,7 +5,7 @@ import type {
 	InvalidFieldInAggregation,
 	SearchRequest,
 } from "../..";
-import type { Prettify } from "../../types/helpers";
+import type { KeyedArrayToObject, Prettify } from "../../types/helpers";
 
 type RangeSpec = {
 	from?: string | undefined;
@@ -46,12 +46,6 @@ type RangeOutput<
 		: never;
 };
 
-type RangeOutputToObject<Ranges> = Ranges extends readonly { key: string }[]
-	? {
-			[K in Ranges[number] as K["key"]]: Omit<K, "key">;
-		}
-	: never;
-
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
 export type DateRangeAggs<
 	BaseQuery extends SearchRequest,
@@ -69,7 +63,7 @@ export type DateRangeAggs<
 		? Ranges extends readonly RangeSpec[]
 			? Keyed extends true
 				? {
-						buckets: RangeOutputToObject<
+						buckets: KeyedArrayToObject<
 							RangeOutput<BaseQuery, E, Index, Agg, Ranges>
 						>;
 					}
