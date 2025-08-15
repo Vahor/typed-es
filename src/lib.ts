@@ -10,6 +10,7 @@ import type { FiltersAggs } from "./aggregations/bucket/filters";
 import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
 import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
+import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { TermsAggs } from "./aggregations/bucket/terms";
@@ -181,6 +182,7 @@ export type NextAggsParentKey<
 	| "geohex_grid"
 	| "geotile_grid"
 	| "histogram"
+	| "ip_prefix"
 	| "ip_range"
 	| "median_absolute_deviation"
 	| "percentile_ranks"
@@ -213,6 +215,7 @@ export type AggregationOutput<
 			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
 			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
 			| HistogramAggs<BaseQuery, E, Index, Agg>
+			| IpPrefixAggs<BaseQuery, E, Index, Agg>
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>

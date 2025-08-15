@@ -8,7 +8,12 @@ import type {
 	SearchRequest,
 	TypeOfField,
 } from "../..";
-import type { AtLeastOneOf, IsSomeSortOf, Prettify } from "../../types/helpers";
+import type {
+	AtLeastOneOf,
+	IsSomeSortOf,
+	KeyedArrayToObject,
+	Prettify,
+} from "../../types/helpers";
 
 type IpRangeSpec =
 	| AtLeastOneOf<
@@ -64,12 +69,6 @@ type IpRangeOutput<
 		: never;
 };
 
-type RangeOutputToObject<Ranges> = Ranges extends readonly { key: string }[]
-	? {
-			[K in Ranges[number] as K["key"]]: Omit<K, "key">;
-		}
-	: never;
-
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-iprange-aggregation
 export type IpRangeAggs<
 	BaseQuery extends SearchRequest,
@@ -88,7 +87,7 @@ export type IpRangeAggs<
 			? Ranges extends readonly IpRangeSpec[]
 				? Keyed extends true
 					? {
-							buckets: RangeOutputToObject<
+							buckets: KeyedArrayToObject<
 								IpRangeOutput<BaseQuery, E, Index, Agg, Ranges>
 							>;
 						}
