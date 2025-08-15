@@ -114,7 +114,7 @@ export type InvalidFieldTypeInAggregation<
 	expected: expected;
 };
 
-export type InvalidPropetyTypeInAggregation<
+export type InvalidPropertyTypeInAggregation<
 	PropertyName extends string,
 	Aggregation,
 	got,

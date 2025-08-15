@@ -2,7 +2,7 @@ import { describe, expectTypeOf, test } from "bun:test";
 import {
 	type ElasticsearchOutput,
 	type InvalidFieldInAggregation,
-	type InvalidPropetyTypeInAggregation,
+	type InvalidPropertyTypeInAggregation,
 	typedEs,
 } from "../../../src/index";
 import type { RangeInclusive } from "../../../src/types/helpers";
@@ -111,7 +111,7 @@ describe("Geotile Aggregations", () => {
 		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
-			invalid_stats: InvalidPropetyTypeInAggregation<
+			invalid_stats: InvalidPropertyTypeInAggregation<
 				"precision",
 				(typeof query)["aggs"]["invalid_stats"],
 				30,

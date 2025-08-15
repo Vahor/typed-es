@@ -3,7 +3,7 @@ import type {
 	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
 	InvalidFieldInAggregation,
-	InvalidPropetyTypeInAggregation,
+	InvalidPropertyTypeInAggregation,
 	SearchRequest,
 } from "../..";
 import type {
@@ -38,6 +38,11 @@ export type GeoHexGridAggs<
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
 				}
-			: InvalidPropetyTypeInAggregation<"precision", Agg, Precision, Range_0_15>
+			: InvalidPropertyTypeInAggregation<
+					"precision",
+					Agg,
+					Precision,
+					Range_0_15
+				>
 		: InvalidFieldInAggregation<Field, Index, Agg>
 	: never;
