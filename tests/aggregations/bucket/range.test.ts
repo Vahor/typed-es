@@ -127,6 +127,44 @@ describe("Range Aggregations", () => {
 		}>();
 	});
 
+	test("with keyed and custom key", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				price_ranges: {
+					range: {
+						field: "score";
+						keyed: true;
+						ranges: [
+							{ key: "cheap"; to: 100 },
+							{ key: "average"; from: 100; to: 200 },
+							{ key: "expensive"; from: 200 },
+						];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			price_ranges: {
+				buckets: {
+					cheap: {
+						to: 100.0;
+						doc_count: number;
+					};
+					average: {
+						from: 100.0;
+						to: 200.0;
+						doc_count: number;
+					};
+					expensive: {
+						from: 200.0;
+						doc_count: number;
+					};
+				};
+			};
+		}>();
+	});
+
 	test("fails when using an invalid field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",

@@ -76,3 +76,15 @@ export type Enumerate<T extends number, Acc extends number[] = []> = T extends 0
 export type RangeInclusive<T extends number, U extends number> =
 	| U
 	| Exclude<Enumerate<U>, Enumerate<T>>;
+
+export type AtLeastOneOf<
+	T,
+	Keys extends keyof T = keyof T,
+> = Keys extends unknown
+	? Required<Pick<T, Keys>> & Partial<Omit<T, Keys>>
+	: never;
+
+export type Ipv4 = `${number}.${number}.${number}.${number}`;
+export type CirdIpv4 = `${Ipv4}/${number}`;
+export type Ipv6 = string;
+export type CirdIpv6 = `${Ipv6}/${number}`;

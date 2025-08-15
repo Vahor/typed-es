@@ -10,6 +10,7 @@ import type { FiltersAggs } from "./aggregations/bucket/filters";
 import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
 import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
+import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { TermsAggs } from "./aggregations/bucket/terms";
 import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
@@ -180,6 +181,7 @@ export type NextAggsParentKey<
 	| "geohex_grid"
 	| "geotile_grid"
 	| "histogram"
+	| "ip_range"
 	| "median_absolute_deviation"
 	| "percentile_ranks"
 	| "percentiles"
@@ -210,6 +212,8 @@ export type AggregationOutput<
 			| FiltersAggs<BaseQuery, E, Index, Agg>
 			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
 			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
+			| HistogramAggs<BaseQuery, E, Index, Agg>
+			| IpRangeAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			//
@@ -218,7 +222,6 @@ export type AggregationOutput<
 			| GeoBoundsAggs<E, Index, Agg>
 			| GeoCentroidAggs<E, Index, Agg>
 			| GeoLineAggs<E, Index, Agg>
-			| HistogramAggs<BaseQuery, E, Index, Agg>
 			| MedianAbsoluteDeviationAggs<E, Index, Agg>
 			| PercentilesAggs<E, Index, Agg>
 			| PercentileRanksAggs<E, Index, Agg>
