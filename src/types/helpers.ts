@@ -94,3 +94,11 @@ export type KeyedArrayToObject<O> = O extends readonly { key: string }[]
 			[K in O[number] as K["key"]]: Omit<K, "key">;
 		}
 	: never;
+
+export type And<A, B> = A extends true
+	? B extends true
+		? true
+		: false
+	: false;
+
+export type Not<A> = A extends true ? false : true;

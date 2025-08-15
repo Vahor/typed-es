@@ -31,6 +31,7 @@ import type { StatsAggs } from "./aggregations/metrics/stats";
 import type { StringStatsAggs } from "./aggregations/metrics/string_stats";
 import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
 import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
+import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
 import type {
 	AnyString,
 	IsNever,
@@ -196,6 +197,7 @@ export type NextAggsParentKey<
 	| "terms"
 	| "top_hits"
 	| "top_metrics"
+	| "weighted_avg"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -236,6 +238,7 @@ export type AggregationOutput<
 			| StringStatsAggs<E, Index, Agg>
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| TopMetricsAggs<E, Index, Agg>
+			| WeightedAvgAggs<E, Index, Agg>
 			//
 			| BucketAggs<Agg>;
 

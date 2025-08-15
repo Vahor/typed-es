@@ -14,6 +14,7 @@ export type CustomIndexes = {
 		date: string;
 		ip: `${string}.${string}.${string}.${string}`;
 		load_time: number;
+		weight: number;
 	};
 	demo2: {
 		invalid: string;
