@@ -1,47 +1,39 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { InvalidFieldInAggregation } from "../../../src/index";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("Date Histogram Aggregations", () => {
 	test("with nested date_histogram", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				years: {
 					date_histogram: {
-						field: "date",
-						calendar_interval: "year",
-					},
+						field: "date";
+						calendar_interval: "year";
+					};
 					aggregations: {
 						daily: {
 							date_histogram: {
-								field: "date",
-								calendar_interval: "day",
-							},
+								field: "date";
+								calendar_interval: "day";
+							};
 							aggs: {
-								score_value: { sum: { field: "score" } },
-							},
-						},
+								score_value: { sum: { field: "score" } };
+							};
+						};
 						yearly_avg: {
 							avg_bucket: {
-								buckets_path: "daily>score_value",
-								gap_policy: "insert_zeros",
-							},
-						},
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
+								buckets_path: "daily>score_value";
+								gap_policy: "insert_zeros";
+							};
+						};
+					};
+				};
+			}
+		>;
 
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			years: {
 				buckets: Array<{
 					key_as_string: string;
@@ -68,24 +60,20 @@ describe("Date Histogram Aggregations", () => {
 	});
 
 	test("with keyed", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				sales_over_time: {
 					date_histogram: {
-						field: "date",
-						calendar_interval: "1M",
-						format: "yyyy-MM-dd",
-						keyed: true,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "date";
+						calendar_interval: "1M";
+						format: "yyyy-MM-dd";
+						keyed: true;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			sales_over_time: {
 				buckets: Record<
 					string,
@@ -100,27 +88,23 @@ describe("Date Histogram Aggregations", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				sales_over_time: {
 					date_histogram: {
-						field: "invalid",
-						calendar_interval: "1M",
-						format: "yyyy-MM-dd",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+						calendar_interval: "1M";
+						format: "yyyy-MM-dd";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			sales_over_time: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["sales_over_time"]
+				Aggregations["input"]["sales_over_time"]
 			>;
 		}>();
 	});

@@ -1,35 +1,27 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { InvalidFieldInAggregation } from "../../../src/index";
+import type { TestAggregationOutput } from "../../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
 describe("DateRange Aggregations", () => {
 	test("with from-to", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				range: {
 					date_range: {
-						field: "date",
-						format: "MM-yyyy",
+						field: "date";
+						format: "MM-yyyy";
 						ranges: [
 							{ to: "2016/02/01" },
-							{ from: "2016/02/01", to: "now/d" },
+							{ from: "2016/02/01"; to: "now/d" },
 							{ from: "now/d" },
-						],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			range: {
 				buckets: [
 					{
@@ -58,24 +50,20 @@ describe("DateRange Aggregations", () => {
 	});
 
 	test("with keyed", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				range: {
 					date_range: {
-						field: "date",
-						format: "MM-yyy",
-						ranges: [{ to: "now-10M/M" }, { from: "now-10M/M" }],
-						keyed: true,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "date";
+						format: "MM-yyy";
+						ranges: [{ to: "now-10M/M" }, { from: "now-10M/M" }];
+						keyed: true;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			range: {
 				buckets: {
 					[x: `*-${string}`]: {
@@ -94,28 +82,24 @@ describe("DateRange Aggregations", () => {
 	});
 
 	test("with keyed and custom key", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				range: {
 					date_range: {
-						field: "date",
-						format: "MM-yyy",
+						field: "date";
+						format: "MM-yyy";
 						ranges: [
-							{ from: "01-2015", to: "03-2015", key: "quarter_01" },
-							{ from: "03-2015", to: "06-2015", key: "quarter_02" },
-							{ from: "06-2015", key: "quarter_03_to_now" },
-						],
-						keyed: true,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+							{ from: "01-2015"; to: "03-2015"; key: "quarter_01" },
+							{ from: "03-2015"; to: "06-2015"; key: "quarter_02" },
+							{ from: "06-2015"; key: "quarter_03_to_now" },
+						];
+						keyed: true;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			range: {
 				buckets: {
 					quarter_01: {
@@ -143,28 +127,24 @@ describe("DateRange Aggregations", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				range: {
 					date_range: {
-						field: "invalid",
-						format: "MM-yyy",
-						ranges: [{ from: "01-2015", to: "03-2015", key: "quarter_01" }],
-						keyed: true,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+						format: "MM-yyy";
+						ranges: [{ from: "01-2015"; to: "03-2015"; key: "quarter_01" }];
+						keyed: true;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			range: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["range"]
+				Aggregations["input"]["range"]
 			>;
 		}>();
 	});
