@@ -1,28 +1,23 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type ElasticsearchOutput, typedEs } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation
 describe("Filters Aggregations", () => {
 	test("with anonymous filters", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				messages: {
 					filters: {
 						filters: [
 							{ match: { body: "error" } },
 							{ match: { body: "warning" } },
-						],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			messages: {
 				buckets: Array<{
 					doc_count: number;
@@ -32,24 +27,20 @@ describe("Filters Aggregations", () => {
 	});
 
 	test("with named filters", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				messages: {
 					filters: {
 						filters: {
-							errors: { match: { body: "error" } },
-							warnings: { match: { body: "warning" } },
-						},
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+							errors: { match: { body: "error" } };
+							warnings: { match: { body: "warning" } };
+						};
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			messages: {
 				buckets: {
 					errors: {
@@ -64,24 +55,20 @@ describe("Filters Aggregations", () => {
 	});
 
 	test("with named filters and other_bucket_key", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				messages: {
 					filters: {
 						filters: {
-							warnings: { match: { body: "warning" } },
-						},
-						other_bucket_key: "another_key",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+							warnings: { match: { body: "warning" } };
+						};
+						other_bucket_key: "another_key";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			messages: {
 				buckets: {
 					another_key: {
@@ -96,27 +83,23 @@ describe("Filters Aggregations", () => {
 	});
 
 	test("Should support `keyed` parameter", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				messages: {
 					filters: {
 						filters: {
-							errors: { match: { body: "error" } },
-							warnings: { match: { body: "warning" } },
-						},
-						other_bucket_key: "another_key",
-						keyed: false,
-					},
-				},
-			},
-		});
+							errors: { match: { body: "error" } };
+							warnings: { match: { body: "warning" } };
+						};
+						other_bucket_key: "another_key";
+						keyed: false;
+					};
+				};
+			}
+		>;
 
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			messages: {
 				buckets: Array<{
 					key: "errors" | "warnings" | "another_key";
@@ -127,31 +110,27 @@ describe("Filters Aggregations", () => {
 	});
 
 	test("Should support nested aggregations", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				the_filter: {
 					filters: {
-						keyed: false,
+						keyed: false;
 						filters: {
-							"t-shirt": { term: { type: "t-shirt" } },
-							hat: { term: { type: "hat" } },
-						},
-					},
+							"t-shirt": { term: { type: "t-shirt" } };
+							hat: { term: { type: "hat" } };
+						};
+					};
 					aggs: {
-						avg_price: { avg: { field: "score" } },
+						avg_price: { avg: { field: "score" } };
 						sort_by_avg_price: {
-							bucket_sort: { sort: { avg_price: "asc" } },
-						},
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+							bucket_sort: { sort: { avg_price: "asc" } };
+						};
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			the_filter: {
 				buckets: Array<{
 					key: "t-shirt" | "hat";

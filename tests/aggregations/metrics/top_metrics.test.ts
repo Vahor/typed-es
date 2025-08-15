@@ -1,41 +1,36 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type ElasticsearchOutput, typedEs } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("top_metrics Aggregations", () => {
 	test("get the top 10 of a field", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				max_score: {
 					max: {
-						field: "total",
-					},
-				},
+						field: "total";
+					};
+				};
 				top_scores: {
 					top_metrics: {
 						sort: [
 							{
 								total: {
-									order: "desc",
-								},
+									order: "desc";
+								};
 							},
-						],
+						];
 						metrics: [
 							{
-								field: "total",
+								field: "total";
 							},
-						],
-						size: 10,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						];
+						size: 10;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			max_score: {
 				value: number;
 				value_as_string?: string;

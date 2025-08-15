@@ -1,27 +1,21 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	type InvalidFieldTypeInAggregation,
-	typedEs,
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
 } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("String Stats Aggregation", () => {
 	test("simple", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
 				rating_stats: {
-					string_stats: { field: "rating.string" },
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+					string_stats: { field: "rating.string" };
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			rating_stats: {
 				count: number;
 				min_length: number;
@@ -33,19 +27,15 @@ describe("String Stats Aggregation", () => {
 	});
 
 	test("with show_distribution", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
 				rating_stats: {
-					string_stats: { field: "rating.string", show_distribution: true },
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+					string_stats: { field: "rating.string"; show_distribution: true };
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			rating_stats: {
 				count: number;
 				min_length: number;
@@ -58,21 +48,17 @@ describe("String Stats Aggregation", () => {
 	});
 
 	test("fails when using an invalid type field", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			_source: false,
-			size: 0,
-			aggs: {
-				rating_stats: { string_stats: { field: "rating" } },
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
+				rating_stats: { string_stats: { field: "rating" } };
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			rating_stats: InvalidFieldTypeInAggregation<
 				"rating",
 				"reviews",
-				(typeof query)["aggs"]["rating_stats"],
+				Aggregations["input"]["rating_stats"],
 				number,
 				string
 			>;
@@ -80,23 +66,19 @@ describe("String Stats Aggregation", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
 				invalid_stats: {
-					string_stats: { field: "invalid" },
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+					string_stats: { field: "invalid" };
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			invalid_stats: InvalidFieldInAggregation<
 				"invalid",
 				"reviews",
-				(typeof query)["aggs"]["invalid_stats"]
+				Aggregations["input"]["invalid_stats"]
 			>;
 		}>();
 	});

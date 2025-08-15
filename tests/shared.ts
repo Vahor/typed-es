@@ -1,5 +1,9 @@
 import type { estypes } from "@elastic/elasticsearch";
-import type { TypedClient } from "../src/index";
+import type {
+	ElasticsearchOutput,
+	TypedClient,
+	TypedSearchRequest,
+} from "../src/index";
 
 export type SearchRequest = estypes.SearchRequest;
 
@@ -60,4 +64,22 @@ export const testQueries = {
 		index: "demo",
 		_source: ["score", "invalid"],
 	} as const satisfies SearchRequest,
+};
+
+export type TestAggregationOutput<
+	Index extends keyof CustomIndexes,
+	Aggregation extends TypedSearchRequest<CustomIndexes>["aggregations"],
+> = {
+	aggregations: ElasticsearchOutput<
+		{
+			index: Index;
+			rest_total_hits_as_int: true;
+			_source: false;
+			size: 0;
+			aggregations: Aggregation;
+		},
+		CustomIndexes,
+		Index
+	>["aggregations"];
+	input: Aggregation;
 };

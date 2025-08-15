@@ -1,30 +1,24 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	type InvalidPropertyTypeInAggregation,
-	typedEs,
+import type {
+	InvalidFieldInAggregation,
+	InvalidPropertyTypeInAggregation,
 } from "../../../src/index";
 import type { RangeInclusive } from "../../../src/types/helpers";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("GeoHexGrid Aggregations", () => {
 	test("with default values", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggregations: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				"large-grid": {
 					geohex_grid: {
-						field: "shipping_address.geo_point",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "shipping_address.geo_point";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			"large-grid": {
 				buckets: Array<{
 					key: string;
@@ -35,22 +29,18 @@ describe("GeoHexGrid Aggregations", () => {
 	});
 
 	test("with higher precision", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggregations: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				"large-grid": {
 					geohex_grid: {
-						field: "shipping_address.geo_point",
-						precision: 12,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "shipping_address.geo_point";
+						precision: 12;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			"large-grid": {
 				buckets: Array<{
 					key: string;
@@ -61,22 +51,18 @@ describe("GeoHexGrid Aggregations", () => {
 	});
 
 	test("supports nested sub-aggregations in buckets", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				grid: {
-					geohex_grid: { field: "shipping_address.geo_point", precision: 8 },
+					geohex_grid: { field: "shipping_address.geo_point"; precision: 8 };
 					aggs: {
-						by_status: { terms: { field: "status" } },
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						by_status: { terms: { field: "status" } };
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			grid: {
 				buckets: Array<{
 					key: string;
@@ -95,25 +81,21 @@ describe("GeoHexGrid Aggregations", () => {
 	});
 
 	test("fails when using a out of range precision", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				invalid_stats: {
 					geohex_grid: {
-						field: "shipping_address.geo_point",
-						precision: 30,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "shipping_address.geo_point";
+						precision: 30;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			invalid_stats: InvalidPropertyTypeInAggregation<
 				"precision",
-				(typeof query)["aggs"]["invalid_stats"],
+				Aggregations["input"]["invalid_stats"],
 				30,
 				RangeInclusive<0, 15>
 			>;
@@ -121,25 +103,21 @@ describe("GeoHexGrid Aggregations", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				invalid_stats: {
 					geohex_grid: {
-						field: "invalid",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			invalid_stats: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["invalid_stats"]
+				Aggregations["input"]["invalid_stats"]
 			>;
 		}>();
 	});

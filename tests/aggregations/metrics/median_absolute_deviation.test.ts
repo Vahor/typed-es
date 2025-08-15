@@ -1,34 +1,28 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	type InvalidFieldTypeInAggregation,
-	typedEs,
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
 } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("Median Absolute Deviation Aggregation", () => {
 	test("simple", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
 				review_average: {
 					avg: {
-						field: "rating",
-					},
-				},
+						field: "rating";
+					};
+				};
 				review_variability: {
 					median_absolute_deviation: {
-						field: "rating",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "rating";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			review_average: {
 				value_as_string?: string;
 				value: number;
@@ -40,26 +34,22 @@ describe("Median Absolute Deviation Aggregation", () => {
 	});
 
 	test("fails when using an invalid type field", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
 				review_average: {
 					avg: {
-						field: "rating",
-					},
-				},
+						field: "rating";
+					};
+				};
 				review_variability: {
 					median_absolute_deviation: {
-						field: "id",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "id";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			review_average: {
 				value_as_string?: string;
 				value: number;
@@ -67,7 +57,7 @@ describe("Median Absolute Deviation Aggregation", () => {
 			review_variability: InvalidFieldTypeInAggregation<
 				"id",
 				"reviews",
-				(typeof query)["aggs"]["review_variability"],
+				Aggregations["input"]["review_variability"],
 				string,
 				number
 			>;
@@ -75,26 +65,22 @@ describe("Median Absolute Deviation Aggregation", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "reviews",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"reviews",
+			{
 				review_average: {
 					avg: {
-						field: "rating",
-					},
-				},
+						field: "rating";
+					};
+				};
 				review_variability: {
 					median_absolute_deviation: {
-						field: "invalid",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			review_average: {
 				value_as_string?: string;
 				value: number;
@@ -102,7 +88,7 @@ describe("Median Absolute Deviation Aggregation", () => {
 			review_variability: InvalidFieldInAggregation<
 				"invalid",
 				"reviews",
-				(typeof query)["aggs"]["review_variability"]
+				Aggregations["input"]["review_variability"]
 			>;
 		}>();
 	});

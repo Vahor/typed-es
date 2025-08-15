@@ -1,39 +1,32 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { InvalidFieldInAggregation } from "../../../src/index";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("Terms Aggregations", () => {
 	test("without other aggs", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				number_agg: {
 					terms: {
-						field: "user_id",
-					},
-				},
+						field: "user_id";
+					};
+				};
 				string_agg: {
 					terms: {
-						field: "product_ids",
-					},
-				},
+						field: "product_ids";
+					};
+				};
 				string_enum_agg: {
 					terms: {
-						field: "status",
-						size: 10,
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "status";
+						size: 10;
+					};
+				};
+			}
+		>;
+
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			number_agg: {
 				doc_count_error_upper_bound: number;
 				sum_other_doc_count: number;
@@ -62,25 +55,21 @@ describe("Terms Aggregations", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				terms_agg: {
 					terms: {
-						field: "invalid",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			terms_agg: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["terms_agg"]
+				Aggregations["input"]["terms_agg"]
 			>;
 		}>();
 	});

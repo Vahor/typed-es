@@ -4,25 +4,25 @@ import {
 	type InvalidFieldInAggregation,
 	typedEs,
 } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import {
+	type CustomIndexes,
+	client,
+	type TestAggregationOutput,
+} from "../../shared";
 
 describe("Leaf Function Aggregations", () => {
 	test("with min", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				min_value: {
 					min: {
-						field: "total",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "total";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			min_value: {
 				value: number;
 				value_as_string?: string;
@@ -135,125 +135,117 @@ describe("Leaf Function Aggregations", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				min_value: {
 					min: {
-						field: "price",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "price";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			min_value: InvalidFieldInAggregation<
 				"price",
 				"demo",
-				(typeof query)["aggs"]["min_value"]
+				Aggregations["input"]["min_value"]
 			>;
 		}>();
 	});
 
 	test("output type should be correct for all agg functions", () => {
-		const query = typedEs(client, {
-			index: "test_types",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"test_types",
+			{
 				str_min: {
 					min: {
-						field: "name",
-					},
-				},
+						field: "name";
+					};
+				};
 				num_min: {
 					min: {
-						field: "price",
-					},
-				},
+						field: "price";
+					};
+				};
 				date_min: {
 					min: {
-						field: "timestamp",
-					},
-				},
+						field: "timestamp";
+					};
+				};
 				//
 				str_max: {
 					max: {
-						field: "name",
-					},
-				},
+						field: "name";
+					};
+				};
 				num_max: {
 					max: {
-						field: "price",
-					},
-				},
+						field: "price";
+					};
+				};
 				date_max: {
 					max: {
-						field: "timestamp",
-					},
-				},
+						field: "timestamp";
+					};
+				};
 				//
 				num_avg: {
 					avg: {
-						field: "price",
-					},
-				},
+						field: "price";
+					};
+				};
 				date_avg: {
 					avg: {
-						field: "timestamp",
-					},
-				},
+						field: "timestamp";
+					};
+				};
 				//
 				num_sum: {
 					sum: {
-						field: "price",
-					},
-				},
+						field: "price";
+					};
+				};
 				date_sum: {
 					sum: {
-						field: "timestamp",
-					},
-				},
+						field: "timestamp";
+					};
+				};
 				//
 				str_value_count: {
 					value_count: {
-						field: "name",
-					},
-				},
+						field: "name";
+					};
+				};
 				num_value_count: {
 					value_count: {
-						field: "price",
-					},
-				},
+						field: "price";
+					};
+				};
 				date_value_count: {
 					value_count: {
-						field: "timestamp",
-					},
-				},
+						field: "timestamp";
+					};
+				};
 				//
 				str_cardinality: {
 					cardinality: {
-						field: "name",
-					},
-				},
+						field: "name";
+					};
+				};
 				num_cardinality: {
 					cardinality: {
-						field: "price",
-					},
-				},
+						field: "price";
+					};
+				};
 				date_cardinality: {
 					cardinality: {
-						field: "timestamp",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "timestamp";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			str_min: {
 				value: number | string;
 				value_as_string?: string;
