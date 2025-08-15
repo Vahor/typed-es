@@ -1,28 +1,20 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { InvalidFieldInAggregation } from "../../../src/index";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("Stats Aggregation", () => {
 	test("with stats on numeric field", () => {
-		const query = typedEs(client, {
-			index: "orders",
-			size: 0,
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
 				total_stats: {
 					stats: {
-						field: "total",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "total";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			total_stats: {
 				count: number;
 				min: number;
@@ -38,25 +30,21 @@ describe("Stats Aggregation", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				invalid_stats: {
 					stats: {
-						field: "price",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "price";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			invalid_stats: InvalidFieldInAggregation<
 				"price",
 				"demo",
-				(typeof query)["aggs"]["invalid_stats"]
+				Aggregations["input"]["invalid_stats"]
 			>;
 		}>();
 	});

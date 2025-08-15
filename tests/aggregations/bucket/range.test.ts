@@ -1,37 +1,29 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { InvalidFieldInAggregation } from "../../../src/index";
+import type { TestAggregationOutput } from "../../shared";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
 describe("Range Aggregations", () => {
 	test("with from-to", () => {
 		const startRange = 100 as number;
 		const midRange = 200 as number;
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				price_ranges: {
 					range: {
-						field: "score",
+						field: "score";
 						ranges: [
-							{ to: startRange },
-							{ from: startRange, to: midRange },
-							{ from: midRange, to: 500 },
+							{ to: typeof startRange },
+							{ from: typeof startRange; to: typeof midRange },
+							{ from: typeof midRange; to: 500 },
 							{ from: 500.0 },
-						],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			price_ranges: {
 				buckets: [
 					{
@@ -62,26 +54,22 @@ describe("Range Aggregations", () => {
 	});
 
 	test("with explicit from-to", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				price_ranges: {
 					range: {
-						field: "score",
+						field: "score";
 						ranges: [
 							{ to: 100.1 },
-							{ from: 100.1, to: 200.0 },
+							{ from: 100.1; to: 200.0 },
 							{ from: 200.0 },
-						],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			price_ranges: {
 				buckets: [
 					{
@@ -106,23 +94,19 @@ describe("Range Aggregations", () => {
 	});
 
 	test("with keyed", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				price_ranges: {
 					range: {
-						field: "score",
-						keyed: true,
-						ranges: [{ to: 100 }, { from: 100, to: 200 }, { from: 200 }],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "score";
+						keyed: true;
+						ranges: [{ to: 100 }, { from: 100; to: 200 }, { from: 200 }];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			price_ranges: {
 				buckets: {
 					"*-100.0": {
@@ -144,27 +128,23 @@ describe("Range Aggregations", () => {
 	});
 
 	test("fails when using an invalid field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			size: 0,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				price_ranges: {
 					range: {
-						field: "invalid",
-						keyed: true,
-						ranges: [{ to: 100 }, { from: 100, to: 200 }, { from: 200 }],
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "invalid";
+						keyed: true;
+						ranges: [{ to: 100 }, { from: 100; to: 200 }, { from: 200 }];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			price_ranges: InvalidFieldInAggregation<
 				"invalid",
 				"demo",
-				(typeof query)["aggs"]["price_ranges"]
+				Aggregations["input"]["price_ranges"]
 			>;
 		}>();
 	});
