@@ -12,7 +12,7 @@ Automatically add output types to your Elasticsearch queries.
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
-- **Add type to native methods**: Supports `search` and `asyncSearch`
+- **Supports `search` and `asyncSearch`**
 
 ## Example Usage
 ```ts
@@ -201,8 +201,7 @@ The [asyncSearch](https://www.elastic.co/docs/api/doc/elasticsearch/operation/op
 To work around that we've added a new type definition.
 
 ```typescript
-const query = typedEs(..);
-...
+const query = typedEs(...);
 
 const result = client.asyncSearch.get<typeof query>({ id: "abc" });
 const data = result.response; // Same type as if you used client.search(query);
