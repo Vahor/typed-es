@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.23
+
+### Patch Changes
+
+- [#151](https://github.com/Vahor/typed-es/pull/151) [`05a000e`](https://github.com/Vahor/typed-es/commit/05a000ee3a2ddd9d771f1e292ecd0b50f1c6e6ff) Thanks [@Vahor](https://github.com/Vahor)! - fix: missing promise
+
 ## 0.0.22
 
 ### Patch Changes
