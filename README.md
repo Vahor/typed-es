@@ -197,17 +197,17 @@ See more examples in the test files.
 
 ## Usage with `asyncSearch`
 
-The [asyncSearch](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit) api has some complexity for us. The `get` method does not have the query information by default.
+The [asyncSearch](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-get) API has some complexity for us. The `get` method does not include the original query type information by default.
 To work around that we've added a new type definition.
 
 ```typescript
 const query = typedEs(...);
 
-const result = client.asyncSearch.get<typeof query>({ id: "abc" });
+const result = await client.asyncSearch.get<typeof query>({ id: "abc" });
 const data = result.response; // Same type as if you used client.search(query);
 
-# If you don't have a query variable you can also add the query by hand.
-const result = client.asyncSearch.get<{ query: ...}>({ id: "abc" });
+// If you don't have a query variable, you can pass the query type explicitly.
+const result = await client.asyncSearch.get<{ query: ...}>({ id: "abc" });
 ```
 
 ## Limitations
