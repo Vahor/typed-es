@@ -53,6 +53,35 @@ describe("Matrix Stats Aggregations", () => {
 		}>();
 	});
 
+	test("with non string literal field", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				statistics: {
+					matrix_stats: {
+						fields: string[];
+					};
+				};
+			}
+		>;
+
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			statistics: {
+				doc_count: number;
+				fields: Array<{
+					name: string;
+					count: number;
+					mean: number;
+					variance: number;
+					skewness: number;
+					kurtosis: number;
+					covariance: Record<string, number>;
+					correlation: Record<string, number>;
+				}>;
+			};
+		}>();
+	});
+
 	test("fails when using an invalid type field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",

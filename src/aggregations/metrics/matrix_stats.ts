@@ -5,7 +5,7 @@ import type {
 	InvalidFieldTypeInAggregation,
 	TypeOfField,
 } from "../..";
-import type { IsSomeSortOf, Not } from "../../types/helpers";
+import type { IsSomeSortOf, IsStringLiteral, Not } from "../../types/helpers";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-matrix-stats-aggregation
 export type MatrixStatsAggs<
@@ -43,7 +43,11 @@ export type MatrixStatsAggs<
 								kurtosis: number;
 								covariance: Record<Field[number], number>;
 								correlation: {
-									[K in Field[number]]: K extends Field[index] ? 1 : number;
+									[K in Field[number]]: K extends Field[index]
+										? IsStringLiteral<K> extends true
+											? 1
+											: number
+										: number;
 								};
 							};
 			};
