@@ -64,5 +64,36 @@ describe("Client", () => {
 				expectTypeOf<Result>().not.toHaveProperty("headers");
 			});
 		});
+
+		describe("asyncSearch.submit", () => {
+			test("with meta", () => {
+				type Result = Awaited<
+					ReturnType<
+						typeof client.asyncSearch.submit<typeof query, { meta: true }>
+					>
+				>;
+				expectTypeOf<Result>().toHaveProperty("body");
+				expectTypeOf<Result>().toHaveProperty("statusCode");
+				expectTypeOf<Result>().toHaveProperty("headers");
+			});
+			test("without meta", () => {
+				type Result = Awaited<
+					ReturnType<
+						typeof client.asyncSearch.submit<typeof query, { meta: false }>
+					>
+				>;
+				expectTypeOf<Result>().not.toHaveProperty("body");
+				expectTypeOf<Result>().not.toHaveProperty("statusCode");
+				expectTypeOf<Result>().not.toHaveProperty("headers");
+			});
+			test("without explicit options", () => {
+				type Result = Awaited<
+					ReturnType<typeof client.asyncSearch.submit<typeof query>>
+				>;
+				expectTypeOf<Result>().not.toHaveProperty("body");
+				expectTypeOf<Result>().not.toHaveProperty("statusCode");
+				expectTypeOf<Result>().not.toHaveProperty("headers");
+			});
+		});
 	});
 });
