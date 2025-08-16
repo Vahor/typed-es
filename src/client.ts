@@ -18,7 +18,9 @@ type TransportOptions =
 type WithTransport<
 	T extends TransportOptions,
 	Data,
-> = T extends TransportRequestOptionsWithMeta ? TransportResult<Data> : Data;
+> = T extends TransportRequestOptionsWithMeta
+	? Promise<TransportResult<Data>>
+	: Promise<Data>;
 
 // @ts-expect-error: We are overriding types, but it's fine
 export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
