@@ -1,5 +1,17 @@
 # @vahor/typed-es
 
+## 0.0.22
+
+### Patch Changes
+
+- [#140](https://github.com/Vahor/typed-es/pull/140) [`3cd3301`](https://github.com/Vahor/typed-es/commit/3cd3301786bf20f35888292ab90e9bf140e0542b) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `rate` metric aggregation.
+
+- [#141](https://github.com/Vahor/typed-es/pull/141) [`b9b286b`](https://github.com/Vahor/typed-es/commit/b9b286b0ce1b4c1111c2801dd40bedfaf35a5de2) Thanks [@Vahor](https://github.com/Vahor)! - Add `matrix_stats` metrics aggregation.
+
+- [#138](https://github.com/Vahor/typed-es/pull/138) [`5f982e1`](https://github.com/Vahor/typed-es/commit/5f982e1a1514163495290da614b95cd3b08812e9) Thanks [@Vahor](https://github.com/Vahor)! - Add `weighted_avg` metric aggregation.
+
+- [#136](https://github.com/Vahor/typed-es/pull/136) [`c40559f`](https://github.com/Vahor/typed-es/commit/c40559f9d475203ac87f371915784e285e95fc0a) Thanks [@Vahor](https://github.com/Vahor)! - Add `boxplot` metric aggregation.
+
 ## 0.0.21
 
 ### Patch Changes
