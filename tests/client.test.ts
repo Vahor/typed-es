@@ -8,7 +8,7 @@ const query = typedEs(client, {
 });
 
 describe("Client", () => {
-	describe("transport options is respected", () => {
+	describe("transport options are respected", () => {
 		describe("search", () => {
 			test("with meta", async () => {
 				type Result = Awaited<
