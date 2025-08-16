@@ -12,7 +12,7 @@ Automatically add output types to your Elasticsearch queries.
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
-- **Supports `search` and [`asyncSearch`](#usage-with-asyncsearch)**
+- **Supports `search` and [`asyncSearch`](#usage-with-asyncsearch)**: You can still use the native types if something goes wrong (see [What if the library is missing a feature that you need?](#what-if-the-library-is-missing-a-feature-that-you-need)).
 
 ## Example Usage
 ```ts
@@ -97,8 +97,9 @@ const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ k
 ## Install
 
 ```bash
-bun add -D @vahor/typed-es
+bun add @vahor/typed-es
 ```
+Note: you can install it in dev-dependencies if you don't plan to use the `typedEs` function.
 
 ## Usage
 
@@ -208,6 +209,22 @@ const data = result.response; // Same type as if you used client.search(query);
 
 // If you don't have a query variable, you can pass the query type explicitly.
 const result = await client.asyncSearch.get<{ query: ...}>({ id: "abc" });
+```
+
+
+## What if the library is missing a feature that you need?
+
+Please open an issue or a PR.
+
+If it's a type error and is urgent, you can add the types manually as you'd do without the library.
+
+```typescript
+const myBrokenQuery = typedEs(client, {
+    index: "my-index",
+    _source: ["score", "entity_id", "*ate"],
+});
+
+const result = await (client as unknown as Client).search(myBrokenQuery); // With the `as Client` cast you are now using the native types
 ```
 
 ## Limitations

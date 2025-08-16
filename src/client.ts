@@ -7,12 +7,18 @@ import type {
 } from "@elastic/transport";
 import type { ElasticsearchIndexes, TypedSearchRequest } from ".";
 import type { TypedAsyncSearchGetResponse } from "./override/async-search-get-response";
+import type { TypedAsyncSearchSubmitResponse } from "./override/async-search-submit-response";
 import type { TypedSearchResponse } from "./override/search-response";
 
 type TransportOptions =
 	| TransportRequestOptionsWithMeta
 	| TransportRequestOptionsWithOutMeta
 	| TransportRequestOptions;
+
+type WithTransport<
+	T extends TransportOptions,
+	Data,
+> = T extends TransportRequestOptionsWithMeta ? TransportResult<Data> : Data;
 
 // @ts-expect-error: We are overriding types, but it's fine
 export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
@@ -26,25 +32,16 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 	>(
 		query: Query,
 		options?: O,
-	): O extends TransportRequestOptionsWithMeta
-		? Promise<
-				TransportResult<
-					TypedSearchResponse<
-						// @ts-expect-error: Same as above
-						Query,
-						E
-					>
-				>
-			>
-		: Promise<
-				TypedSearchResponse<
-					// @ts-expect-error: Same as above
-					Query,
-					E
-				>
-			>;
+	): WithTransport<
+		O,
+		TypedSearchResponse<
+			// @ts-expect-error: Same as above
+			Query,
+			E
+		>
+	>;
 
-	asyncSearch: {
+	asyncSearch: Omit<Client["asyncSearch"], "get" | "submit"> & {
 		/**
 		 * Get async search results. Retrieve the results of a previously submitted asynchronous search request. If the Elasticsearch security features are enabled, access to the results of a specific async search is restricted to the user or API key that submitted it.
 		 * @see {@link https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit | Elasticsearch API documentation}
@@ -55,22 +52,32 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 		>(
 			params: estypes.AsyncSearchGetRequest,
 			options?: O,
-		): O extends TransportRequestOptionsWithMeta
-			? Promise<
-					TransportResult<
-						TypedAsyncSearchGetResponse<
-							// @ts-expect-error: Same as above
-							Query,
-							E
-						>
-					>
-				>
-			: Promise<
-					TypedAsyncSearchGetResponse<
-						// @ts-expect-error: Same as above
-						Query,
-						E
-					>
-				>;
+		): WithTransport<
+			O,
+			TypedAsyncSearchGetResponse<
+				// @ts-expect-error: Same as above
+				Query,
+				E
+			>
+		>;
+
+		/**
+		 * Run an async search. When the primary sort of the results is an indexed field, shards get sorted based on minimum and maximum value that they hold for that field. Partial results become available following the sort criteria that was requested. Warning: Asynchronous search does not support scroll or search requests that include only the suggest section. By default, Elasticsearch does not allow you to store an async search response larger than 10Mb and an attempt to do this results in an error. The maximum allowed size for a stored async search response can be set by changing the `search.max_async_search_response_size` cluster level setting.
+		 * @see {@link https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit | Elasticsearch API documentation}
+		 */
+		submit<
+			Query extends TypedSearchRequest<E>,
+			O extends TransportOptions = TransportRequestOptionsWithOutMeta,
+		>(
+			params: estypes.AsyncSearchGetRequest,
+			options?: O,
+		): WithTransport<
+			O,
+			TypedAsyncSearchSubmitResponse<
+				// @ts-expect-error: Same as above
+				Query,
+				E
+			>
+		>;
 	};
 }
