@@ -3,7 +3,7 @@ import type { TypedAsyncSearchGetResponse } from "../../src/override/async-searc
 import type { CustomIndexes, testQueries } from "../shared";
 
 describe("Should return the correct type", () => {
-	describe("response is a TypedSearchResponse", () => {
+	test("response is a TypedSearchResponse", () => {
 		expectTypeOf<
 			TypedAsyncSearchGetResponse<
 				typeof testQueries.invalidSourceQuery,
