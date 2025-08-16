@@ -35,14 +35,14 @@ describe("Stats Aggregation", () => {
 			{
 				invalid_stats: {
 					stats: {
-						field: "price";
+						field: "invalid";
 					};
 				};
 			}
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			invalid_stats: InvalidFieldInAggregation<
-				"price",
+				"invalid",
 				"demo",
 				Aggregations["input"]["invalid_stats"]
 			>;
