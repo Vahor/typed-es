@@ -12,7 +12,7 @@ Automatically add output types to your Elasticsearch queries.
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
-- **Supports `search` and `asyncSearch`**
+- **Supports `search` and [`asyncSearch`](#usage-with-asyncsearch)**
 
 ## Example Usage
 ```ts
