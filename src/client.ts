@@ -5,6 +5,7 @@ import type {
 	TransportRequestOptionsWithOutMeta,
 } from "@elastic/transport";
 import type { ElasticsearchIndexes, TypedSearchRequest } from ".";
+import type { TypedAsyncSearchGetResponse } from "./override/async-search-get-response";
 import type { TypedSearchResponse } from "./override/search-response";
 
 // @ts-expect-error: We are overriding types, but it's fine
@@ -28,12 +29,13 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 		 * Get async search results. Retrieve the results of a previously submitted asynchronous search request. If the Elasticsearch security features are enabled, access to the results of a specific async search is restricted to the user or API key that submitted it.
 		 * @see {@link https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-submit | Elasticsearch API documentation}
 		 */
-		get<_Query extends TypedSearchRequest<E>>(
+		get<Query extends TypedSearchRequest<E>>(
 			params: estypes.AsyncSearchGetRequest,
 			options?:
 				| TransportRequestOptionsWithOutMeta
 				| TransportRequestOptionsWithMeta
 				| TransportRequestOptions,
-		): Promise<null>;
+			// @ts-expect-error: Same as above
+		): Promise<TypedAsyncSearchGetResponse<Query, E>>;
 	};
 }

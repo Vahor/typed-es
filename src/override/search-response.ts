@@ -39,6 +39,8 @@ type OverrideSearchResponse<
 		aggregations: IsNever<ExtractAggs<Query>> extends true
 			? never
 			: NonNullable<T_Aggs>;
+	} & {
+		"~type": "TypedSearchResponse";
 	}
 >;
 
