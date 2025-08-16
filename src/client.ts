@@ -69,7 +69,7 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 			Query extends TypedSearchRequest<E>,
 			O extends TransportOptions = TransportRequestOptionsWithOutMeta,
 		>(
-			params: estypes.AsyncSearchGetRequest,
+			params: estypes.AsyncSearchSubmitRequest,
 			options?: O,
 		): WithTransport<
 			O,

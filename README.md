@@ -99,6 +99,7 @@ const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ k
 ```bash
 bun add @vahor/typed-es
 ```
+
 Note: you can install it in dev-dependencies if you don't plan to use the `typedEs` function.
 
 ## Usage
@@ -210,7 +211,6 @@ const data = result.response; // Same type as if you used client.search(query);
 // If you don't have a query variable, you can pass the query type explicitly.
 const result = await client.asyncSearch.get<{ query: ...}>({ id: "abc" });
 ```
-
 
 ## What if the library is missing a feature that you need?
 
