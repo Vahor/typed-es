@@ -1,9 +1,6 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	ElasticsearchOutput,
-	RequestedIndex,
-	SearchRequest,
-} from "../src/index";
+import type { RequestedIndex, SearchRequest } from "../src/index";
+import type { TypedSearchResponse } from "../src/override/search-response";
 import type {
 	ExtractQuery_Source,
 	ExtractQueryFields,
@@ -137,7 +134,7 @@ describe("Field Extraction", () => {
 
 		test("Should fail if the index is not found", () => {
 			expectTypeOf<
-				ElasticsearchOutput<typeof testQueries.invalidIndex, CustomIndexes>
+				TypedSearchResponse<typeof testQueries.invalidIndex, CustomIndexes>
 			>().toEqualTypeOf<"Index 'invalid' not found">;
 		});
 	});

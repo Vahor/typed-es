@@ -1,23 +1,19 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type ElasticsearchOutput, typedEs } from "../../../src/index";
-import { type CustomIndexes, client } from "../../shared";
+import type { TestAggregationOutput } from "../../shared";
 
 describe("Value Count Aggregations", () => {
 	test("number agg on a non-number field", () => {
-		const query = typedEs(client, {
-			index: "demo",
-			_source: false,
-			aggs: {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
 				"my-agg-name": {
 					value_count: {
-						field: "entity_id",
-					},
-				},
-			},
-		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
-		type Aggregations = Output["aggregations"];
-		expectTypeOf<Aggregations>().toEqualTypeOf<{
+						field: "entity_id";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			"my-agg-name": {
 				value: number;
 				value_as_string?: string;

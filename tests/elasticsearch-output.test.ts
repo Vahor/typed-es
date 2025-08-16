@@ -1,9 +1,6 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type SearchRequest,
-	typedEs,
-} from "../src/index";
+import { type SearchRequest, typedEs } from "../src/index";
+import type { TypedSearchResponse } from "../src/override/search-response";
 import { type CustomIndexes, client, type testQueries } from "./shared";
 
 describe("Should return the correct type", () => {
@@ -11,7 +8,7 @@ describe("Should return the correct type", () => {
 		describe("_source", () => {
 			test("with _source", () => {
 				expectTypeOf<
-					ElasticsearchOutput<
+					TypedSearchResponse<
 						typeof testQueries.invalidSourceQuery,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"]["score"]
@@ -20,7 +17,7 @@ describe("Should return the correct type", () => {
 
 			test("without _source", () => {
 				expectTypeOf<
-					ElasticsearchOutput<
+					TypedSearchResponse<
 						typeof testQueries.queryWithoutSource,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"]
@@ -36,11 +33,11 @@ describe("Should return the correct type", () => {
 							_source: ["entity_id.keyword"],
 							fields: ["score.some_format"],
 						});
-						type OutputSource = ElasticsearchOutput<
+						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
 						>["hits"]["hits"][0]["_source"];
-						type OutputFields = ElasticsearchOutput<
+						type OutputFields = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
 						>["hits"]["hits"][0]["fields"];
@@ -59,7 +56,7 @@ describe("Should return the correct type", () => {
 							index: "demo",
 							_source: ["entity_id.keyword", "invalid"],
 						});
-						type OutputSource = ElasticsearchOutput<
+						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
 						>["hits"]["hits"][0]["_source"];
@@ -76,7 +73,7 @@ describe("Should return the correct type", () => {
 							index: "orders",
 							_source: ["shipping_address.postal_code.keyword"],
 						});
-						type OutputSource = ElasticsearchOutput<
+						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
 						>["hits"]["hits"][0]["_source"];
@@ -93,7 +90,7 @@ describe("Should return the correct type", () => {
 							index: "orders",
 							_source: ["shipping_address.keyword"],
 						});
-						type OutputSource = ElasticsearchOutput<
+						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
 						>["hits"]["hits"][0]["_source"];
@@ -109,7 +106,7 @@ describe("Should return the correct type", () => {
 								"shipping_address.postal_code.keyword",
 							],
 						});
-						type OutputSource = ElasticsearchOutput<
+						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
 						>["hits"]["hits"][0]["_source"];
@@ -126,7 +123,7 @@ describe("Should return the correct type", () => {
 			test("with _source set to false", () => {
 				type Query = typeof testQueries.queryWithoutSource & { _source: false };
 				expectTypeOf<
-					ElasticsearchOutput<
+					TypedSearchResponse<
 						Query,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"]
@@ -139,7 +136,7 @@ describe("Should return the correct type", () => {
 						index: "orders",
 						_source: ["shipping_address.street"],
 					});
-					type OutputSource = ElasticsearchOutput<
+					type OutputSource = TypedSearchResponse<
 						typeof query,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"];
@@ -155,7 +152,7 @@ describe("Should return the correct type", () => {
 						index: "orders",
 						_source: ["shipping_address.street", "shipping_address.city"],
 					});
-					type OutputSource = ElasticsearchOutput<
+					type OutputSource = TypedSearchResponse<
 						typeof query,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"];
@@ -177,7 +174,7 @@ describe("Should return the correct type", () => {
 						index: "orders",
 						_source: ["shipping_address.again.and_again.last_time"],
 					});
-					type OutputSource = ElasticsearchOutput<
+					type OutputSource = TypedSearchResponse<
 						typeof query,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"];
@@ -200,7 +197,7 @@ describe("Should return the correct type", () => {
 						index: "demo",
 						_source: ["*"],
 					} as const satisfies SearchRequest;
-					type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+					type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<
 						CustomIndexes["demo"]
@@ -211,7 +208,7 @@ describe("Should return the correct type", () => {
 						index: "demo",
 						_source: ["*core"],
 					} as const satisfies SearchRequest;
-					type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+					type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 						score: number;
@@ -223,7 +220,7 @@ describe("Should return the correct type", () => {
 						index: "demo",
 						_source: ["sc*"],
 					} as const satisfies SearchRequest;
-					type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+					type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 						score: number;
@@ -236,7 +233,7 @@ describe("Should return the correct type", () => {
 						index: "demo",
 						_source: ["*cor*"],
 					} as const satisfies SearchRequest;
-					type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+					type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 						score: number;
@@ -248,7 +245,7 @@ describe("Should return the correct type", () => {
 						index: "demo",
 						_source: ["*core", "entity_id"],
 					} as const satisfies SearchRequest;
-					type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+					type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 					type Hits = Output["hits"]["hits"][0];
 					expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 						score: number;
@@ -265,7 +262,7 @@ describe("Should return the correct type", () => {
 					_source: false,
 					fields: ["shipping_address.street"],
 				});
-				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.street": string[];
@@ -278,7 +275,7 @@ describe("Should return the correct type", () => {
 					_source: ["shipping_address.street"],
 					fields: ["shipping_address.city"],
 				});
-				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.city": string[];
@@ -299,7 +296,7 @@ describe("Should return the correct type", () => {
 						{ field: "*at", format: "yyyy-MM-dd" },
 					],
 				} as const satisfies SearchRequest;
-				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.street": string[];
@@ -315,7 +312,7 @@ describe("Should return the correct type", () => {
 					_source: false,
 					docvalue_fields: ["shipping_address.street"],
 				});
-				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.street": string[];
@@ -328,7 +325,7 @@ describe("Should return the correct type", () => {
 					_source: ["shipping_address.street"],
 					docvalue_fields: ["shipping_address.city"],
 				});
-				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.city": string[];
@@ -347,7 +344,7 @@ describe("Should return the correct type", () => {
 					docvalue_fields: ["shipping_address.city"],
 					fields: ["shipping_address.street", "shipping_address"],
 				});
-				type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.street": string[];
@@ -367,7 +364,7 @@ describe("Should return the correct type", () => {
 				_source: false,
 				size: 0,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<Output["aggregations"]>().toEqualTypeOf<never>();
 		});
 
@@ -384,7 +381,7 @@ describe("Should return the correct type", () => {
 					},
 				},
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<Output["aggregations"]>().not.toEqualTypeOf<never>();
 		});
 	});

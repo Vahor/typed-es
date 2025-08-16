@@ -1,6 +1,7 @@
 import { describe, expectTypeOf, test } from "bun:test";
 import type { estypes } from "@elastic/elasticsearch";
-import { type ElasticsearchOutput, typedEs } from "../src/index";
+import { typedEs } from "../src/index";
+import type { TypedSearchResponse } from "../src/override/search-response";
 import { type CustomIndexes, client } from "./shared";
 
 describe("Query Options", () => {
@@ -11,7 +12,7 @@ describe("Query Options", () => {
 				track_total_hits: true,
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<
 				Output["hits"]["total"]
 			>().toEqualTypeOf<estypes.SearchTotalHits>();
@@ -22,7 +23,7 @@ describe("Query Options", () => {
 				track_total_hits: false,
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<never>();
 		});
 
@@ -31,7 +32,7 @@ describe("Query Options", () => {
 				index: "demo",
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<
 				Output["hits"]["total"]
 			>().toEqualTypeOf<estypes.SearchTotalHits>();
@@ -45,7 +46,7 @@ describe("Query Options", () => {
 				rest_total_hits_as_int: true,
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<number>();
 		});
 
@@ -55,7 +56,7 @@ describe("Query Options", () => {
 				rest_total_hits_as_int: false,
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<
 				Output["hits"]["total"]
 			>().toEqualTypeOf<estypes.SearchTotalHits>();
@@ -66,7 +67,7 @@ describe("Query Options", () => {
 				index: "demo",
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<
 				Output["hits"]["total"]
 			>().toEqualTypeOf<estypes.SearchTotalHits>();
@@ -79,7 +80,7 @@ describe("Query Options", () => {
 				rest_total_hits_as_int: true,
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<never>();
 		});
 		test("combined with track_total_hits: true", () => {
@@ -89,7 +90,7 @@ describe("Query Options", () => {
 				rest_total_hits_as_int: true,
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<Output["hits"]["total"]>().toEqualTypeOf<number>();
 		});
 	});
@@ -100,7 +101,7 @@ describe("Query Options", () => {
 				index: "demo",
 				_source: false,
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			expectTypeOf<
 				Output["hits"]["hits"][0]["_source"]
 			>().toEqualTypeOf<never>();
@@ -110,7 +111,7 @@ describe("Query Options", () => {
 			const query = typedEs(client, {
 				index: "demo",
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			type Source = Output["hits"]["hits"][0]["_source"];
 			expectTypeOf<Source>().toEqualTypeOf<CustomIndexes["demo"]>();
 		});
@@ -120,7 +121,7 @@ describe("Query Options", () => {
 				index: "demo",
 				_source: [],
 			});
-			type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 			type Source = Output["hits"]["hits"][0]["_source"];
 			expectTypeOf<Source>().toEqualTypeOf<{}>();
 		});

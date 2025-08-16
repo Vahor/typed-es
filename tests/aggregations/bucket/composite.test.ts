@@ -1,5 +1,6 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type ElasticsearchOutput, typedEs } from "../../../src/index";
+import { typedEs } from "../../../src/index";
+import type { TypedSearchResponse } from "../../../src/override/search-response";
 import {
 	type CustomIndexes,
 	client,
@@ -137,7 +138,7 @@ describe("Composite Aggregations", () => {
 				},
 			},
 		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
