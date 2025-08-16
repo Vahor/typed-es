@@ -10,7 +10,7 @@ const query = typedEs(client, {
 describe("Client", () => {
 	describe("transport options are respected", () => {
 		describe("search", () => {
-			test("with meta", async () => {
+			test("with meta", () => {
 				type Result = Awaited<
 					ReturnType<typeof client.search<typeof query, { meta: true }>>
 				>;
@@ -18,7 +18,7 @@ describe("Client", () => {
 				expectTypeOf<Result>().toHaveProperty("statusCode");
 				expectTypeOf<Result>().toHaveProperty("headers");
 			});
-			test("without meta", async () => {
+			test("without meta", () => {
 				type Result = Awaited<
 					ReturnType<typeof client.search<typeof query, { meta: false }>>
 				>;
@@ -26,7 +26,7 @@ describe("Client", () => {
 				expectTypeOf<Result>().not.toHaveProperty("statusCode");
 				expectTypeOf<Result>().not.toHaveProperty("headers");
 			});
-			test("without explicit options", async () => {
+			test("without explicit options", () => {
 				type Result = Awaited<ReturnType<typeof client.search<typeof query>>>;
 				expectTypeOf<Result>().not.toHaveProperty("body");
 				expectTypeOf<Result>().not.toHaveProperty("statusCode");
@@ -35,7 +35,7 @@ describe("Client", () => {
 		});
 
 		describe("asyncSearch.get", () => {
-			test("with meta", async () => {
+			test("with meta", () => {
 				type Result = Awaited<
 					ReturnType<
 						typeof client.asyncSearch.get<typeof query, { meta: true }>
@@ -45,7 +45,7 @@ describe("Client", () => {
 				expectTypeOf<Result>().toHaveProperty("statusCode");
 				expectTypeOf<Result>().toHaveProperty("headers");
 			});
-			test("without meta", async () => {
+			test("without meta", () => {
 				type Result = Awaited<
 					ReturnType<
 						typeof client.asyncSearch.get<typeof query, { meta: false }>
@@ -55,7 +55,7 @@ describe("Client", () => {
 				expectTypeOf<Result>().not.toHaveProperty("statusCode");
 				expectTypeOf<Result>().not.toHaveProperty("headers");
 			});
-			test("without explicit options", async () => {
+			test("without explicit options", () => {
 				type Result = Awaited<
 					ReturnType<typeof client.asyncSearch.get<typeof query>>
 				>;
