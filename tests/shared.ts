@@ -1,11 +1,9 @@
-import type { estypes } from "@elastic/elasticsearch";
 import type {
-	ElasticsearchOutput,
+	SearchRequest,
 	TypedClient,
 	TypedSearchRequest,
 } from "../src/index";
-
-export type SearchRequest = estypes.SearchRequest;
+import type { TypedSearchResponse } from "../src/override/search-response";
 
 export type CustomIndexes = {
 	demo: {
@@ -75,7 +73,7 @@ export type TestAggregationOutput<
 	Index extends keyof CustomIndexes,
 	Aggregation extends TypedSearchRequest<CustomIndexes>["aggregations"],
 > = {
-	aggregations: ElasticsearchOutput<
+	aggregations: TypedSearchResponse<
 		{
 			index: Index;
 			rest_total_hits_as_int: true;

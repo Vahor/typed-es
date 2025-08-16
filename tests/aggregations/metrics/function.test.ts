@@ -1,9 +1,6 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import {
-	type ElasticsearchOutput,
-	type InvalidFieldInAggregation,
-	typedEs,
-} from "../../../src/index";
+import { type InvalidFieldInAggregation, typedEs } from "../../../src/index";
+import type { TypedSearchResponse } from "../../../src/override/search-response";
 import {
 	type CustomIndexes,
 	client,
@@ -45,7 +42,7 @@ describe("Leaf Function Aggregations", () => {
 				},
 			},
 		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value: {
@@ -73,7 +70,7 @@ describe("Leaf Function Aggregations", () => {
 				},
 			},
 		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value:
@@ -108,7 +105,7 @@ describe("Leaf Function Aggregations", () => {
 				},
 			},
 		});
-		type Output = ElasticsearchOutput<typeof query, CustomIndexes>;
+		type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value:
