@@ -140,14 +140,14 @@ describe("Leaf Function Aggregations", () => {
 			{
 				min_value: {
 					min: {
-						field: "price";
+						field: "invalid";
 					};
 				};
 			}
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			min_value: InvalidFieldInAggregation<
-				"price",
+				"invalid",
 				"demo",
 				Aggregations["input"]["min_value"]
 			>;

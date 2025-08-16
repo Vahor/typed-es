@@ -26,6 +26,7 @@ import type { GeoLineAggs } from "./aggregations/metrics/geo_line";
 import type { MedianAbsoluteDeviationAggs } from "./aggregations/metrics/median_absolute_deviation";
 import type { PercentileRanksAggs } from "./aggregations/metrics/percentile_ranks";
 import type { PercentilesAggs } from "./aggregations/metrics/percentiles";
+import type { RateAggs } from "./aggregations/metrics/rate";
 import type { ScriptedMetricAggs } from "./aggregations/metrics/scripted_metric";
 import type { StatsAggs } from "./aggregations/metrics/stats";
 import type { StringStatsAggs } from "./aggregations/metrics/string_stats";
@@ -191,6 +192,7 @@ export type NextAggsParentKey<
 	| "percentile_ranks"
 	| "percentiles"
 	| "range"
+	| "rate"
 	| "scripted_metric"
 	| "stats"
 	| "string_stats"
@@ -233,6 +235,7 @@ export type AggregationOutput<
 			| MedianAbsoluteDeviationAggs<E, Index, Agg>
 			| PercentilesAggs<E, Index, Agg>
 			| PercentileRanksAggs<E, Index, Agg>
+			| RateAggs<E, Index, Agg>
 			| ScriptedMetricAggs<Agg>
 			| StatsAggs<E, Index, Agg>
 			| StringStatsAggs<E, Index, Agg>
