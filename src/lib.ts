@@ -23,6 +23,7 @@ import type {
 import type { GeoBoundsAggs } from "./aggregations/metrics/geo_bounds";
 import type { GeoCentroidAggs } from "./aggregations/metrics/geo_centroid";
 import type { GeoLineAggs } from "./aggregations/metrics/geo_line";
+import type { MatrixStatsAggs } from "./aggregations/metrics/matrix_stats";
 import type { MedianAbsoluteDeviationAggs } from "./aggregations/metrics/median_absolute_deviation";
 import type { PercentileRanksAggs } from "./aggregations/metrics/percentile_ranks";
 import type { PercentilesAggs } from "./aggregations/metrics/percentiles";
@@ -188,6 +189,7 @@ export type NextAggsParentKey<
 	| "histogram"
 	| "ip_prefix"
 	| "ip_range"
+	| "matrix_stats"
 	| "median_absolute_deviation"
 	| "percentile_ranks"
 	| "percentiles"
@@ -232,6 +234,7 @@ export type AggregationOutput<
 			| GeoBoundsAggs<E, Index, Agg>
 			| GeoCentroidAggs<E, Index, Agg>
 			| GeoLineAggs<E, Index, Agg>
+			| MatrixStatsAggs<E, Index, Agg>
 			| MedianAbsoluteDeviationAggs<E, Index, Agg>
 			| PercentilesAggs<E, Index, Agg>
 			| PercentileRanksAggs<E, Index, Agg>
