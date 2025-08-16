@@ -1,8 +1,9 @@
-import type { estypes } from "@elastic/elasticsearch";
-import type { TypedClient, TypedSearchRequest } from "../src/index";
+import type {
+	SearchRequest,
+	TypedClient,
+	TypedSearchRequest,
+} from "../src/index";
 import type { TypedSearchResponse } from "../src/override/search-response";
-
-export type SearchRequest = estypes.SearchRequest;
 
 export type CustomIndexes = {
 	demo: {

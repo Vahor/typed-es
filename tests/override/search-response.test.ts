@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type SearchRequest, typedEs } from "../src/index";
-import type { TypedSearchResponse } from "../src/override/search-response";
-import { type CustomIndexes, client, type testQueries } from "./shared";
+import { type SearchRequest, typedEs } from "../../src";
+import type { TypedSearchResponse } from "../../src/override/search-response";
+import { type CustomIndexes, client, type testQueries } from "../shared";
 
 describe("Should return the correct type", () => {
 	describe("hits", () => {
