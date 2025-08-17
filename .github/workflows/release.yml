@@ -34,6 +34,7 @@ jobs:
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
           publish: bunx @changesets/cli publish
+          commitMode: github-api
         env:
           GITHUB_TOKEN: ${{ secrets.CHANGESET_PAT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
