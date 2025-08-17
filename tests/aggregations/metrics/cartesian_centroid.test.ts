@@ -3,6 +3,7 @@ import type {
 	InvalidFieldInAggregation,
 	InvalidFieldTypeInAggregation,
 } from "../../../src/index";
+import type { EsPoint, EsShape } from "../../../src/types/fields";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("CartesianCentroid Aggregations", () => {
@@ -81,7 +82,7 @@ describe("CartesianCentroid Aggregations", () => {
 				"demo",
 				Aggregations["input"]["invalid_stats"],
 				number,
-				string
+				EsPoint | EsShape
 			>;
 		}>();
 	});

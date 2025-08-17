@@ -1,3 +1,3 @@
-export type Point = string;
-export type Shape = string;
-export type Date = string;
+export type EsPoint = string;
+export type EsShape = string;
+export type EsDate = string;
