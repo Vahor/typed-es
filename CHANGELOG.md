@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.24
+
+### Patch Changes
+
+- [#156](https://github.com/Vahor/typed-es/pull/156) [`a7dd54d`](https://github.com/Vahor/typed-es/commit/a7dd54d4fd6f620a5687b6f456786d08ef13b643) Thanks [@Vahor](https://github.com/Vahor)! - fix: parse Query passed in `asyncSearch.submit` method
+
 ## 0.0.23
 
 ### Patch Changes
