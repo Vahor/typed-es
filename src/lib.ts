@@ -14,6 +14,7 @@ import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { TermsAggs } from "./aggregations/bucket/terms";
+import type { VariableWidthHistogramAggs } from "./aggregations/bucket/variable_width_histogram";
 import type { BoxplotAggs } from "./aggregations/metrics/boxplot";
 import type { CartesianCentroidAggs } from "./aggregations/metrics/cartesian_centroid";
 import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
@@ -202,6 +203,7 @@ export type NextAggsParentKey<
 	| "terms"
 	| "top_hits"
 	| "top_metrics"
+	| "variable_width_histogram"
 	| "weighted_avg"
 	| AggFunction
 	| BucketAggFunction
@@ -228,6 +230,7 @@ export type AggregationOutput<
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
+			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			//
 			| BoxplotAggs<E, Index, Agg>
 			| CartesianCentroidAggs<E, Index, Agg>

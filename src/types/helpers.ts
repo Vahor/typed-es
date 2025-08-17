@@ -104,3 +104,7 @@ export type And<A, B> = A extends true
 	: false;
 
 export type Not<A> = A extends true ? false : true;
+
+export type AtMostN<T, N extends number, R extends unknown[] = []> =
+	| R
+	| (R["length"] extends N ? never : AtMostN<T, N, [T, ...R]>);
