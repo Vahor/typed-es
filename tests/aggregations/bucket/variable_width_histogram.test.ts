@@ -32,6 +32,12 @@ describe("VariableWidthHistogram Aggregations", () => {
 				>;
 			};
 		}>();
+
+		const buckets = [] as Aggregations["aggregations"]["prices"]["buckets"];
+		buckets[0];
+		buckets[1];
+		// @ts-expect-error: index out of bounds
+		buckets[2];
 	});
 
 	test("supports nested sub-aggregations in buckets", () => {
@@ -70,6 +76,12 @@ describe("VariableWidthHistogram Aggregations", () => {
 				>;
 			};
 		}>();
+
+		const buckets = [] as Aggregations["aggregations"]["prices"]["buckets"];
+		buckets[2];
+		buckets[9];
+		// @ts-expect-error: index out of bounds
+		buckets[10];
 	});
 
 	test("fails when using an invalid field type", () => {
