@@ -28,8 +28,8 @@ jobs:
 
   typecheck:
     runs-on: ubuntu-latest
-    fail-fast: false
     strategy:
+      fail-fast: false
       matrix:
         elasticsearch-version: ["^8", "^9"]
     steps:
@@ -46,8 +46,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    fail-fast: false
     strategy:
+      fail-fast: false
       matrix:
         elasticsearch-version: ["^8", "^9"]
     steps:
