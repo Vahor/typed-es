@@ -258,7 +258,7 @@ const myBrokenQuery = typedEs(client, {
     _source: ["score", "entity_id", "*ate"],
 });
 
-const result = await (client as unknown as Client).search(myBrokenQuery); // With the `as Client` cast you are now using the native types
+const result = await (client as unknown as Client).search<TDocument, TAggregations>(myBrokenQuery); // With the `as Client` cast you are now using the native types
 ```
 
 ## Limitations
