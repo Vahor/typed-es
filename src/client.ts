@@ -4,6 +4,11 @@ import type {
 	ElasticsearchOutput,
 	TypedSearchRequest,
 } from ".";
+import type {
+	MultiSearchRequest,
+	MultiSearchResponse,
+	MultiSearchOptions,
+} from "./types/msearch";
 
 // @ts-expect-error: We are overriding types, but it's fine
 export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
@@ -11,4 +16,10 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 		query: Query,
 		// @ts-expect-error: Same as above
 	): Promise<ElasticsearchOutput<Query, E>>;
+	
+	msearch<Requests extends MultiSearchRequest<E>>(
+		params: {
+			searches: Requests;
+		} & MultiSearchOptions,
+	): Promise<MultiSearchResponse<Requests, E>>;
 }

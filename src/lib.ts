@@ -351,7 +351,16 @@ export type ElasticsearchOutputFields<
 				: Array<Output[K]>;
 		};
 
-export type ElasticsearchOutput<
+export type ExtractAggs<V> = V extends
+	| { aggs: infer A }
+	| { aggregations: infer A }
+	? A
+	: never;
+
+
+
+// Rename ElasticsearchOutput to SearchResponse for reuse in both search and msearch
+export type SearchResponse<
 	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string = RequestedIndex<Query>,
@@ -372,6 +381,13 @@ export type ElasticsearchOutput<
 			}
 		>
 	: `Index '${Index}' not found`;
+
+// Re-export the old name for backward compatibility
+export type ElasticsearchOutput<
+	Query extends SearchRequest,
+	E extends ElasticsearchIndexes,
+	Index extends string = RequestedIndex<Query>,
+> = SearchResponse<Query, E, Index>;
 
 export type SearchRequest = estypes.SearchRequest;
 
@@ -407,9 +423,3 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 			>;
 		};
 	}[keyof Indexes];
-
-export type ExtractAggs<V> = V extends
-	| { aggs: infer A }
-	| { aggregations: infer A }
-	? A
-	: never;

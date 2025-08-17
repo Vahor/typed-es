@@ -1,3 +1,13 @@
+import type { estypes } from "@elastic/elasticsearch";
+import type {
+	ElasticsearchIndexes,
+	SearchRequest,
+	RequestedIndex,
+	ElasticsearchOutputFields,
+	ExtractAggsKey,
+	AggregationOutput,
+} from "../lib";
+
 export type Prettify<T> = {
 	[K in keyof T]: T[K];
 } & {};

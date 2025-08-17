@@ -12,6 +12,7 @@ Automatically add output types to your Elasticsearch queries.
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
+- **Multi-search support**: Execute multiple search requests in a single HTTP call with full type safety using the `msearch` API.
 
 ## Example Usage
 ```ts
@@ -189,6 +190,43 @@ And with that, also autocompletion for these fields.
 const invalidIndex = typedEs(client, {
     index: "invalid-index", // Here we get a: Type '"invalid-index"' is not assignable to type '"first-index" | "second-index"'. 
     _source: ["score", "entity_id"],
+});
+```
+
+### Multi-Search Example
+
+You can also execute multiple searches in a single request using the `msearch` API:
+
+```ts
+import { typedMsearch } from "@vahor/typed-es";
+
+const msearchQuery = typedMsearch(client, [
+    {
+        header: { index: "first-index" },
+        body: {
+            query: { match: { score: 100 } },
+            _source: ["score", "entity_id"]
+        }
+    },
+    {
+        header: { index: "second-index" },
+        body: {
+            query: { match: { "some-field": "value" } },
+            _source: ["some-field"]
+        }
+    }
+]);
+
+const msearchResult = await client.msearch({
+    searches: msearchQuery,
+    allow_no_indices: true
+});
+
+// Each response is properly typed
+msearchResult.responses.forEach((response, index) => {
+    if ('hits' in response) {
+        console.log(`Search ${index + 1} found ${response.hits.total} results`);
+    }
 });
 ```
 
