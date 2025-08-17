@@ -122,6 +122,38 @@ type CustomIndexes = {
 }
 ```
 
+<details>
+    <summary>For complex types like "point", "shape" even "date" we currently assume that the type is <code>string</code>.</summary>
+
+ex:
+```json
+{
+    "mappings": {
+        "properties": {
+            "location": {
+                "type": "point"
+            },
+            "date": {
+                "type": "date"
+            }
+        }
+    }
+}
+```
+
+would give:
+
+```ts
+type CustomIndexes = {
+	"first-index": {
+		location: string;
+		date: string;
+	};
+};
+```
+
+</details>
+
 ### Step 2: Create a client
 
 ```ts
