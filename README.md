@@ -122,6 +122,38 @@ type CustomIndexes = {
 }
 ```
 
+<details>
+    <summary>For complex types like "point", "shape" even "date" we currently assume that the type is <code>string</code>.</summary>
+
+ex:
+```json
+{
+    "mappings": {
+        "properties": {
+            "location": {
+                "type": "point"
+            },
+            "date": {
+                "type": "date"
+            }
+        }
+    }
+}
+```
+
+would give:
+
+```ts
+type CustomIndexes = {
+	"first-index": {
+		location: string;
+		date: string;
+	};
+};
+```
+
+</details>
+
 ### Step 2: Create a client
 
 ```ts
@@ -226,7 +258,7 @@ const myBrokenQuery = typedEs(client, {
     _source: ["score", "entity_id", "*ate"],
 });
 
-const result = await (client as unknown as Client).search(myBrokenQuery); // With the `as Client` cast you are now using the native types
+const result = await (client as unknown as Client).search<TDocument, TAggregations>(myBrokenQuery); // With the `as Client` cast you are now using the native types
 ```
 
 ## Limitations

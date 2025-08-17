@@ -15,6 +15,7 @@ import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { TermsAggs } from "./aggregations/bucket/terms";
 import type { BoxplotAggs } from "./aggregations/metrics/boxplot";
+import type { CartesianCentroidAggs } from "./aggregations/metrics/cartesian_centroid";
 import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
 import type {
 	AggFunction,
@@ -176,6 +177,7 @@ export type NextAggsParentKey<
 > = ObjectKeysWithSpecificKeys<
 	Aggs,
 	| "boxplot"
+	| "cartesian_centroid"
 	| "date_histogram"
 	| "date_range"
 	| "extended_stats"
@@ -228,6 +230,7 @@ export type AggregationOutput<
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			//
 			| BoxplotAggs<E, Index, Agg>
+			| CartesianCentroidAggs<E, Index, Agg>
 			| ExtendedStatsAggs<E, Index, Agg>
 			| FunctionAggs<E, Index, Agg>
 			| GeoBoundsAggs<E, Index, Agg>
