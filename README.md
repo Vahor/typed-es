@@ -2,7 +2,7 @@
 
 [![Code quality](https://github.com/vahor/typed-es/actions/workflows/quality.yml/badge.svg)](https://github.com/vahor/typed-es/actions/workflows/quality.yml)
 [![npm downloads](https://img.shields.io/npm/dm/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
-![ElasticSearch](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FVahor%2Ftyped-es%2Frefs%2Fheads%2Fmain%2Fpackage.json&query=%24.devDependencies.%40elastic%2Felasticsearch&logo=elasticsearch&label=Elasticsearch
+![Elasticsearch](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FVahor%2Ftyped-es%2Frefs%2Fheads%2Fmain%2Fpackage.json&query=%24.devDependencies.%40elastic%2Felasticsearch&logo=elasticsearch&label=Elasticsearch
 )
 
 
