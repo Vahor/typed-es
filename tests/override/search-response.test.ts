@@ -16,12 +16,12 @@ describe("Should return the correct type", () => {
 			});
 
 			test("without _source", () => {
-				expectTypeOf<
-					TypedSearchResponse<
-						typeof testQueries.queryWithoutSource,
-						CustomIndexes
-					>["hits"]["hits"][0]["_source"]
-				>().toEqualTypeOf<CustomIndexes["demo"]>();
+				type Output = TypedSearchResponse<
+					typeof testQueries.queryWithoutSource,
+					CustomIndexes
+				>["hits"]["hits"][0]["_source"];
+
+				expectTypeOf<Output>().toEqualTypeOf<CustomIndexes["demo"]>();
 			});
 
 			describe("handle custom fields", () => {
