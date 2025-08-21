@@ -1,5 +1,15 @@
 # @vahor/typed-es
 
+## 0.0.25
+
+### Patch Changes
+
+- [#164](https://github.com/Vahor/typed-es/pull/164) [`6efcd00`](https://github.com/Vahor/typed-es/commit/6efcd0065d08753baf5e39ab309e407990255cb9) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `cartesian_centroid` metric aggregation.
+
+- [#180](https://github.com/Vahor/typed-es/pull/180) [`65eef16`](https://github.com/Vahor/typed-es/commit/65eef165490e6f72a69de46b8d22d4e4651cf11e) Thanks [@Vahor](https://github.com/Vahor)! - nullable properties result in never type in output
+
+- [#166](https://github.com/Vahor/typed-es/pull/166) [`b8b1e75`](https://github.com/Vahor/typed-es/commit/b8b1e7543fe9f10033a1ece13968f6113e7531c4) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `variable_width_histogram` bucket aggregation.
+
 ## 0.0.24
 
 ### Patch Changes
