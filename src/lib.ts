@@ -296,7 +296,7 @@ type IsParentKeyALeaf<
 	: false;
 
 export type ElasticsearchOutputFields<
-	QueryWithSource extends Partial<{ _source: unknown; fields: unknown }>,
+	QueryWithSource extends Partial<SearchRequest>,
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Type extends "_source" | "fields",

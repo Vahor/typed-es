@@ -15,6 +15,7 @@ export type CustomIndexes = {
 		load_time: number;
 		weight: number;
 		price: number;
+		nullable: number | null;
 	};
 	demo2: {
 		invalid: string;

@@ -33,8 +33,16 @@ export type RecursiveDotNotation<
 		: never;
 
 export type FLAT_UNKNOWN = "FLAT_UNKNOWN";
+type IsFlatUnknown<T> = T extends FLAT_UNKNOWN
+	? FLAT_UNKNOWN extends T
+		? true
+		: false
+	: false;
 
-type ExpandDottedKey<Key extends string, Value> = Value extends FLAT_UNKNOWN
+type ExpandDottedKey<
+	Key extends string,
+	Value,
+> = IsFlatUnknown<Value> extends true
 	? ExpandDottedKey<RemoveLastDot<Key>, unknown>
 	: Key extends `${infer K}.${infer Rest}`
 		? { [P in K]: ExpandDottedKey<Rest, Value> }
