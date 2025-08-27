@@ -56,9 +56,9 @@ export type TypedSearchResponse<
 			{
 				[K in ExtractAggsKey<Query>]: AggregationOutput<
 					Query,
-					// @ts-expect-error: Query is BaseQuery not Record<string, unknown> but we know it
 					Query,
 					E,
+					// @ts-expect-error: TODO
 					K,
 					Index
 				>;
