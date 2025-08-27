@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.26
+
+### Patch Changes
+
+- [#185](https://github.com/Vahor/typed-es/pull/185) [`f67bff3`](https://github.com/Vahor/typed-es/commit/f67bff333027b55bd4b5d0957b4421d0350c8289) Thanks [@Vahor](https://github.com/Vahor)! - Reduce requirements on SearchRequest type - In results if the type of any field except `_source`, `aggs`, `aggregations`, `index`, `fields`, `track_total_hits` or `rest_total_hits_as_int` is invalid or impossible to detect (any/unknown/complex union) ; the output type will still be correctly infered.
+
 ## 0.0.25
 
 ### Patch Changes
