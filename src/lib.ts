@@ -325,7 +325,20 @@ export type ElasticsearchOutputFields<
 				: Array<Output[K]>;
 		};
 
-export type SearchRequest = estypes.SearchRequest;
+export type UsefulSearchRequestFields =
+	| "_source"
+	| "aggs"
+	| "aggregations"
+	| "docvalue_fields"
+	| "fields"
+	| "index"
+	| "track_total_hits"
+	| "rest_total_hits_as_int";
+
+export type SearchRequest = Pick<
+	estypes.SearchRequest,
+	UsefulSearchRequestFields
+>;
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	SearchRequest,
