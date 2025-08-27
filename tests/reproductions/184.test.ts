@@ -1,5 +1,5 @@
 import { expectTypeOf, test } from "bun:test";
-import { typedEs } from "../../src";
+import { type QueryTotal, typedEs } from "../../src";
 import type { TypedSearchResponse } from "../../src/override/search-response";
 import { type CustomIndexes, client } from "../shared";
 
@@ -11,12 +11,16 @@ test("type still works when sorting on _score with condition", async () => {
 	const query = typedEs(client, {
 		index: "demo",
 		_source: false,
+		track_total_hits: true,
 		rest_total_hits_as_int: true,
 		sort:
 			order.field === "score"
-				? [{ _score: { order: "asc" } }, { entity_id: { order: "asc" } }]
-				: [{ entity_id: { order: "asc" } }, { _score: { order: "asc" } }],
+				? [{ score: { order: "asc" } }, { entity_id: { order: "asc" } }]
+				: [{ entity_id: { order: "asc" } }],
 	});
+
+	type Total = QueryTotal<typeof query>;
+	expectTypeOf<Total>().toEqualTypeOf<number>();
 
 	type Result = TypedSearchResponse<typeof query, CustomIndexes>;
 	expectTypeOf<Result["hits"]["total"]>().toEqualTypeOf<number>();
