@@ -13,6 +13,7 @@ import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
+import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
 import type { TermsAggs } from "./aggregations/bucket/terms";
 import type { VariableWidthHistogramAggs } from "./aggregations/bucket/variable_width_histogram";
 import type { BoxplotAggs } from "./aggregations/metrics/boxplot";
@@ -198,6 +199,7 @@ export type NextAggsParentKey<
 	| "range"
 	| "rate"
 	| "scripted_metric"
+	| "significant_text"
 	| "stats"
 	| "string_stats"
 	| "terms"
@@ -229,6 +231,7 @@ export type AggregationOutput<
 			| IpPrefixAggs<BaseQuery, E, Index, Agg>
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
+			| SignificantTextAggs<E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			//
