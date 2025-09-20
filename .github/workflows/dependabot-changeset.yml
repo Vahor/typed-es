@@ -32,17 +32,7 @@ jobs:
           git fetch origin $BRANCH_NAME
           git checkout $BRANCH_NAME
 
-      - name: Check for existing changeset
-        id: check-changeset
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          # Check if there's already a changeset for this PR
-          changeset_exists=$(find .changeset -name "dependabot-$PR_NUMBER.md" | wc -l)
-          echo "changeset_exists=$changeset_exists" >> $GITHUB_OUTPUT
-
       - name: Create changeset
-        if: steps.check-changeset.outputs.changeset_exists == '0'
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -52,8 +42,7 @@ jobs:
 
           cat > $changeset_file << EOF
           ---
-          "@vahor/n8n-kit": patch
-          "@vahor/n8n-cli": patch
+          "@vahor/typed-es": patch
           ---
 
           $PR_TITLE
@@ -66,7 +55,3 @@ jobs:
           git commit -m "chore: add changeset for dependabot PR #$PR_NUMBER"
           git push
 
-      - name: Skip changeset creation
-        if: steps.check-changeset.outputs.changeset_exists != '0'
-        run: |
-          echo "Changeset already exists for this Dependabot PR. Skipping creation."
