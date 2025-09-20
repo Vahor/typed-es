@@ -13,6 +13,7 @@ import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { RangeAggs } from "./aggregations/bucket/range";
+import type { SamplerAggs } from "./aggregations/bucket/sampler";
 import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
 import type { TermsAggs } from "./aggregations/bucket/terms";
 import type { VariableWidthHistogramAggs } from "./aggregations/bucket/variable_width_histogram";
@@ -198,6 +199,7 @@ export type NextAggsParentKey<
 	| "percentiles"
 	| "range"
 	| "rate"
+	| "sampler"
 	| "scripted_metric"
 	| "significant_text"
 	| "stats"
@@ -231,6 +233,7 @@ export type AggregationOutput<
 			| IpPrefixAggs<BaseQuery, E, Index, Agg>
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
+			| SamplerAggs<BaseQuery, E, Index, Agg>
 			| SignificantTextAggs<E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
