@@ -1,5 +1,19 @@
 # @vahor/typed-es
 
+## 0.0.27
+
+### Patch Changes
+
+- [#193](https://github.com/Vahor/typed-es/pull/193) [`2c384e7`](https://github.com/Vahor/typed-es/commit/2c384e72cfb251476e62e0909370a6037fb5fbfe) Thanks [@dependabot](https://github.com/apps/dependabot)! - Bump @biomejs/biome from 2.2.2 to 2.2.4
+
+- [#195](https://github.com/Vahor/typed-es/pull/195) [`8027533`](https://github.com/Vahor/typed-es/commit/802753347b2b4fbc5e765560e129c9dd1953e949) Thanks [@dependabot](https://github.com/apps/dependabot)! - Bump @changesets/cli from 2.29.6 to 2.29.7
+
+- [#196](https://github.com/Vahor/typed-es/pull/196) [`7608fdb`](https://github.com/Vahor/typed-es/commit/7608fdbbf0fcf7cbf070ceab2914bcc8189bd8e8) Thanks [@dependabot](https://github.com/apps/dependabot)! - Bump pkg-pr-new from 0.0.57 to 0.0.60
+
+- [#198](https://github.com/Vahor/typed-es/pull/198) [`d1dabd7`](https://github.com/Vahor/typed-es/commit/d1dabd75e1f7f16b70a2d20aed74b0381cc31132) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `significant_text` bucket aggregation
+
+- [#199](https://github.com/Vahor/typed-es/pull/199) [`6e5d109`](https://github.com/Vahor/typed-es/commit/6e5d1098c3c43435fa478befabc4cb200998326a) Thanks [@Vahor](https://github.com/Vahor)! - add support for `sampler` bucket agg
+
 ## 0.0.26
 
 ### Patch Changes
