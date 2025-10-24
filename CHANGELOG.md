@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.29
+
+### Patch Changes
+
+- [`5587c62`](https://github.com/Vahor/typed-es/commit/5587c627c1b1d0eaacc6c558a2a6a4025a78b738) Thanks [@Vahor](https://github.com/Vahor)! - simplify sort check
+
 ## 0.0.28
 
 ### Patch Changes
