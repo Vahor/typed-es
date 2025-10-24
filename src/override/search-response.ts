@@ -32,11 +32,7 @@ type OverrideSearchResponse<
 						: "docvalue_fields" extends keyof Query
 							? T_Fields
 							: never;
-					sort: "sort" extends keyof Query
-						? Query["sort"] extends Array<any>
-							? estypes.SortResults
-							: never
-						: never;
+					sort: "sort" extends keyof Query ? estypes.SortResults : never;
 				}
 			>;
 		};
