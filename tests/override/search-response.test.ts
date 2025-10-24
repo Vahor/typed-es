@@ -127,7 +127,7 @@ describe("Should return the correct type", () => {
 						Query,
 						CustomIndexes
 					>["hits"]["hits"][0]["_source"]
-				>().toEqualTypeOf<never>();
+				>().toBeUndefined();
 			});
 
 			describe("handle nested fields", () => {
@@ -365,7 +365,7 @@ describe("Should return the correct type", () => {
 				size: 0,
 			});
 			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
-			expectTypeOf<Output["aggregations"]>().toEqualTypeOf<never>();
+			expectTypeOf<Output["aggregations"]>().toBeUndefined();
 		});
 
 		test("with aggregations", () => {
@@ -382,7 +382,7 @@ describe("Should return the correct type", () => {
 				},
 			});
 			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
-			expectTypeOf<Output["aggregations"]>().not.toEqualTypeOf<never>();
+			expectTypeOf<Output["aggregations"]>().not.toBeUndefined();
 		});
 	});
 });

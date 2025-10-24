@@ -21,6 +21,6 @@ describe("adding a sort field in a query should make hits.[number].sort required
 		});
 		type Result = TypedSearchResponse<typeof query, CustomIndexes>;
 		type Hit = Result["hits"]["hits"][number];
-		expectTypeOf<Hit["sort"]>().toBeNever();
+		expectTypeOf<Hit["sort"]>().toBeUndefined();
 	});
 });
