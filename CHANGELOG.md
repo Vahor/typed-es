@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.28
+
+### Patch Changes
+
+- [#205](https://github.com/Vahor/typed-es/pull/205) [`359bbce`](https://github.com/Vahor/typed-es/commit/359bbce181ec0ce7d0eed498987978e86cb23567) Thanks [@Vahor](https://github.com/Vahor)! - Enforce type of `hits[number].sort` based on the query `sort` parameter
+
 ## 0.0.27
 
 ### Patch Changes
