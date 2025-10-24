@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.0.30
+
+### Patch Changes
+
+- [#209](https://github.com/Vahor/typed-es/pull/209) [`8d63b1e`](https://github.com/Vahor/typed-es/commit/8d63b1ea7b43551522cc56c8507853b151bd4c4b) Thanks [@Vahor](https://github.com/Vahor)! - Replace `never` with `undefined` for query option results
+
 ## 0.0.29
 
 ### Patch Changes
