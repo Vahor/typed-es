@@ -24,7 +24,7 @@ type OverrideSearchResponse<
 			hits: Array<
 				Omit<
 					estypes.SearchHitsMetadata<T_Doc>["hits"][number],
-					"_source" | "fields"
+					"_source" | "fields" | "sort"
 				> & {
 					_source: Query["_source"] extends false ? never : T_Source;
 					fields: "fields" extends keyof Query
@@ -32,6 +32,11 @@ type OverrideSearchResponse<
 						: "docvalue_fields" extends keyof Query
 							? T_Fields
 							: never;
+					sort: "sort" extends keyof Query
+						? Query["sort"] extends Array<any>
+							? estypes.SortResults
+							: never
+						: never;
 				}
 			>;
 		};
