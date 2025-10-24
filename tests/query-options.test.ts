@@ -102,9 +102,7 @@ describe("Query Options", () => {
 				_source: false,
 			});
 			type Output = TypedSearchResponse<typeof query, CustomIndexes>;
-			expectTypeOf<
-				Output["hits"]["hits"][0]["_source"]
-			>().toEqualTypeOf<never>();
+			expectTypeOf<Output["hits"]["hits"][0]["_source"]>().toBeUndefined();
 		});
 
 		test("undefined", () => {

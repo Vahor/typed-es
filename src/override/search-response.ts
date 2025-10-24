@@ -26,19 +26,19 @@ type OverrideSearchResponse<
 					estypes.SearchHitsMetadata<T_Doc>["hits"][number],
 					"_source" | "fields" | "sort"
 				> & {
-					_source: Query["_source"] extends false ? never : T_Source;
+					_source: Query["_source"] extends false ? undefined : T_Source;
 					fields: "fields" extends keyof Query
 						? T_Fields
 						: "docvalue_fields" extends keyof Query
 							? T_Fields
-							: never;
-					sort: "sort" extends keyof Query ? estypes.SortResults : never;
+							: undefined;
+					sort: "sort" extends keyof Query ? estypes.SortResults : undefined;
 				}
 			>;
 		};
 	} & {
 		aggregations: IsNever<ExtractAggs<Query>> extends true
-			? never
+			? undefined
 			: NonNullable<T_Aggs>;
 	} & {
 		"~type": "TypedSearchResponse";
