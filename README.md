@@ -50,9 +50,9 @@ Automatically add output types to your Elasticsearch queries.
 ### Metrics Aggregations
 | Aggregation | Status | Documentation |
 |-------------|--------|---------------|
-| Avg | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-avg-aggregation) |
+| Avg | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-avg-aggregation) |
 | Boxplot | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation) |
-| Cardinality | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cardinality-aggregation) |
+| Cardinality | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cardinality-aggregation) |
 | Cartesian Bounds | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation) |
 | Cartesian Centroid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation) |
 | Extended Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation) |
@@ -60,20 +60,20 @@ Automatically add output types to your Elasticsearch queries.
 | Geo Centroid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation) |
 | Geo Line | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line) |
 | Matrix Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-matrix-stats-aggregation) |
-| Max | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-max-aggregation) |
+| Max | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-max-aggregation) |
 | Median Absolute Deviation | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation) |
-| Min | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-min-aggregation) |
+| Min | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-min-aggregation) |
 | Percentile Ranks | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-rank-aggregation) |
 | Percentiles | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-aggregation) |
 | Rate | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-rate-aggregation) |
 | Scripted Metric | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-scripted-metric-aggregation) |
 | Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation) |
 | String Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation) |
-| Sum | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-sum-aggregation) |
+| Sum | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-sum-aggregation) |
 | T-Test | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation) |
 | Top Hits | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-hits-aggregation) |
 | Top Metrics | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics) |
-| Value Count | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-valuecount-aggregation) |
+| Value Count | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-valuecount-aggregation) |
 | Weighted Avg | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation) |
 
 ### Pipeline Aggregations
