@@ -10,6 +10,20 @@ import type {
 import type { Prettify, UnionToIntersection } from "../types/helpers";
 import type { TypedSearchResponse } from "./search-response";
 
+/**
+ * Internal helper type that overrides the runtime AsyncSearch Get response
+ * to provide a strongly-typed `response` field of type `TypedSearchResponse<Query, E>`.
+ *
+ * This preserves the rest of the runtime shape via `Omit<estypes.AsyncSearchGetResponse<T_Doc, T_Aggs>, "response">` and applies
+ * the typed `response`.
+ *
+ * @template Query - The input query type
+ * @template E - Elasticsearch index map
+ * @template T_Source - Output type for _source
+ * @template T_Fields - Output type for fields
+ * @template T_Aggs - Output type for aggregations
+ * @template T_Doc - Combined doc type (source|fields)
+ */
 type OverrideAsyncSearchGetResponse<
 	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
@@ -23,6 +37,11 @@ type OverrideAsyncSearchGetResponse<
 	}
 >;
 
+/**
+ * @template Query - The input query type
+ * @template E - Elasticsearch index map
+ * @template Index - The index string (defaulted via RequestedIndex<Query>)
+ */
 export type TypedAsyncSearchGetResponse<
 	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
