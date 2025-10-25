@@ -1,4 +1,5 @@
 import type { estypes } from "@elastic/elasticsearch";
+import type { AdjacencyMatrixAggs } from "./aggregations/bucket/adjacency_matrix";
 import type {
 	BucketAggFunction,
 	BucketAggs,
@@ -179,6 +180,7 @@ export type NextAggsParentKey<
 	Aggs = ExtractAggs<Query>,
 > = ObjectKeysWithSpecificKeys<
 	Aggs,
+	| "adjacency_matrix"
 	| "boxplot"
 	| "cartesian_centroid"
 	| "date_histogram"
@@ -223,6 +225,7 @@ export type AggregationOutput<
 > = IsNever<CurrentAggregationKey> extends true
 	? never
 	:
+			| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
 			| CompositeAggs<BaseQuery, E, Index, Agg>
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
