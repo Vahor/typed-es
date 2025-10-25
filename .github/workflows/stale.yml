@@ -1,0 +1,32 @@
+# Configuration for Stale - https://github.com/actions/stale
+name: 'Close stale'
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 10,20 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  stale:
+    if: github.repository_owner == 'vahor'
+    permissions:
+      issues: write  # for actions/stale to close stale issues
+      pull-requests: write  # for actions/stale to close stale PRs
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
+    steps:
+      - uses: actions/stale@v10
+        with:
+          stale-issue-message: 'This issue is stale because it has been open 60 days with no activity. Remove stale label or comment or this will be closed in 14 days.'
+          close-issue-message: 'This issue was closed because it has been stalled for 14 days with no activity.'
+          stale-pr-message: 'This PR is stale because it has been open 60 days with no activity. Remove stale label or comment or this will be closed in 14 days.'
+          close-pr-message: 'This PR was closed because it has been stalled for 14 days with no activity.'
+          days-before-stale: 60
+          days-before-close: 14
+          exempt-all-milestones: true
+          stale-pr-label: stale
+          exempt-issue-labels: no-stale
+          exempt-pr-labels: no-stale
