@@ -14,93 +14,93 @@ Automatically add output types to your Elasticsearch queries.
 ### Bucket Aggregations
 | Aggregation | Status | Documentation |
 |-------------|--------|---------------|
-| Adjacency Matrix | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation) |
-| Auto Date Histogram | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-autodatehistogram-aggregation) |
-| Categorize Text | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-categorize-text-aggregation) |
-| Children | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-children-aggregation) |
-| Composite | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-composite-aggregation) |
-| Date Histogram | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation) |
-| Date Range | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation) |
-| Diversified Sampler | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-diversified-sampler-aggregation) |
-| Filter | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filter-aggregation) |
-| Filters | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation) |
-| Frequent Item Sets | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-frequent-item-sets-aggregation) |
-| Geohash Grid | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation) |
-| Geohex Grid | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation) |
-| Geotile Grid | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation) |
-| Global | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-global-aggregation) |
-| Histogram | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation) |
-| IP Prefix | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation) |
-| IP Range | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-iprange-aggregation) |
-| Missing | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-missing-aggregation) |
-| Multi Terms | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation) |
-| Nested | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-nested-aggregation) |
-| Parent | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-parent-aggregation) |
-| Random Sampler | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-random-sampler-aggregation) |
-| Range | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation) |
-| Rare Terms | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-rare-terms-aggregation) |
-| Reverse Nested | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-reverse-nested-aggregation) |
-| Sampler | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-sampler-aggregation) |
-| Significant Terms | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation) |
-| Significant Text | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation) |
-| Terms | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation) |
-| Time Series | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-time-series-aggregation) |
-| Variable Width Histogram | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation) |
+| Adjacency Matrix | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation) |
+| Auto Date Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-autodatehistogram-aggregation) |
+| Categorize Text | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-categorize-text-aggregation) |
+| Children | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-children-aggregation) |
+| Composite | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-composite-aggregation) |
+| Date Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation) |
+| Date Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation) |
+| Diversified Sampler | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-diversified-sampler-aggregation) |
+| Filter | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filter-aggregation) |
+| Filters | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation) |
+| Frequent Item Sets | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-frequent-item-sets-aggregation) |
+| Geohash Grid | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation) |
+| Geohex Grid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation) |
+| Geotile Grid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation) |
+| Global | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-global-aggregation) |
+| Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation) |
+| IP Prefix | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation) |
+| IP Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-iprange-aggregation) |
+| Missing | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-missing-aggregation) |
+| Multi Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation) |
+| Nested | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-nested-aggregation) |
+| Parent | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-parent-aggregation) |
+| Random Sampler | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-random-sampler-aggregation) |
+| Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation) |
+| Rare Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-rare-terms-aggregation) |
+| Reverse Nested | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-reverse-nested-aggregation) |
+| Sampler | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-sampler-aggregation) |
+| Significant Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation) |
+| Significant Text | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation) |
+| Terms | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation) |
+| Time Series | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-time-series-aggregation) |
+| Variable Width Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation) |
 
 ### Metrics Aggregations
 | Aggregation | Status | Documentation |
 |-------------|--------|---------------|
-| Avg | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-avg-aggregation) |
-| Boxplot | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation) |
-| Cardinality | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cardinality-aggregation) |
-| Cartesian Bounds | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation) |
-| Cartesian Centroid | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation) |
-| Extended Stats | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation) |
-| Geo Bounds | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation) |
-| Geo Centroid | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation) |
-| Geo Line | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line) |
-| Matrix Stats | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-matrix-stats-aggregation) |
-| Max | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-max-aggregation) |
-| Median Absolute Deviation | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation) |
-| Min | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-min-aggregation) |
-| Percentile Ranks | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-rank-aggregation) |
-| Percentiles | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-aggregation) |
-| Rate | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-rate-aggregation) |
-| Scripted Metric | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-scripted-metric-aggregation) |
-| Stats | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation) |
-| String Stats | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation) |
-| Sum | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-sum-aggregation) |
-| T-Test | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation) |
-| Top Hits | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-hits-aggregation) |
-| Top Metrics | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics) |
-| Value Count | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-valuecount-aggregation) |
-| Weighted Avg | [x] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation) |
+| Avg | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-avg-aggregation) |
+| Boxplot | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation) |
+| Cardinality | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cardinality-aggregation) |
+| Cartesian Bounds | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation) |
+| Cartesian Centroid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation) |
+| Extended Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation) |
+| Geo Bounds | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation) |
+| Geo Centroid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation) |
+| Geo Line | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line) |
+| Matrix Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-matrix-stats-aggregation) |
+| Max | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-max-aggregation) |
+| Median Absolute Deviation | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation) |
+| Min | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-min-aggregation) |
+| Percentile Ranks | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-rank-aggregation) |
+| Percentiles | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-aggregation) |
+| Rate | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-rate-aggregation) |
+| Scripted Metric | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-scripted-metric-aggregation) |
+| Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation) |
+| String Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation) |
+| Sum | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-sum-aggregation) |
+| T-Test | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation) |
+| Top Hits | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-hits-aggregation) |
+| Top Metrics | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics) |
+| Value Count | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-valuecount-aggregation) |
+| Weighted Avg | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation) |
 
 ### Pipeline Aggregations
 | Aggregation | Status | Documentation |
 |-------------|--------|---------------|
-| Average Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-avg-bucket-aggregation) |
-| Bucket Script | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-script-aggregation) |
-| Bucket Count K-S Test | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-count-ks-test-aggregation) |
-| Bucket Correlation | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-correlation-aggregation) |
-| Bucket Selector | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-selector-aggregation) |
-| Bucket Sort | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-sort-aggregation) |
-| Change Point | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-change-point-aggregation) |
-| Cumulative Cardinality | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-cardinality-aggregation) |
-| Cumulative Sum | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-sum-aggregation) |
-| Derivative | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-derivative-aggregation) |
-| Extended Stats Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-extended-stats-bucket-aggregation) |
-| Inference | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-inference-bucket-aggregation) |
-| Max Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-max-bucket-aggregation) |
-| Min Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
-| Moving Average | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
-| Moving Function | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
-| Moving Percentiles | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation) |
-| Normalize | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
-| Percentiles Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation) |
-| Serial Differencing | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-serialdiff-aggregation) |
-| Stats Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-stats-bucket-aggregation) |
-| Sum Bucket | [ ] | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-sum-bucket-aggregation) |
+| Average Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-avg-bucket-aggregation) |
+| Bucket Script | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-script-aggregation) |
+| Bucket Count K-S Test | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-count-ks-test-aggregation) |
+| Bucket Correlation | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-correlation-aggregation) |
+| Bucket Selector | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-selector-aggregation) |
+| Bucket Sort | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-sort-aggregation) |
+| Change Point | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-change-point-aggregation) |
+| Cumulative Cardinality | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-cardinality-aggregation) |
+| Cumulative Sum | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-sum-aggregation) |
+| Derivative | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-derivative-aggregation) |
+| Extended Stats Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-extended-stats-bucket-aggregation) |
+| Inference | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-inference-bucket-aggregation) |
+| Max Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-max-bucket-aggregation) |
+| Min Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
+| Moving Average | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
+| Moving Function | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
+| Moving Percentiles | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation) |
+| Normalize | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
+| Percentiles Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation) |
+| Serial Differencing | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-serialdiff-aggregation) |
+| Stats Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-stats-bucket-aggregation) |
+| Sum Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-sum-bucket-aggregation) |
 
 </details>
 
