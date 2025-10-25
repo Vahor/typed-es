@@ -1,5 +1,6 @@
 import type { estypes } from "@elastic/elasticsearch";
 import type { AdjacencyMatrixAggs } from "./aggregations/bucket/adjacency_matrix";
+import type { AutoDateHistogramAggs } from "./aggregations/bucket/auto_date_histogram";
 import type {
 	BucketAggFunction,
 	BucketAggs,
@@ -181,6 +182,7 @@ export type NextAggsParentKey<
 > = ObjectKeysWithSpecificKeys<
 	Aggs,
 	| "adjacency_matrix"
+	| "auto_date_histogram"
 	| "boxplot"
 	| "cartesian_centroid"
 	| "date_histogram"
@@ -226,6 +228,7 @@ export type AggregationOutput<
 	? never
 	:
 			| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
+			| AutoDateHistogramAggs<BaseQuery, E, Index, Agg>
 			| CompositeAggs<BaseQuery, E, Index, Agg>
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
