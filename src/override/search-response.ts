@@ -60,6 +60,9 @@ type OverrideSearchResponse<
 >;
 
 /**
+ *
+ * Add strongly-typed `sort`, `_source`, `fields` to your search request.
+ *
  * @template Query - The input query type
  * @template E - Elasticsearch index map
  * @template Index - The index string (defaulted via RequestedIndex<Query>)

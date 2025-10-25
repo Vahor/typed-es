@@ -75,6 +75,29 @@ type FilterToOnlyLeaf<
 		}
 	: never;
 
+/**
+ * Extracts all possible field paths from an index, supporting nested objects via dot notation.
+ *
+ * @template Index - The index name
+ * @template Indexes - Your Elasticsearch index definitions
+ * @template OnlyLeaf - If true, only returns leaf fields (excludes parent objects)
+ * @template AllowVariants - If true, includes field variants (e.g., "field.keyword")
+ *
+ * @example
+ * ```typescript
+ * type Indexes = {
+ *   "products": {
+ *     info: {
+ *       name: string;
+ *       price: number;
+ *     }
+ *   }
+ * };
+ *
+ * // PossibleFields<"products", Indexes> = "info" | "info.name" | "info.price"
+ * // PossibleFields<"products", Indexes, true> = "info.name" | "info.price"
+ * ```
+ */
 export type PossibleFields<
 	Index,
 	Indexes extends ElasticsearchIndexes,
@@ -102,15 +125,53 @@ export type CanBeUsedInAggregation<
 		? true
 		: false;
 
+/**
+ * Error type returned when a field cannot be used in an aggregation.
+ *
+ * This typically occurs when:
+ * - The field doesn't exist in the index
+ * - The field is a parent object, not a leaf field
+ *
+ * @example
+ * ```typescript
+ * // Error: Field 'invalid_field' cannot be used in aggregation on 'products'
+ * // Suggestion: Use one of: "id" | "name" | "price" | ...
+ * const query = typedEs(client, {
+ *   index: "products",
+ *   aggs: {
+ *     my_agg: {
+ *       terms: { field: "invalid_field" }  // Error here
+ *     }
+ *   }
+ * });
+ * ```
+ */
 export type InvalidFieldInAggregation<
 	Field extends string,
 	Index extends string,
 	Aggregation,
 > = {
-	error: `Field '${Field}' cannot be used in aggregation on '${Index}'`;
+	error: `Field '${Field}' cannot be used in aggregation on '${Index}'. Check that the field exists and is a leaf field (not a parent object).`;
 	aggregation: Aggregation;
+	hint: "Use PossibleFields<Index, Indexes, true> to see valid fields for aggregations";
 };
 
+/**
+ * Error type returned when a field has the wrong type for an aggregation.
+ *
+ * @example
+ * ```typescript
+ * // Error: Field 'name' on index 'products' has type 'string' but aggregation requires 'number'
+ * const query = typedEs(client, {
+ *   index: "products",
+ *   aggs: {
+ *     avg_name: {
+ *       avg: { field: "name" }  // Error: can't average strings
+ *     }
+ *   }
+ * });
+ * ```
+ */
 export type InvalidFieldTypeInAggregation<
 	Field extends string,
 	Index extends string,
@@ -118,23 +179,45 @@ export type InvalidFieldTypeInAggregation<
 	got,
 	expected,
 > = {
-	error: `Field '${Field}' cannot be used in aggregation on '${Index}' because it is of type '${ToString<got>}' but expected '${ToString<expected>}'`;
+	error: `Field '${Field}' on index '${Index}' has type '${ToString<got>}' but aggregation requires '${ToString<expected>}'`;
 	field: Field;
 	aggregation: Aggregation;
 	got: got;
 	expected: expected;
+	hint: "Check the field type in your index definition and ensure it matches the aggregation requirements";
 };
 
+/**
+ * Error type returned when an aggregation property has the wrong type.
+ *
+ * @example
+ * ```typescript
+ * // Error: Property 'size' expects 'number' but got 'string'
+ * const query = typedEs(client, {
+ *   index: "products",
+ *   aggs: {
+ *     top_products: {
+ *       terms: {
+ *         field: "category",
+ *         size: "10"  // Error: should be number, not string
+ *       }
+ *     }
+ *   }
+ * });
+ * ```
+ */
 export type InvalidPropertyTypeInAggregation<
 	PropertyName extends string,
 	Aggregation,
 	got,
 	expected,
 > = {
+	error: `Property '${PropertyName}' has incorrect type`;
 	aggregation: Aggregation;
 	property: PropertyName;
 	got: got;
 	expected: expected;
+	hint: "Check the aggregation configuration syntax in Elasticsearch documentation";
 };
 
 export type PossibleFieldsWithWildcards<
@@ -282,6 +365,27 @@ export type AppendSubAggs<
 			>;
 		};
 
+/**
+ * The base type for defining your Elasticsearch index mappings.
+ *
+ * Each key represents an index name, and its value is an object describing the document structure.
+ *
+ * @example
+ * ```typescript
+ * type MyIndexes = {
+ *   "products": {
+ *     id: number;
+ *     name: string;
+ *     price: number;
+ *   };
+ *   "orders": {
+ *     order_id: string;
+ *     product_id: number;
+ *     quantity: number;
+ *   };
+ * };
+ * ```
+ */
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
 export type QueryTotal<Query extends SearchRequest> = HasOption<
@@ -352,6 +456,43 @@ export type SearchRequest = Pick<
 	UsefulSearchRequestFields
 >;
 
+/**
+ * A type-safe Elasticsearch search request that provides autocomplete and validation
+ * for index names, _source fields, fields, and docvalue_fields.
+ *
+ * @template Indexes - Your Elasticsearch index definitions
+ *
+ * @remarks
+ * This type extends the standard Elasticsearch SearchRequest but adds:
+ * - Type-checked index names (must be a key in your Indexes type)
+ * - Autocomplete for _source, fields, and docvalue_fields based on your index schema
+ * - Support for wildcard patterns in field names
+ * - Proper type inference for the search response
+ *
+ * @example
+ * ```typescript
+ * type MyIndexes = {
+ *   "products": {
+ *     id: number;
+ *     name: string;
+ *     price: number;
+ *   }
+ * };
+ *
+ * // Valid query
+ * const query: TypedSearchRequest<MyIndexes> = {
+ *   index: "products",
+ *   _source: ["id", "name"],  // Autocomplete works here
+ *   query: { match_all: {} }
+ * };
+ *
+ * // Invalid query - TypeScript error
+ * const invalid: TypedSearchRequest<MyIndexes> = {
+ *   index: "invalid-index",  // Error: not in MyIndexes
+ *   _source: ["invalid_field"]  // Error: field doesn't exist
+ * };
+ * ```
+ */
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	SearchRequest,
 	"index" | "_source" | "fields" | "docvalue_fields"
