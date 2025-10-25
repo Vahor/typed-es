@@ -22,6 +22,44 @@ type WithTransport<
 	? Promise<TransportResult<Data>>
 	: Promise<Data>;
 
+/**
+ * A type-safe wrapper around the Elasticsearch Client that provides automatic type inference
+ * for search results based on your query structure.
+ *
+ * @template E - Your Elasticsearch index type definitions
+ *
+ * @example
+ * ```typescript
+ * import { Client } from "@elastic/elasticsearch";
+ * import { TypedClient } from "@vahor/typed-es";
+ *
+ * type MyIndexes = {
+ *   "users": {
+ *     id: number;
+ *     name: string;
+ *     email: string;
+ *   }
+ * };
+ *
+ * const client = new Client({
+ *   node: "http://localhost:9200"
+ * }) as unknown as TypedClient<MyIndexes>;
+ *
+ * // Now use with typedEs for full type safety
+ * const query = typedEs(client, {
+ *   index: "users",
+ *   _source: ["id", "name"]
+ * });
+ *
+ * const result = await client.search(query);
+ * // result.hits.hits[0]._source is automatically typed as { id: string, name: string }
+ * ```
+ *
+ * Note:
+ * The cast `as unknown as TypedClient<MyIndexes>` is necessary because we're augmenting
+ * the native Elasticsearch Client with stricter type definitions. This is safe and provides
+ * better type checking for your queries and results.
+ */
 // @ts-expect-error: We are overriding types, but it's fine
 export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 	/**
