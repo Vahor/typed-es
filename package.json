@@ -1,6 +1,6 @@
 {
 	"name": "@vahor/typed-es",
-	"version": "0.0.30",
+	"version": "0.0.31",
 	"description": "Automatically add output types to your Elasticsearch queries.",
 	"license": "MIT",
 	"repository": {
