@@ -1,13 +1,15 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { Prettify, PrettyArray } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation
 type KeysAndOBK<Keys, Agg> = Agg extends {
 	filters: { other_bucket_key: infer OBK extends string };
 }
 	? OBK | Keys
 	: Keys;
 
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation
+ */
 export type FiltersAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

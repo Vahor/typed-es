@@ -2,7 +2,6 @@ import { describe, expectTypeOf, test } from "bun:test";
 import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
 describe("DateRange Aggregations", () => {
 	test("with from-to", () => {
 		type Aggregations = TestAggregationOutput<

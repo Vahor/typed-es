@@ -43,7 +43,9 @@ type IpPrefixOutput<
 	} & AppendSubAggs<BaseQuery, E, Index, Agg>
 >;
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation
+ */
 export type IpPrefixAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

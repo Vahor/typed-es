@@ -1,7 +1,6 @@
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation
 describe("Filters Aggregations", () => {
 	test("with anonymous filters", () => {
 		type Aggregations = TestAggregationOutput<

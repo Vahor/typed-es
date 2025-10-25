@@ -8,7 +8,9 @@ import type {
 import type { EsPoint, EsShape } from "../../types/fields";
 import type { IsSomeSortOf, Not } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation
+ */
 export type CartesianCentroidAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

@@ -16,7 +16,9 @@ type DefaultPrecision = 6;
 type GetPrecision<P> = P extends number ? P : DefaultPrecision;
 type Range_0_15 = RangeInclusive<0, 15>;
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation
+ */
 export type GeoHexGridAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

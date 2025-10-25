@@ -4,7 +4,9 @@ import type {
 	InvalidFieldInAggregation,
 } from "../..";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation
+ */
 export type GeoCentroidAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

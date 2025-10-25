@@ -4,7 +4,9 @@ import type {
 	InvalidFieldInAggregation,
 } from "../..";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line
+ */
 export type GeoLineAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

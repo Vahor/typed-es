@@ -4,7 +4,9 @@ import type {
 	InvalidFieldInAggregation,
 } from "../..";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation
+ */
 export type GeoBoundsAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

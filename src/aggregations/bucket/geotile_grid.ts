@@ -16,7 +16,9 @@ type DefaultPrecision = 7;
 type GetPrecision<P> = P extends number ? P : DefaultPrecision;
 type Range_0_29 = RangeInclusive<0, 29>;
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation
+ */
 export type GeoTileGridAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

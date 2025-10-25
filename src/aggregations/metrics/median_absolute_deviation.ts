@@ -7,7 +7,9 @@ import type {
 } from "../..";
 import type { IsSomeSortOf } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation
+ */
 export type MedianAbsoluteDeviationAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

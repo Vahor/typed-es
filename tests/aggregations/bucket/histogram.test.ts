@@ -2,7 +2,6 @@ import { describe, expectTypeOf, test } from "bun:test";
 import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation
 describe("Histogram Aggregations", () => {
 	test("default", () => {
 		type Aggregations = TestAggregationOutput<
