@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.0.31
+
+### Patch Changes
+
+- [#211](https://github.com/Vahor/typed-es/pull/211) [`c929cb1`](https://github.com/Vahor/typed-es/commit/c929cb142f0afe3177e991131f8937a87d12cc9f) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `adjacency_matrix` bucket aggregation
+
+- [#213](https://github.com/Vahor/typed-es/pull/213) [`7644388`](https://github.com/Vahor/typed-es/commit/7644388089ee62721445287202e70cc93e7c7301) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `auto_date_histogram` bucket aggregation.
+
 ## 0.0.30
 
 ### Patch Changes
