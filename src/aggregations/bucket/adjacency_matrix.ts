@@ -1,8 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { Combinations, PrettyArray } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation
-
 type DefaultSeparator = "&";
 type GetSeparator<S> = S extends string ? S : DefaultSeparator;
 
