@@ -7,7 +7,9 @@ import type {
 } from "../..";
 import type { IsSomeSortOf, IsStringLiteral, Not } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-matrix-stats-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-matrix-stats-aggregation
+ */
 export type MatrixStatsAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

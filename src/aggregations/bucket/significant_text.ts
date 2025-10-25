@@ -7,8 +7,9 @@ import type {
 } from "../..";
 import type { IsSomeSortOf, PrettyArray } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation
-
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation
+ */
 export type SignificantTextAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

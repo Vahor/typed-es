@@ -7,7 +7,9 @@ type ExtractSourcesKeys<Sources extends CompositeSources> = {
 	[k in keyof Sources]: keyof Sources[k];
 }[number];
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-composite-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-composite-aggregation
+ */
 export type CompositeAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

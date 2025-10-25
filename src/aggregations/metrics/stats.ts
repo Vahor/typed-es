@@ -4,7 +4,9 @@ import type {
 	InvalidFieldInAggregation,
 } from "../..";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation
+ */
 export type StatsAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

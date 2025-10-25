@@ -9,7 +9,9 @@ import type {
 } from "../..";
 import type { AtMostN, IsSomeSortOf, Not, Prettify } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation
+ */
 export type VariableWidthHistogramAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

@@ -6,6 +6,9 @@ import type { Combinations, PrettyArray } from "../../types/helpers";
 type DefaultSeparator = "&";
 type GetSeparator<S> = S extends string ? S : DefaultSeparator;
 
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation
+ */
 export type AdjacencyMatrixAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

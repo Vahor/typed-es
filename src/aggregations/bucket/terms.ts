@@ -8,7 +8,9 @@ import type {
 } from "../..";
 import type { IsStringLiteral, PrettyArray } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation
+ */
 export type TermsAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

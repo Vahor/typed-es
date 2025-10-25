@@ -7,7 +7,9 @@ import type {
 } from "../..";
 import type { IsSomeSortOf, Not } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation
+ */
 export type WeightedAvgAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

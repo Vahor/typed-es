@@ -7,7 +7,9 @@ import type {
 } from "../..";
 import type { IsSomeSortOf, Not } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-rate-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-rate-aggregation
+ */
 export type RateAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,

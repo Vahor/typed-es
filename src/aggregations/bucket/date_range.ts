@@ -46,7 +46,9 @@ type RangeOutput<
 		: never;
 };
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
+ */
 export type DateRangeAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

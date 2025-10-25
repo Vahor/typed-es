@@ -49,7 +49,9 @@ type RangeOutput<
 		: never;
 };
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
+ */
 export type RangeAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,

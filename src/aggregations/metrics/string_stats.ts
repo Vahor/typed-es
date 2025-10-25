@@ -7,7 +7,9 @@ import type {
 } from "../..";
 import type { IsSomeSortOf, Prettify } from "../../types/helpers";
 
-// https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation
+/**
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation
+ */
 export type StringStatsAggs<
 	E extends ElasticsearchIndexes,
 	Index extends string,
