@@ -1,5 +1,5 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
-import type { Combinations, Prettify, PrettyArray } from "../../types/helpers";
+import type { Combinations, PrettyArray } from "../../types/helpers";
 
 // https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation
 
