@@ -20,6 +20,7 @@ import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { MissingAggs } from "./aggregations/bucket/missing";
 import type { NestedAggs } from "./aggregations/bucket/nested";
+import type { ParentAggs } from "./aggregations/bucket/parent";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { SamplerAggs } from "./aggregations/bucket/sampler";
 import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
@@ -293,6 +294,7 @@ export type NextAggsParentKey<
 	| "missing"
 	| "nested"
 	| "median_absolute_deviation"
+	| "parent"
 	| "percentile_ranks"
 	| "percentiles"
 	| "range"
@@ -336,6 +338,7 @@ export type AggregationOutput<
 			| HistogramAggs<BaseQuery, E, Index, Agg>
 			| IpPrefixAggs<BaseQuery, E, Index, Agg>
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
+			| ParentAggs<BaseQuery, E, Index, Agg>
 			| MissingAggs<BaseQuery, E, Index, Agg>
 			| NestedAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
