@@ -1,5 +1,5 @@
 ---
-"typed-es": patch
+"@vahor/typed-es": patch
 ---
 
-Add support for Nested bucket aggregation
+Add support for `nested` bucket aggregation

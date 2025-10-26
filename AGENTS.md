@@ -7,7 +7,7 @@
 - **Typecheck**: `bun typecheck`
 - **Test**: `bun test` (uses Bun test runner)
 - **Test single file**: `bun test tests/index.test.ts`
-- **Adding changesets**: `bunx @changesets/cli`
+- **Adding changesets**: `bunx @changesets/cli` (package name is `@vahor/typed-es`)
 
 ## Code Style Guidelines
 
@@ -18,6 +18,7 @@
 - **Comments**: Avoid comments unless necessary for complex type logic
 - **Error handling**: Use TypeScript's type system for compile-time safety
 - **File structure**: Code in src/, tests in tests/ directory
+- **Backticks**: Add backticks around any field name, aggregation name, or index name in comments.
 
 ## Project Specifics
 
