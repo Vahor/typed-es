@@ -22,7 +22,7 @@ Automatically add output types to your Elasticsearch queries.
 | Date Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation) |
 | Date Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation) |
 | Diversified Sampler | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-diversified-sampler-aggregation) |
-| Filter | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filter-aggregation) |
+| Filter | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filter-aggregation) |
 | Filters | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation) |
 | Frequent Item Sets | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-frequent-item-sets-aggregation) |
 | Geohash Grid | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation) |
