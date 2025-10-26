@@ -7,6 +7,7 @@
 - **Typecheck**: `bun typecheck`
 - **Test**: `bun test` (uses Bun test runner)
 - **Test single file**: `bun test tests/index.test.ts`
+- **Adding changesets**: `bunx @changesets/cli`
 
 ## Code Style Guidelines
 
@@ -25,3 +26,4 @@
 - Biome linting with recommended rules (noBannedTypes disabled)
 - Pre-commit hooks with husky and lint-staged
 - Export types and utilities for Elasticsearch type safety
+- Add changesets when making a pull request
