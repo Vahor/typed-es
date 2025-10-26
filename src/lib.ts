@@ -47,6 +47,7 @@ import type { StringStatsAggs } from "./aggregations/metrics/string_stats";
 import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
 import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
+import type { ChangePointAggs } from "./aggregations/pipeline/change_point";
 import type {
 	AnyString,
 	DeepPickPaths,
@@ -276,6 +277,7 @@ export type NextAggsParentKey<
 	| "boxplot"
 	| "cartesian_centroid"
 	| "categorize_text"
+	| "change_point"
 	| "children"
 	| "date_histogram"
 	| "date_range"
@@ -365,6 +367,8 @@ export type AggregationOutput<
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| WeightedAvgAggs<E, Index, Agg>
+			//
+			| ChangePointAggs<Agg>
 			//
 			| BucketAggs<Agg>;
 

@@ -85,7 +85,7 @@ Automatically add output types to your Elasticsearch queries.
 | Bucket Correlation | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-correlation-aggregation) |
 | Bucket Selector | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-selector-aggregation) |
 | Bucket Sort | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-sort-aggregation) |
-| Change Point | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-change-point-aggregation) |
+| Change Point | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-change-point-aggregation) |
 | Cumulative Cardinality | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-cardinality-aggregation) |
 | Cumulative Sum | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-sum-aggregation) |
 | Derivative | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-derivative-aggregation) |
