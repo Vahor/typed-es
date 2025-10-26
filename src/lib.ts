@@ -18,6 +18,7 @@ import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
+import type { ParentAggs } from "./aggregations/bucket/parent";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { SamplerAggs } from "./aggregations/bucket/sampler";
 import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
@@ -289,6 +290,7 @@ export type NextAggsParentKey<
 	| "ip_range"
 	| "matrix_stats"
 	| "median_absolute_deviation"
+	| "parent"
 	| "percentile_ranks"
 	| "percentiles"
 	| "range"
@@ -332,6 +334,7 @@ export type AggregationOutput<
 			| HistogramAggs<BaseQuery, E, Index, Agg>
 			| IpPrefixAggs<BaseQuery, E, Index, Agg>
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
+			| ParentAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| SamplerAggs<BaseQuery, E, Index, Agg>
 			| SignificantTextAggs<E, Index, Agg>
