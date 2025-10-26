@@ -1,5 +1,31 @@
 # @vahor/typed-es
 
+## 0.0.32
+
+### Patch Changes
+
+- [#258](https://github.com/Vahor/typed-es/pull/258) [`2945ace`](https://github.com/Vahor/typed-es/commit/2945ace62c463cc657c930b63e4dd595f3f8f0cd) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `random_sampler` bucket aggregation with compile-time `probability` validation. The validation ensures that the `probability` parameter is greater than 0, less than 0.5, or exactly 1, catching invalid values at compile-time when using literal numbers.
+
+- [#259](https://github.com/Vahor/typed-es/pull/259) [`ce62209`](https://github.com/Vahor/typed-es/commit/ce62209b1633b021c12f897dc85a37f074e502e7) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `bucket_sort` pipeline aggregation
+
+- [#251](https://github.com/Vahor/typed-es/pull/251) [`4228ee3`](https://github.com/Vahor/typed-es/commit/4228ee36f8d3624d7f9ae75bf41417702c231f9b) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `categorize_text` bucket aggregation
+
+- [#254](https://github.com/Vahor/typed-es/pull/254) [`016ecef`](https://github.com/Vahor/typed-es/commit/016ecef04c1d5742ae335479248c6635c5ac5f4b) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `geohash_grid` bucket aggregation
+
+- [#248](https://github.com/Vahor/typed-es/pull/248) [`d6390c9`](https://github.com/Vahor/typed-es/commit/d6390c9ccaae017658975dd292804b94415b60f9) Thanks [@Vahor](https://github.com/Vahor)! - Add ctrl-click functionality on \_source fields in response
+
+- [#256](https://github.com/Vahor/typed-es/pull/256) [`ec7f56d`](https://github.com/Vahor/typed-es/commit/ec7f56dae244a50f3fcdd6387c1698348eb1c3ae) Thanks [@Vahor](https://github.com/Vahor)! - add support for `missing` bucket aggregation
+
+- [#261](https://github.com/Vahor/typed-es/pull/261) [`ec981c2`](https://github.com/Vahor/typed-es/commit/ec981c225442d4bcbed97f82e83804643bf8cc49) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `reverse_nested` bucket aggregation
+
+- [#255](https://github.com/Vahor/typed-es/pull/255) [`e6bf837`](https://github.com/Vahor/typed-es/commit/e6bf8371dda2fd10871dc60210d43e8f1c66f960) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `nested` bucket aggregation
+
+- [#257](https://github.com/Vahor/typed-es/pull/257) [`261d1ab`](https://github.com/Vahor/typed-es/commit/261d1ab2fc1e3476a1ba2d67328b77832907dba3) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `parent` bucket aggregation
+
+- [#252](https://github.com/Vahor/typed-es/pull/252) [`da1a3aa`](https://github.com/Vahor/typed-es/commit/da1a3aa9525de9e1b2b78761d6d731cfbe14385b) Thanks [@Vahor](https://github.com/Vahor)! - feat: add support for `children` bucket aggregation
+
+- [#253](https://github.com/Vahor/typed-es/pull/253) [`4497ab0`](https://github.com/Vahor/typed-es/commit/4497ab09c5b3d8cc7e40b8d668d3a8990dd4f7c2) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `filter` bucket aggregation
+
 ## 0.0.31
 
 ### Patch Changes
