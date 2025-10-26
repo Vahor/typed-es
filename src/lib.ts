@@ -5,6 +5,7 @@ import type {
 	BucketAggFunction,
 	BucketAggs,
 } from "./aggregations/bucket/bucket_agg";
+import type { CategorizeTextAggs } from "./aggregations/bucket/categorize_text";
 import type { CompositeAggs } from "./aggregations/bucket/composite";
 import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
 import type { DateRangeAggs } from "./aggregations/bucket/date_range";
@@ -268,6 +269,7 @@ export type NextAggsParentKey<
 	| "auto_date_histogram"
 	| "boxplot"
 	| "cartesian_centroid"
+	| "categorize_text"
 	| "date_histogram"
 	| "date_range"
 	| "extended_stats"
@@ -312,6 +314,7 @@ export type AggregationOutput<
 	:
 			| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
 			| AutoDateHistogramAggs<BaseQuery, E, Index, Agg>
+			| CategorizeTextAggs<BaseQuery, E, Index, Agg>
 			| CompositeAggs<BaseQuery, E, Index, Agg>
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
