@@ -10,6 +10,7 @@ import type { ChildrenAggs } from "./aggregations/bucket/children";
 import type { CompositeAggs } from "./aggregations/bucket/composite";
 import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
 import type { DateRangeAggs } from "./aggregations/bucket/date_range";
+import type { FilterAggs } from "./aggregations/bucket/filter";
 import type { FiltersAggs } from "./aggregations/bucket/filters";
 import type { GeoHashGridAggs } from "./aggregations/bucket/geohash_grid";
 import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
@@ -276,6 +277,7 @@ export type NextAggsParentKey<
 	| "date_histogram"
 	| "date_range"
 	| "extended_stats"
+	| "filter"
 	| "filters"
 	| "geo_bounds"
 	| "geo_centroid"
@@ -322,6 +324,7 @@ export type AggregationOutput<
 			| CompositeAggs<BaseQuery, E, Index, Agg>
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
+			| FilterAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
 			| GeoHashGridAggs<BaseQuery, E, Index, Agg>
 			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
