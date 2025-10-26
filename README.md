@@ -39,7 +39,7 @@ Automatically add output types to your Elasticsearch queries.
 | Random Sampler | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-random-sampler-aggregation) |
 | Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation) |
 | Rare Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-rare-terms-aggregation) |
-| Reverse Nested | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-reverse-nested-aggregation) |
+| Reverse Nested | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-reverse-nested-aggregation) |
 | Sampler | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-sampler-aggregation) |
 | Significant Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation) |
 | Significant Text | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation) |
