@@ -51,4 +51,5 @@ jobs:
           timeout_minutes: "180"
           claude_args: |
             --dangerously-skip-permissions
+            --system-prompt "Start by reading AGENTS.md. Update README.md and other .md files if necessary."
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}

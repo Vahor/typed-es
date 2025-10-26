@@ -26,4 +26,4 @@
 - Biome linting with recommended rules (noBannedTypes disabled)
 - Pre-commit hooks with husky and lint-staged
 - Export types and utilities for Elasticsearch type safety
-- Add changesets when making a pull request
+- Add changesets when making a pull request. In version 0.x.x, create patch changesets.
