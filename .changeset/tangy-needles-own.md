@@ -1,5 +1,5 @@
 ---
-"typed-es": minor
+"typed-es": patch
 ---
 
-Add support for Filter bucket aggregation
+Add support for `filter` bucket aggregation
