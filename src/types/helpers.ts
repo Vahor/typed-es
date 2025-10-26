@@ -179,3 +179,18 @@ export type Combinations<
 					? T | `${T}${Sep}${Combinations<U, Sep, U, [...Used, T], T>}`
 					: never
 		: never;
+
+type DeepPickOne<
+	T,
+	Path extends string,
+> = Path extends `${infer K}.${infer Rest}`
+	? K extends keyof T
+		? { [Q in K]: DeepPickOne<T[K], Rest> }
+		: {}
+	: Path extends keyof T
+		? Pick<T, Path>
+		: unknown;
+
+export type DeepPickPaths<T, Paths extends string> = Prettify<
+	UnionToIntersection<Paths extends any ? DeepPickOne<T, Paths> : never>
+>;

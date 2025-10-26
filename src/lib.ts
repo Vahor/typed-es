@@ -42,13 +42,13 @@ import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
 import type {
 	AnyString,
+	DeepPickPaths,
 	IsNever,
 	IsStringLiteral,
 	ToString,
 	UnionToIntersection,
 } from "./types/helpers";
 import type {
-	ExpandAll,
 	FLAT_UNKNOWN,
 	JoinKeys,
 	Primitive,
@@ -420,6 +420,7 @@ export type ElasticsearchOutputFields<
 	RequestedFields = Type extends "_source"
 		? ExtractQuery_Source<QueryWithSource, E, Index>
 		: ExtractQueryFields<QueryWithSource>,
+	// TODO: make this a union string instead of an object. we no longer need the values
 	Output = {
 		[K in WildcardSearch<
 			PossibleFields<Index, E, Type extends "fields" ? true : false>,
@@ -432,7 +433,7 @@ export type ElasticsearchOutputFields<
 		> as IsParentKeyALeaf<K, E, Index> extends true ? K : never]: FLAT_UNKNOWN;
 	},
 > = Type extends "_source"
-	? ExpandAll<Output>
+	? DeepPickPaths<E[Index], Extract<keyof Output, string>>
 	: {
 			[K in keyof Output as Output[K] extends FLAT_UNKNOWN
 				? RemoveLastDot<K>
