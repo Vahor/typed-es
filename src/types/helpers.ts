@@ -185,8 +185,8 @@ type DeepPickOne<
 	Path extends string,
 > = Path extends `${infer K}.${infer Rest}`
 	? K extends keyof T
-		? { [Q in K]: DeepPickOne<T[K], Rest> } // Remove Pick<T, K> &
-		: {} & 2
+		? { [Q in K]: DeepPickOne<T[K], Rest> }
+		: {}
 	: Path extends keyof T
 		? Pick<T, Path>
 		: unknown;
