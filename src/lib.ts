@@ -21,6 +21,7 @@ import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { MissingAggs } from "./aggregations/bucket/missing";
 import type { NestedAggs } from "./aggregations/bucket/nested";
 import type { ParentAggs } from "./aggregations/bucket/parent";
+import type { RandomSamplerAggs } from "./aggregations/bucket/random_sampler";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { SamplerAggs } from "./aggregations/bucket/sampler";
 import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
@@ -299,6 +300,7 @@ export type NextAggsParentKey<
 	| "percentiles"
 	| "range"
 	| "rate"
+	| "random_sampler"
 	| "sampler"
 	| "scripted_metric"
 	| "significant_text"
@@ -342,6 +344,7 @@ export type AggregationOutput<
 			| MissingAggs<BaseQuery, E, Index, Agg>
 			| NestedAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>
+			| RandomSamplerAggs<BaseQuery, E, Index, Agg>
 			| SamplerAggs<BaseQuery, E, Index, Agg>
 			| SignificantTextAggs<E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
