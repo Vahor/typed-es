@@ -23,6 +23,7 @@ import type { NestedAggs } from "./aggregations/bucket/nested";
 import type { ParentAggs } from "./aggregations/bucket/parent";
 import type { RandomSamplerAggs } from "./aggregations/bucket/random_sampler";
 import type { RangeAggs } from "./aggregations/bucket/range";
+import type { ReverseNestedAggs } from "./aggregations/bucket/reverse_nested";
 import type { SamplerAggs } from "./aggregations/bucket/sampler";
 import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
 import type { TermsAggs } from "./aggregations/bucket/terms";
@@ -310,7 +311,7 @@ export type NextAggsParentKey<
 	| "top_hits"
 	| "top_metrics"
 	| "variable_width_histogram"
-	| "weighted_avg"
+	| "reverse_nested"
 	| AggFunction
 	| BucketAggFunction
 >;
@@ -349,6 +350,7 @@ export type AggregationOutput<
 			| SignificantTextAggs<E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
+			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
 			//
 			| BoxplotAggs<E, Index, Agg>
 			| CartesianCentroidAggs<E, Index, Agg>

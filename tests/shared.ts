@@ -40,6 +40,16 @@ export type CustomIndexes = {
 			};
 		};
 	};
+	issues: {
+		id: string;
+		title: string;
+		tags: string[];
+		comments: {
+			username: string;
+			text: string;
+			created_at: string;
+		};
+	};
 	test_types: {
 		id: string;
 		price: number;
