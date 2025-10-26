@@ -32,7 +32,7 @@ Automatically add output types to your Elasticsearch queries.
 | Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation) |
 | IP Prefix | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation) |
 | IP Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-iprange-aggregation) |
-| Missing | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-missing-aggregation) |
+| Missing | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-missing-aggregation) |
 | Multi Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation) |
 | Nested | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-nested-aggregation) |
 | Parent | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-parent-aggregation) |
