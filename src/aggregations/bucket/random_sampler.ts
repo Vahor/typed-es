@@ -1,14 +1,16 @@
-import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
+import type {
+	AppendSubAggs,
+	ElasticsearchIndexes,
+	InvalidPropertyTypeInAggregation,
+	SearchRequest,
+} from "../..";
 import type { IsNumericLiteral, Prettify } from "../../types/helpers";
 
 /**
- * Error type for invalid `probability` values in `random_sampler` aggregation.
+ * Valid probability range for `random_sampler` aggregation.
+ * Must be greater than 0, less than 0.5, or exactly 1.
  */
-type InvalidProbabilityError<P> = {
-	error: `Invalid probability value '${P extends number ? P : "unknown"}'. The probability must be greater than 0, less than 0.5, or exactly 1.`;
-	received: P;
-	expected: "0 < probability < 0.5 or probability === 1";
-};
+type ValidProbabilityRange = "0 < probability < 0.5 or probability === 1";
 
 /**
  * Validates the `probability` parameter for `random_sampler` aggregation.
@@ -52,7 +54,12 @@ export type RandomSamplerAggs<
 					doc_count: number;
 				} & AppendSubAggs<BaseQuery, E, Index, Agg>
 			>
-		: InvalidProbabilityError<P>
+		: InvalidPropertyTypeInAggregation<
+				"probability",
+				Agg,
+				P,
+				ValidProbabilityRange
+			>
 	: Agg extends { random_sampler: object }
 		? Prettify<
 				{
