@@ -86,4 +86,57 @@ describe("Reverse Nested Aggregations", () => {
 			};
 		}>();
 	});
+
+	test("reverse_nested inside nested aggregation (documentation example)", () => {
+		type Aggregations = TestAggregationOutput<
+			"issues",
+			{
+				comments: {
+					nested: {
+						path: "comments";
+					};
+					aggs: {
+						top_usernames: {
+							terms: {
+								field: "comments.username";
+							};
+							aggs: {
+								comment_to_issue: {
+									reverse_nested: {};
+									aggs: {
+										top_tags: {
+											terms: {
+												field: "tags";
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			}
+		>;
+
+		expectTypeOf<Aggregations["aggregations"]>().toMatchTypeOf<{
+			comments: {
+				doc_count: number;
+				top_usernames: {
+					buckets: Array<{
+						key: string | number;
+						doc_count: number;
+						comment_to_issue: {
+							doc_count: number;
+							top_tags: {
+								buckets: Array<{
+									key: string | number;
+									doc_count: number;
+								}>;
+							};
+						};
+					}>;
+				};
+			};
+		}>();
+	});
 });
