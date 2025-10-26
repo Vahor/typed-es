@@ -57,7 +57,8 @@ describe("Categorize Text Aggregations", () => {
 					max_matching_length: number;
 					regex: string;
 					avg_score: {
-						value: number | null;
+						value: number;
+						value_as_string?: string;
 					};
 				}>;
 			};
