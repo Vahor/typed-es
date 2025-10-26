@@ -17,7 +17,7 @@ Automatically add output types to your Elasticsearch queries.
 | Adjacency Matrix | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation) |
 | Auto Date Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-autodatehistogram-aggregation) |
 | Categorize Text | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-categorize-text-aggregation) |
-| Children | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-children-aggregation) |
+| Children | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-children-aggregation) |
 | Composite | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-composite-aggregation) |
 | Date Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation) |
 | Date Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation) |
