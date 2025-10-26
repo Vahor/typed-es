@@ -2,4 +2,4 @@
 "@vahor/typed-es": patch
 ---
 
-feat: add support for `missing` bucket aggregation
+add support for `missing` bucket aggregation
