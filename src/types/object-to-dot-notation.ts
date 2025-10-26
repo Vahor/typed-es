@@ -1,5 +1,3 @@
-import type { UnionToIntersection } from "./helpers";
-
 export type Primitive =
 	| string
 	| number
@@ -33,26 +31,6 @@ export type RecursiveDotNotation<
 		: never;
 
 export type FLAT_UNKNOWN = "FLAT_UNKNOWN";
-type IsFlatUnknown<T> = T extends FLAT_UNKNOWN
-	? FLAT_UNKNOWN extends T
-		? true
-		: false
-	: false;
-
-type ExpandDottedKey<
-	Key extends string,
-	Value,
-> = IsFlatUnknown<Value> extends true
-	? ExpandDottedKey<RemoveLastDot<Key>, unknown>
-	: Key extends `${infer K}.${infer Rest}`
-		? { [P in K]: ExpandDottedKey<Rest, Value> }
-		: { [P in Key]: Value };
-
-export type ExpandAll<T> = UnionToIntersection<
-	{
-		[K in keyof T]: ExpandDottedKey<K & string, T[K]>;
-	}[keyof T]
->;
 
 export type RemoveLastDot<T> = T extends `${infer Prefix}.${infer Rest}`
 	? Rest extends `${string}.${string}`
