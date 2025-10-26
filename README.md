@@ -25,7 +25,7 @@ Automatically add output types to your Elasticsearch queries.
 | Filter | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filter-aggregation) |
 | Filters | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation) |
 | Frequent Item Sets | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-frequent-item-sets-aggregation) |
-| Geohash Grid | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation) |
+| Geohash Grid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation) |
 | Geohex Grid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation) |
 | Geotile Grid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation) |
 | Global | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-global-aggregation) |

@@ -11,6 +11,7 @@ import type { CompositeAggs } from "./aggregations/bucket/composite";
 import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
 import type { DateRangeAggs } from "./aggregations/bucket/date_range";
 import type { FiltersAggs } from "./aggregations/bucket/filters";
+import type { GeoHashGridAggs } from "./aggregations/bucket/geohash_grid";
 import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
 import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
@@ -322,6 +323,7 @@ export type AggregationOutput<
 			| DateHistogramAggs<BaseQuery, E, Index, Agg>
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
+			| GeoHashGridAggs<BaseQuery, E, Index, Agg>
 			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
 			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
 			| HistogramAggs<BaseQuery, E, Index, Agg>
