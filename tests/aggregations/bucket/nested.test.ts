@@ -104,4 +104,34 @@ describe("Nested Aggregations", () => {
 			};
 		}>();
 	});
+
+	test("nested with min metric sub-aggregation", () => {
+		type Aggregations = TestAggregationOutput<
+			"products",
+			{
+				resellers: {
+					nested: {
+						path: "resellers";
+					};
+					aggs: {
+						min_price: {
+							min: {
+								field: "resellers.price";
+							};
+						};
+					};
+				};
+			}
+		>;
+
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			resellers: {
+				doc_count: number;
+				min_price: {
+					value: number;
+					value_as_string?: string;
+				};
+			};
+		}>();
+	});
 });

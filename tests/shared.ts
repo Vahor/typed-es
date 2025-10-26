@@ -50,6 +50,14 @@ export type CustomIndexes = {
 		id: string;
 		rating: number;
 	};
+	products: {
+		id: string;
+		name: string;
+		resellers: {
+			name: string;
+			price: number;
+		};
+	};
 };
 
 export const client: TypedClient<CustomIndexes> = undefined as any;
