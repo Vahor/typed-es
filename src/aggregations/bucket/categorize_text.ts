@@ -25,6 +25,8 @@ export type CategorizeTextAggs<
 						{
 							key: string;
 							doc_count: number;
+							max_matching_length: number;
+							regex: string;
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
 				}

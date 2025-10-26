@@ -23,6 +23,8 @@ describe("Categorize Text Aggregations", () => {
 				buckets: Array<{
 					key: string;
 					doc_count: number;
+					max_matching_length: number;
+					regex: string;
 				}>;
 			};
 		}>();
@@ -52,6 +54,8 @@ describe("Categorize Text Aggregations", () => {
 				buckets: Array<{
 					key: string;
 					doc_count: number;
+					max_matching_length: number;
+					regex: string;
 					avg_score: {
 						value: number | null;
 					};
