@@ -12,6 +12,7 @@ import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
 import type { DateRangeAggs } from "./aggregations/bucket/date_range";
 import type { FilterAggs } from "./aggregations/bucket/filter";
 import type { FiltersAggs } from "./aggregations/bucket/filters";
+import type { FrequentItemSetsAggs } from "./aggregations/bucket/frequent_item_sets";
 import type { GeoHashGridAggs } from "./aggregations/bucket/geohash_grid";
 import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
 import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
@@ -287,6 +288,7 @@ export type NextAggsParentKey<
 	| "extended_stats"
 	| "filter"
 	| "filters"
+	| "frequent_item_sets"
 	| "geo_bounds"
 	| "geo_centroid"
 	| "geo_line"
@@ -339,6 +341,7 @@ export type AggregationOutput<
 			| DateRangeAggs<BaseQuery, E, Index, Agg>
 			| FilterAggs<BaseQuery, E, Index, Agg>
 			| FiltersAggs<BaseQuery, E, Index, Agg>
+			| FrequentItemSetsAggs<BaseQuery, E, Index, Agg>
 			| GeoHashGridAggs<BaseQuery, E, Index, Agg>
 			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
 			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
