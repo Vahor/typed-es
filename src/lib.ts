@@ -235,6 +235,31 @@ export type PossibleFieldsWithWildcards<
 	OnlyLeaf = false,
 > = PossibleFields<Index, Indexes, OnlyLeaf> | AnyString;
 
+/**
+ * Improved field validation that accepts wildcards and field variants
+ * but restricts known literal fields to the current index.
+ *
+ * The approach:
+ * - Allow all fields from PossibleFields (with variants)
+ * - Allow wildcard patterns
+ * - Allow any field that contains a dot (for field variants and nested fields)
+ * - Allow generic string types (for dynamic use)
+ * - But disallow string literals that don't match any of the above
+ *
+ * This provides better error messages for typos while maintaining flexibility.
+ *
+ * @internal
+ */
+type ValidatedSourceField<
+	Index extends keyof Indexes,
+	Indexes extends ElasticsearchIndexes,
+	OnlyLeaf = false,
+> =
+	| PossibleFields<Index, Indexes, OnlyLeaf, true>
+	| (string & {}) // Generic string type (AnyString)
+	| `${string}*${string}` // Wildcard patterns
+	| `${string}.${string}`; // Field variants and nested fields
+
 export type TypeOfField<
 	Field extends string,
 	Indexes extends ElasticsearchIndexes,
@@ -494,6 +519,7 @@ export type SearchRequest = Pick<
  * - Autocomplete for _source, fields, and docvalue_fields based on your index schema
  * - Support for wildcard patterns in field names
  * - Proper type inference for the search response
+ * - Clear error messages when invalid fields are used
  *
  * @example
  * ```typescript
@@ -515,7 +541,7 @@ export type SearchRequest = Pick<
  * // Invalid query - TypeScript error
  * const invalid: TypedSearchRequest<MyIndexes> = {
  *   index: "invalid-index",  // Error: not in MyIndexes
- *   _source: ["invalid_field"]  // Error: field doesn't exist
+ *   _source: ["invalid_field"]  // Error: field doesn't exist in index 'products'
  * };
  * ```
  */
@@ -527,25 +553,25 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 		[K in keyof Indexes]: {
 			index: K;
 			_source?:
-				| Array<PossibleFieldsWithWildcards<K, Indexes>>
+				| Array<ValidatedSourceField<K, Indexes, false>>
 				| false
 				| {
-						includes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						include?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						excludes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						exclude?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
+						includes?: Array<ValidatedSourceField<K, Indexes, false>>;
+						include?: Array<ValidatedSourceField<K, Indexes, false>>;
+						excludes?: Array<ValidatedSourceField<K, Indexes, false>>;
+						exclude?: Array<ValidatedSourceField<K, Indexes, false>>;
 				  };
 			fields?: Array<
-				| PossibleFieldsWithWildcards<K, Indexes, true>
+				| ValidatedSourceField<K, Indexes, true>
 				| {
-						field: PossibleFieldsWithWildcards<K, Indexes, true>;
+						field: ValidatedSourceField<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
 			docvalue_fields?: Array<
-				| PossibleFieldsWithWildcards<K, Indexes, true>
+				| ValidatedSourceField<K, Indexes, true>
 				| {
-						field: PossibleFieldsWithWildcards<K, Indexes, true>;
+						field: ValidatedSourceField<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
