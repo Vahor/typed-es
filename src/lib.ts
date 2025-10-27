@@ -46,6 +46,7 @@ import type { RateAggs } from "./aggregations/metrics/rate";
 import type { ScriptedMetricAggs } from "./aggregations/metrics/scripted_metric";
 import type { StatsAggs } from "./aggregations/metrics/stats";
 import type { StringStatsAggs } from "./aggregations/metrics/string_stats";
+import type { TTestAggs } from "./aggregations/metrics/t_test";
 import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
 import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
@@ -307,6 +308,7 @@ export type NextAggsParentKey<
 	| "significant_text"
 	| "stats"
 	| "string_stats"
+	| "t_test"
 	| "terms"
 	| "top_hits"
 	| "top_metrics"
@@ -367,6 +369,7 @@ export type AggregationOutput<
 			| ScriptedMetricAggs<Agg>
 			| StatsAggs<E, Index, Agg>
 			| StringStatsAggs<E, Index, Agg>
+			| TTestAggs<E, Index, Agg>
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| WeightedAvgAggs<E, Index, Agg>
