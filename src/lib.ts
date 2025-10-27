@@ -17,6 +17,7 @@ import type { FrequentItemSetsAggs } from "./aggregations/bucket/frequent_item_s
 import type { GeoHashGridAggs } from "./aggregations/bucket/geohash_grid";
 import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
 import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
+import type { GlobalAggs } from "./aggregations/bucket/global";
 import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
@@ -300,6 +301,7 @@ export type NextAggsParentKey<
 	| "ip_prefix"
 	| "ip_range"
 	| "matrix_stats"
+	| "global"
 	| "missing"
 	| "nested"
 	| "median_absolute_deviation"
@@ -352,6 +354,7 @@ export type AggregationOutput<
 			| IpPrefixAggs<BaseQuery, E, Index, Agg>
 			| IpRangeAggs<BaseQuery, E, Index, Agg>
 			| ParentAggs<BaseQuery, E, Index, Agg>
+			| GlobalAggs<BaseQuery, E, Index, Agg>
 			| MissingAggs<BaseQuery, E, Index, Agg>
 			| NestedAggs<BaseQuery, E, Index, Agg>
 			| RangeAggs<BaseQuery, E, Index, Agg>

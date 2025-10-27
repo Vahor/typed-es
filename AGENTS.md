@@ -3,16 +3,16 @@
 This library is a TypeScript type-safe wrapper for Elasticsearch queries.
 There won't be any runtime code in this library.
 
-Always start by making a plan for your changes.
+Always start by making a plan for your changes. Gather requirements, read issue and comments.
 
 ## Build/Test/Lint Commands
 
 - **Build**: `bun run build` (uses build.ts)
 - **Format**: `bunx @biomejs/biome check ./ --write`
 - **Typecheck**: `bun typecheck`
-- **Test**: `bun test` (uses Bun test runner; Even tests pass, run typecheck to make sure types are correct)
+- **Test**: `bun test` (uses Bun test runner; Even tests pass, run typecheck to make sure types are correct ; Add `AGENT=1` env variable to reduce noise)
 - **Test single file**: `bun test tests/index.test.ts`
-- **Adding changesets**: `bunx @changesets/cli` (package name is `@vahor/typed-es`)
+- **Adding changesets**: `echo "---\n@vahor/typed-es: patch\n---\n\nmessage content\n" > .changeset/your-changeset.md` (package name is `@vahor/typed-es`)
 
 ## Code Style Guidelines
 
