@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.0.33
+
+### Patch Changes
+
+- [#266](https://github.com/Vahor/typed-es/pull/266) [`488bd1c`](https://github.com/Vahor/typed-es/commit/488bd1c7dc51a3796c8bfa4466500793a005c6b7) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `cartesian_bounds` metric aggregation
+
+- [#265](https://github.com/Vahor/typed-es/pull/265) [`b76785a`](https://github.com/Vahor/typed-es/commit/b76785a91763469b024333c64452acf60dd4f484) Thanks [@Vahor](https://github.com/Vahor)! - Add support for T-test aggregation
+
 ## 0.0.32
 
 ### Patch Changes
