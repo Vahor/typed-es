@@ -48,7 +48,7 @@
 		"build": "bun run build.ts",
 		"format": "bunx @biomejs/biome check ./ --write",
 		"typecheck": "tsc --noEmit --declaration",
-		"type-coverage": "type-coverage --strict --at-least 99"
+		"type-coverage": "bun run scripts/check-type-coverage.ts"
 	},
 	"lint-staged": {
 		"*": [
