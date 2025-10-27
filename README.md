@@ -72,7 +72,7 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 | Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation) |
 | String Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-string-stats-aggregation) |
 | Sum | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-sum-aggregation) |
-| T-Test | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation) |
+| T-Test | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation) |
 | Top Hits | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-hits-aggregation) |
 | Top Metrics | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics) |
 | Value Count | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-valuecount-aggregation) |
