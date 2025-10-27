@@ -55,7 +55,7 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 | Avg | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-avg-aggregation) |
 | Boxplot | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation) |
 | Cardinality | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cardinality-aggregation) |
-| Cartesian Bounds | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation) |
+| Cartesian Bounds | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation) |
 | Cartesian Centroid | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation) |
 | Extended Stats | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation) |
 | Geo Bounds | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation) |

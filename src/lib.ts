@@ -29,6 +29,7 @@ import type { SignificantTextAggs } from "./aggregations/bucket/significant_text
 import type { TermsAggs } from "./aggregations/bucket/terms";
 import type { VariableWidthHistogramAggs } from "./aggregations/bucket/variable_width_histogram";
 import type { BoxplotAggs } from "./aggregations/metrics/boxplot";
+import type { CartesianBoundsAggs } from "./aggregations/metrics/cartesian_bounds";
 import type { CartesianCentroidAggs } from "./aggregations/metrics/cartesian_centroid";
 import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
 import type {
@@ -276,6 +277,7 @@ export type NextAggsParentKey<
 	| "adjacency_matrix"
 	| "auto_date_histogram"
 	| "boxplot"
+	| "cartesian_bounds"
 	| "cartesian_centroid"
 	| "categorize_text"
 	| "children"
@@ -353,6 +355,7 @@ export type AggregationOutput<
 			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
 			//
 			| BoxplotAggs<E, Index, Agg>
+			| CartesianBoundsAggs<E, Index, Agg>
 			| CartesianCentroidAggs<E, Index, Agg>
 			| ExtendedStatsAggs<E, Index, Agg>
 			| FunctionAggs<E, Index, Agg>
