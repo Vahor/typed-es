@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.0.34
+
+### Patch Changes
+
+- [#283](https://github.com/Vahor/typed-es/pull/283) [`8f2edc8`](https://github.com/Vahor/typed-es/commit/8f2edc81393700ef3a46c0aad33ac1f5c50cbf55) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `frequent_item_sets` bucket aggregation
+
+- [#284](https://github.com/Vahor/typed-es/pull/284) [`ba28c0f`](https://github.com/Vahor/typed-es/commit/ba28c0f1445557b1d1a1514e3f1c0340628e131c) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `diversified_sampler` bucket aggregation
+
 ## 0.0.33
 
 ### Patch Changes
