@@ -30,6 +30,7 @@ describe("typedEs Function", () => {
 		});
 
 		test("with invalid fields", () => {
+			// @ts-expect-error: "invalid" is not a field in demo index
 			typedEs(client, {
 				index: "demo",
 				_source: ["score", "invalid"],
@@ -65,6 +66,7 @@ describe("typedEs Function", () => {
 		});
 
 		test("with invalid fields", () => {
+			// @ts-expect-error: "invalid" is not a field in demo index
 			typedEs(client, {
 				index: "demo",
 				fields: ["score", { field: "invalid", format: "yyyy-MM-dd" }],

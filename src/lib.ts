@@ -236,17 +236,20 @@ export type PossibleFieldsWithWildcards<
 > = PossibleFields<Index, Indexes, OnlyLeaf> | AnyString;
 
 /**
- * Improved field validation that accepts wildcards and field variants
- * but restricts known literal fields to the current index.
+ * Field validation type for _source, fields, and docvalue_fields that provides
+ * intellisense for valid fields while accepting wildcards and field variants.
  *
- * The approach:
- * - Allow all fields from PossibleFields (with variants)
- * - Allow wildcard patterns
- * - Allow any field that contains a dot (for field variants and nested fields)
- * - Allow generic string types (for dynamic use)
- * - But disallow string literals that don't match any of the above
+ * This type includes:
+ * - All valid fields from the index schema (with variants like .keyword)
+ * - Wildcard patterns (e.g., "*_id", "field_*")
+ * - Dotted field paths for variants and nested fields (e.g., "field.keyword")
+ * - Generic string type for dynamic/runtime-generated field names
  *
- * This provides better error messages for typos while maintaining flexibility.
+ * Note: The inclusion of generic string type means invalid field literals
+ * are accepted at compile time. This is a necessary tradeoff because:
+ * - TypeScript's discriminated unions don't work well with strict field validation
+ * - Removing the string fallback causes valid queries to fail type checking
+ * - The error messages for strict validation reference wrong indexes
  *
  * @internal
  */
@@ -256,9 +259,9 @@ type ValidatedSourceField<
 	OnlyLeaf = false,
 > =
 	| PossibleFields<Index, Indexes, OnlyLeaf, true>
-	| (string & {}) // Generic string type (AnyString)
 	| `${string}*${string}` // Wildcard patterns
-	| `${string}.${string}`; // Field variants and nested fields
+	| `${string}.${string}` // Field variants and nested fields
+	| (string & {}); // Generic string type (necessary for union type matching)
 
 export type TypeOfField<
 	Field extends string,
