@@ -12,7 +12,7 @@ Always start by making a plan for your changes. Gather requirements, read issue 
 - **Typecheck**: `bun typecheck`
 - **Test**: `bun test` (uses Bun test runner; Even tests pass, run typecheck to make sure types are correct ; Add `AGENT=1` env variable to reduce noise)
 - **Test single file**: `bun test tests/index.test.ts`
-- **Adding changesets**: `echo "---\n@vahor/typed-es: patch\n---\n\nmessage content\n" > .changeset/your-changeset.md` (package name is `@vahor/typed-es`)
+- **Adding changesets**: `echo '---\n"@vahor/typed-es": patch\n---\n\nmessage content\n' > .changeset/your-changeset.md` (package name is `@vahor/typed-es`)
 
 ## Code Style Guidelines
 
@@ -38,6 +38,7 @@ Always start by making a plan for your changes. Gather requirements, read issue 
 - Each aggregation has a test file in tests/aggregations/[type]. The filename for the test file should be the same as the aggregation name but with .test.ts extension. The aggregation filename should contain the aggregation full name in snake_case. If you don't find it by listing the files, it does not exist yet.
 - To add a new aggregation, you'll have to update lib.ts AggregationOutput type and probably NextAggsParentKey. Do not modify the other aggregation implementations unless requested.
 - When implementing tests, add a base case that uses the documentation example.
+- You don't need to update the CHANGELOG.md file. 
 
 ## Guidelines 
 

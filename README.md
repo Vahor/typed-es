@@ -43,7 +43,7 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 | Rare Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-rare-terms-aggregation) |
 | Reverse Nested | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-reverse-nested-aggregation) |
 | Sampler | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-sampler-aggregation) |
-| Significant Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation) |
+| Significant Terms | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation) |
 | Significant Text | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation) |
 | Terms | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation) |
 | Time Series | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-time-series-aggregation) |
