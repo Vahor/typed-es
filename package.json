@@ -65,7 +65,6 @@
 		"atLeast": 99,
 		"strict": true,
 		"ignoreFiles": [
-			"tests/**/*.test.ts",
 			"**/*.d.ts",
 			"dist/**"
 		]
