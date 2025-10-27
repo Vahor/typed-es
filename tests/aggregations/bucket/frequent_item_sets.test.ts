@@ -23,9 +23,9 @@ describe("Frequent Item Sets Aggregations", () => {
 			my_agg: {
 				buckets: Array<{
 					key: {
-						status: "pending" | "completed" | "cancelled";
-						user_id: number;
-						total: number;
+						status: Array<"pending" | "completed" | "cancelled">;
+						user_id: number[];
+						total: number[];
 					};
 					doc_count: number;
 					support: number;
@@ -50,8 +50,8 @@ describe("Frequent Item Sets Aggregations", () => {
 			item_sets: {
 				buckets: Array<{
 					key: {
-						status: "pending" | "completed" | "cancelled";
-						user_id: number;
+						status: Array<"pending" | "completed" | "cancelled">;
+						user_id: number[];
 					};
 					doc_count: number;
 					support: number;
@@ -76,8 +76,8 @@ describe("Frequent Item Sets Aggregations", () => {
 			product_sets: {
 				buckets: Array<{
 					key: {
-						product_ids: string[];
-						status: "pending" | "completed" | "cancelled";
+						product_ids: string[][];
+						status: Array<"pending" | "completed" | "cancelled">;
 					};
 					doc_count: number;
 					support: number;

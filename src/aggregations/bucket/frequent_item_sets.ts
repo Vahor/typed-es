@@ -23,7 +23,7 @@ export type FrequentItemSetsAggs<
 			buckets: PrettyArray<
 				{
 					key: {
-						[K in Fields[number]["field"]]: TypeOfField<K, E, Index>;
+						[K in Fields[number]["field"]]: TypeOfField<K, E, Index>[];
 					};
 					doc_count: number;
 					support: number;
