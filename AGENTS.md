@@ -24,6 +24,7 @@ Always start by making a plan for your changes.
 - **Error handling**: Use TypeScript's type system for compile-time safety
 - **File structure**: Code in src/, tests in tests/ directory
 - **Backticks**: Add backticks around any field name, aggregation name, or index name in comments.
+- **Add issue name in branch name**: Never commit to main branch. Instead, create a branch with the issue number and name (can add agent name).
 
 ## Project Specifics
 
