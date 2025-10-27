@@ -12,7 +12,16 @@ Always start by making a plan for your changes. Gather requirements, read issue 
 - **Typecheck**: `bun typecheck`
 - **Test**: `bun test` (uses Bun test runner; Even tests pass, run typecheck to make sure types are correct ; Add `AGENT=1` env variable to reduce noise)
 - **Test single file**: `bun test tests/index.test.ts`
-- **Adding changesets**: `echo '---\n"@vahor/typed-es": patch\n---\n\nmessage content\n' > .changeset/your-changeset.md` (package name is `@vahor/typed-es`)
+- **Adding changesets**:
+```bash
+cat > .changeset/your-changeset.md <<'EOF'
+---
+"@vahor/typed-es": patch
+---
+
+message content
+EOF
+```
 
 ## Code Style Guidelines
 
