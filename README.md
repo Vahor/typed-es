@@ -8,6 +8,8 @@
 
 Automatically add output types to your Elasticsearch queries.
 
+Tested with Elasticsearch ^8 and Elasticsearch ^9
+
 <details>
 <summary>Supported Aggregations</summary>
 
