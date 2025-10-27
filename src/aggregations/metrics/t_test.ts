@@ -20,45 +20,8 @@ export type TTestAggs<
 		b?: { field?: infer FieldB extends string; script?: unknown };
 	};
 }
-	? FieldA extends string
-		? FieldB extends string
-			? CanBeUsedInAggregation<FieldA, Index, E> extends true
-				? IsSomeSortOf<TypeOfField<FieldA, E, Index>, number> extends true
-					? CanBeUsedInAggregation<FieldB, Index, E> extends true
-						? IsSomeSortOf<TypeOfField<FieldB, E, Index>, number> extends true
-							? {
-									value: number;
-								}
-							: InvalidFieldTypeInAggregation<
-									FieldB,
-									Index,
-									Agg,
-									TypeOfField<FieldB, E, Index>,
-									number
-								>
-						: InvalidFieldInAggregation<FieldB, Index, Agg>
-					: InvalidFieldTypeInAggregation<
-							FieldA,
-							Index,
-							Agg,
-							TypeOfField<FieldA, E, Index>,
-							number
-						>
-				: InvalidFieldInAggregation<FieldA, Index, Agg>
-			: CanBeUsedInAggregation<FieldA, Index, E> extends true
-				? IsSomeSortOf<TypeOfField<FieldA, E, Index>, number> extends true
-					? {
-							value: number;
-						}
-					: InvalidFieldTypeInAggregation<
-							FieldA,
-							Index,
-							Agg,
-							TypeOfField<FieldA, E, Index>,
-							number
-						>
-				: InvalidFieldInAggregation<FieldA, Index, Agg>
-		: FieldB extends string
+	? CanBeUsedInAggregation<FieldA, Index, E> extends true
+		? IsSomeSortOf<TypeOfField<FieldA, E, Index>, number> extends true
 			? CanBeUsedInAggregation<FieldB, Index, E> extends true
 				? IsSomeSortOf<TypeOfField<FieldB, E, Index>, number> extends true
 					? {
@@ -72,7 +35,12 @@ export type TTestAggs<
 							number
 						>
 				: InvalidFieldInAggregation<FieldB, Index, Agg>
-			: {
-					value: number;
-				}
+			: InvalidFieldTypeInAggregation<
+					FieldA,
+					Index,
+					Agg,
+					TypeOfField<FieldA, E, Index>,
+					number
+				>
+		: InvalidFieldInAggregation<FieldA, Index, Agg>
 	: never;
