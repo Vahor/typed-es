@@ -6,22 +6,23 @@ import type {
 	InvalidFieldTypeInAggregation,
 	SearchRequest,
 	TypeOfField,
-} from "../..";
+} from "../../";
 import type { IsSomeSortOf, PrettyArray } from "../../types/helpers";
 
 /**
- * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation
  */
-export type SignificantTextAggs<
+export type SignificantTermsAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,
-> = Agg extends { significant_text: { field: infer Field extends string } }
+> = Agg extends { significant_terms: { field: infer Field extends string } }
 	? CanBeUsedInAggregation<Field, Index, E> extends true
 		? IsSomeSortOf<TypeOfField<Field, E, Index>, string> extends true
 			? {
 					doc_count: number;
+					bg_count: number;
 					buckets: PrettyArray<
 						{
 							key: string;

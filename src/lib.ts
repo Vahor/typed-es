@@ -28,6 +28,7 @@ import type { RandomSamplerAggs } from "./aggregations/bucket/random_sampler";
 import type { RangeAggs } from "./aggregations/bucket/range";
 import type { ReverseNestedAggs } from "./aggregations/bucket/reverse_nested";
 import type { SamplerAggs } from "./aggregations/bucket/sampler";
+import type { SignificantTermsAggs } from "./aggregations/bucket/significant_terms";
 import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
 import type { TermsAggs } from "./aggregations/bucket/terms";
 import type { VariableWidthHistogramAggs } from "./aggregations/bucket/variable_width_histogram";
@@ -314,6 +315,7 @@ export type NextAggsParentKey<
 	| "sampler"
 	| "scripted_metric"
 	| "significant_text"
+	| "significant_terms"
 	| "stats"
 	| "string_stats"
 	| "t_test"
@@ -360,7 +362,8 @@ export type AggregationOutput<
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| RandomSamplerAggs<BaseQuery, E, Index, Agg>
 			| SamplerAggs<BaseQuery, E, Index, Agg>
-			| SignificantTextAggs<E, Index, Agg>
+			| SignificantTextAggs<BaseQuery, E, Index, Agg>
+			| SignificantTermsAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
