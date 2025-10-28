@@ -362,8 +362,8 @@ export type AggregationOutput<
 			| RangeAggs<BaseQuery, E, Index, Agg>
 			| RandomSamplerAggs<BaseQuery, E, Index, Agg>
 			| SamplerAggs<BaseQuery, E, Index, Agg>
-			| SignificantTextAggs<E, Index, Agg>
-			| SignificantTermsAggs<E, Index, Agg>
+			| SignificantTextAggs<BaseQuery, E, Index, Agg>
+			| SignificantTermsAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
