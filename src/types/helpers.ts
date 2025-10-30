@@ -166,9 +166,11 @@ export type SeparatedString<
 	Sep extends string,
 	Amount extends number,
 	Cur extends any[] = [0],
-> = Cur["length"] extends Amount
-	? string
-	: `${string}${Sep}${SeparatedString<Sep, Amount, [...Cur, any]>}`;
+> = Cur["length"] extends 0
+	? never
+	: Cur["length"] extends Amount
+		? string
+		: `${string}${Sep}${SeparatedString<Sep, Amount, [...Cur, any]>}`;
 
 export type Combinations<
 	T extends string,
