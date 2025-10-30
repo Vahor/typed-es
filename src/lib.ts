@@ -22,6 +22,7 @@ import type { HistogramAggs } from "./aggregations/bucket/histogram";
 import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
 import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
 import type { MissingAggs } from "./aggregations/bucket/missing";
+import type { MultiTermsAggs } from "./aggregations/bucket/multi_terms";
 import type { NestedAggs } from "./aggregations/bucket/nested";
 import type { ParentAggs } from "./aggregations/bucket/parent";
 import type { RandomSamplerAggs } from "./aggregations/bucket/random_sampler";
@@ -319,6 +320,7 @@ export type NextAggsParentKey<
 	| "stats"
 	| "string_stats"
 	| "t_test"
+	| "multi_terms"
 	| "terms"
 	| "top_hits"
 	| "top_metrics"
@@ -365,6 +367,7 @@ export type AggregationOutput<
 			| SignificantTextAggs<BaseQuery, E, Index, Agg>
 			| SignificantTermsAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
+			| MultiTermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
 			//

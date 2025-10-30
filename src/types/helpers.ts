@@ -162,6 +162,14 @@ type CompareStrings<A extends string, B extends string> = A extends B
 			: false // A is longer, not less than
 		: true; // A is shorter prefix of B, is less than
 
+export type SeparatedString<
+	Sep extends string,
+	Amount extends number,
+	Cur extends any[] = [0],
+> = Cur["length"] extends Amount
+	? string
+	: `${string}${Sep}${SeparatedString<Sep, Amount, [...Cur, any]>}`;
+
 export type Combinations<
 	T extends string,
 	Sep extends string = "",
