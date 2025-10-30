@@ -35,7 +35,7 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 | IP Prefix | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation) |
 | IP Range | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-iprange-aggregation) |
 | Missing | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-missing-aggregation) |
-| Multi Terms | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation) |
+| Multi Terms | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation) |
 | Parent | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-parent-aggregation) |
 | Nested | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-nested-aggregation) |
 | Random Sampler | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-random-sampler-aggregation) |
