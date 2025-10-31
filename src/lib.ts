@@ -27,6 +27,7 @@ import type { NestedAggs } from "./aggregations/bucket/nested";
 import type { ParentAggs } from "./aggregations/bucket/parent";
 import type { RandomSamplerAggs } from "./aggregations/bucket/random_sampler";
 import type { RangeAggs } from "./aggregations/bucket/range";
+import type { RareTermsAggs } from "./aggregations/bucket/rare_terms";
 import type { ReverseNestedAggs } from "./aggregations/bucket/reverse_nested";
 import type { SamplerAggs } from "./aggregations/bucket/sampler";
 import type { SignificantTermsAggs } from "./aggregations/bucket/significant_terms";
@@ -322,6 +323,7 @@ export type NextAggsParentKey<
 	| "t_test"
 	| "multi_terms"
 	| "terms"
+	| "rare_terms"
 	| "top_hits"
 	| "top_metrics"
 	| "variable_width_histogram"
@@ -367,6 +369,7 @@ export type AggregationOutput<
 			| SignificantTextAggs<BaseQuery, E, Index, Agg>
 			| SignificantTermsAggs<BaseQuery, E, Index, Agg>
 			| TermsAggs<BaseQuery, E, Index, Agg>
+			| RareTermsAggs<BaseQuery, E, Index, Agg>
 			| MultiTermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
