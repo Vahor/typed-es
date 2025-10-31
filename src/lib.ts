@@ -243,6 +243,34 @@ export type PossibleFieldsWithWildcards<
 	OnlyLeaf = false,
 > = PossibleFields<Index, Indexes, OnlyLeaf> | AnyString;
 
+/**
+ * Field validation type for _source, fields, and docvalue_fields that provides
+ * intellisense for valid fields while accepting wildcards and field variants.
+ *
+ * This type includes:
+ * - All valid fields from the index schema (with variants like .keyword)
+ * - Wildcard patterns (e.g., "*_id", "field_*")
+ * - Dotted field paths for variants and nested fields (e.g., "field.keyword")
+ * - Generic string type for dynamic/runtime-generated field names
+ *
+ * Note: The inclusion of generic string type means invalid field literals
+ * are accepted at compile time. This is a necessary tradeoff because:
+ * - TypeScript's discriminated unions don't work well with strict field validation
+ * - Removing the string fallback causes valid queries to fail type checking
+ * - The error messages for strict validation reference wrong indexes
+ *
+ * @internal
+ */
+type ValidatedSourceField<
+	Index extends keyof Indexes,
+	Indexes extends ElasticsearchIndexes,
+	OnlyLeaf = false,
+> =
+	| PossibleFields<Index, Indexes, OnlyLeaf, true>
+	| `${string}*${string}` // Wildcard patterns
+	| `${string}.${string}` // Field variants and nested fields
+	| (string & {}); // Generic string type (necessary for union type matching)
+
 export type TypeOfField<
 	Field extends string,
 	Indexes extends ElasticsearchIndexes,
@@ -518,6 +546,7 @@ export type SearchRequest = Pick<
  * - Autocomplete for _source, fields, and docvalue_fields based on your index schema
  * - Support for wildcard patterns in field names
  * - Proper type inference for the search response
+ * - Clear error messages when invalid fields are used
  *
  * @example
  * ```typescript
@@ -539,7 +568,7 @@ export type SearchRequest = Pick<
  * // Invalid query - TypeScript error
  * const invalid: TypedSearchRequest<MyIndexes> = {
  *   index: "invalid-index",  // Error: not in MyIndexes
- *   _source: ["invalid_field"]  // Error: field doesn't exist
+ *   _source: ["invalid_field"]  // Error: field doesn't exist in index 'products'
  * };
  * ```
  */
@@ -551,25 +580,25 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 		[K in keyof Indexes]: {
 			index: K;
 			_source?:
-				| Array<PossibleFieldsWithWildcards<K, Indexes>>
+				| Array<ValidatedSourceField<K, Indexes, false>>
 				| false
 				| {
-						includes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						include?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						excludes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						exclude?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
+						includes?: Array<ValidatedSourceField<K, Indexes, false>>;
+						include?: Array<ValidatedSourceField<K, Indexes, false>>;
+						excludes?: Array<ValidatedSourceField<K, Indexes, false>>;
+						exclude?: Array<ValidatedSourceField<K, Indexes, false>>;
 				  };
 			fields?: Array<
-				| PossibleFieldsWithWildcards<K, Indexes, true>
+				| ValidatedSourceField<K, Indexes, true>
 				| {
-						field: PossibleFieldsWithWildcards<K, Indexes, true>;
+						field: ValidatedSourceField<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
 			docvalue_fields?: Array<
-				| PossibleFieldsWithWildcards<K, Indexes, true>
+				| ValidatedSourceField<K, Indexes, true>
 				| {
-						field: PossibleFieldsWithWildcards<K, Indexes, true>;
+						field: ValidatedSourceField<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
