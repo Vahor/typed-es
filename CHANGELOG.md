@@ -1,5 +1,19 @@
 # @vahor/typed-es
 
+## 0.0.35
+
+### Patch Changes
+
+- [#286](https://github.com/Vahor/typed-es/pull/286) [`0611ca4`](https://github.com/Vahor/typed-es/commit/0611ca43af3b150b862fb32c50d35f7fa4d7c4b5) Thanks [@Vahor](https://github.com/Vahor)! - Add `global` aggregation support
+
+- [`d55e8a9`](https://github.com/Vahor/typed-es/commit/d55e8a959b28657c58a1b7cb54848852aa71d701) Thanks [@Vahor](https://github.com/Vahor)! - Added support for `rare_terms` bucket aggregation.
+
+- [#287](https://github.com/Vahor/typed-es/pull/287) [`2033a56`](https://github.com/Vahor/typed-es/commit/2033a560bfada3102e863f619a16668774900617) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `significant_terms` aggregation
+
+- [#262](https://github.com/Vahor/typed-es/pull/262) [`fbe2710`](https://github.com/Vahor/typed-es/commit/fbe2710bc9b6a8973e6e2f7c74c990fd01f97c44) Thanks [@dependabot](https://github.com/apps/dependabot)! - chore(deps-dev): bump @biomejs/biome from 2.3.0 to 2.3.1
+
+- [#290](https://github.com/Vahor/typed-es/pull/290) [`566104a`](https://github.com/Vahor/typed-es/commit/566104a2ee5db134c76c124889248ade51fa9a5e) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `multi_terms` bucket aggregation
+
 ## 0.0.34
 
 ### Patch Changes
