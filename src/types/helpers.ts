@@ -204,3 +204,12 @@ type DeepPickOne<
 export type DeepPickPaths<T, Paths extends string> = Prettify<
 	UnionToIntersection<Paths extends any ? DeepPickOne<T, Paths> : never>
 >;
+
+export type AlternatingPair<
+	T1,
+	T2,
+	Current extends any[] = [T1, T2],
+	Max extends number = 20,
+> = Current["length"] extends Max
+	? Current
+	: Current | AlternatingPair<T1, T2, [...Current, T1, T2], Max>;

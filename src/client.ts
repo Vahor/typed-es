@@ -8,6 +8,10 @@ import type {
 import type { ElasticsearchIndexes, TypedSearchRequest } from ".";
 import type { TypedAsyncSearchGetResponse } from "./override/async-search-get-response";
 import type { TypedAsyncSearchSubmitResponse } from "./override/async-search-submit-response";
+import type {
+	TypedMSearchResponse,
+	TypedMsearchRequest,
+} from "./override/msearch-response";
 import type { TypedSearchResponse } from "./override/search-response";
 
 type TransportOptions =
@@ -80,6 +84,18 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 			E
 		>
 	>;
+
+	/**
+	 * Run multiple independent searches in a single request.
+	 * @see {@link https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-msearch | Elasticsearch API documentation}
+	 */
+	msearch<
+		Query extends TypedMsearchRequest<E>,
+		O extends TransportOptions = TransportRequestOptionsWithOutMeta,
+	>(
+		params: Query,
+		options?: O,
+	): WithTransport<O, TypedMSearchResponse<Query, E>>;
 
 	asyncSearch: Omit<Client["asyncSearch"], "get" | "submit"> & {
 		/**
