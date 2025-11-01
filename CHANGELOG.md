@@ -1,5 +1,20 @@
 # @vahor/typed-es
 
+## 0.1.1
+
+### Patch Changes
+
+- [#296](https://github.com/Vahor/typed-es/pull/296) [`e6ad7e2`](https://github.com/Vahor/typed-es/commit/e6ad7e268f330770fc33d5d0dd7b5da445c18433) Thanks [@Vahor](https://github.com/Vahor)! - - Added support for `avg_bucket` pipeline aggregation
+
+  - Added support for `sum_bucket` pipeline aggregation
+  - Added support for `stats_bucket` pipeline aggregation
+  - Added support for `min_bucket` pipeline aggregation
+  - Added support for `max_bucket` pipeline aggregation
+  - Added support for `extended_stats_bucket` pipeline aggregation
+  - Added support for `percentiles_bucket` pipeline aggregation
+
+- [#299](https://github.com/Vahor/typed-es/pull/299) [`34eca5c`](https://github.com/Vahor/typed-es/commit/34eca5c8c68b06fe6ac31bedecc05d604670cd5b) Thanks [@Vahor](https://github.com/Vahor)! - Add typed `msearch` support and document usage with example. Responses are strongly typed per search pair. Check README example for usage.
+
 ## 0.1.0
 
 ### Minor Changes
