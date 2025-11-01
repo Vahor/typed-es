@@ -72,6 +72,6 @@ describe("Percentiles Bucket Pipeline Aggregation", () => {
 					"99.0": number;
 				};
 			};
-		}>;
+		}>();
 	});
 });
