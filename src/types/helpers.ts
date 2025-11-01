@@ -205,21 +205,11 @@ export type DeepPickPaths<T, Paths extends string> = Prettify<
 	UnionToIntersection<Paths extends any ? DeepPickOne<T, Paths> : never>
 >;
 
-export type Alternating<
+export type AlternatingPair<
 	T1,
 	T2,
-	Current extends any[] = [],
+	Current extends any[] = [T1, T2],
 	Max extends number = 20,
 > = Current["length"] extends Max
 	? Current
-	: Current["length"] extends 0
-		? [T1, T2] | [T1, T2, ...Alternating<T1, T2, [T1, T2], Max>]
-		: Current extends [...any, infer Last]
-			? Last extends T2
-				?
-						| Current
-						| [...Current, T1, ...Alternating<T1, T2, [...Current, T1], Max>]
-				:
-						| Current
-						| [...Current, T2, ...Alternating<T1, T2, [...Current, T2], Max>]
-			: never;
+	: Current | AlternatingPair<T1, T2, [...Current, T1, T2], Max>;

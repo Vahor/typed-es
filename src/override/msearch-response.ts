@@ -1,6 +1,6 @@
 import type { estypes } from "@elastic/elasticsearch";
 import type { ElasticsearchIndexes, TypedSearchRequest } from "../lib";
-import type { Alternating } from "../types/helpers";
+import type { AlternatingPair } from "../types/helpers";
 import type { TypedSearchResponse } from "./search-response";
 
 type PairType<E extends ElasticsearchIndexes> = {
@@ -29,7 +29,7 @@ export type TypedMsearchRequest<Indexes extends ElasticsearchIndexes> = {
 	searches: MRequestSearches<Indexes>;
 };
 
-export type MRequestSearches<E extends ElasticsearchIndexes> = Alternating<
+export type MRequestSearches<E extends ElasticsearchIndexes> = AlternatingPair<
 	PairType<E>["header"],
 	PairType<E>["request"]
 >;
