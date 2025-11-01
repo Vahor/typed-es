@@ -395,6 +395,7 @@ const result = await (client as unknown as Client).search<TDocument, TAggregatio
 - Some agg functions might be missing.
 - _source fields allow any string as you can use wildcards. On the other hand, wildcards will result in the **correct type** in the output.
 - has to use `as unknown as TypedClient<Indexes>` which I don't like.
+- Expect `index` to be a string. Currently we don't support wildcard or `_all` for the index name.
 
 
 PRs are welcome to fix these limitations.
