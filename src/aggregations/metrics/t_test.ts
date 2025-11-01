@@ -1,11 +1,9 @@
 import type {
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
 	InvalidFieldTypeInAggregation,
 	TypeOfField,
 } from "../..";
-import type { IsSomeSortOf } from "../../types/helpers";
+import type { IfFieldCanBeUsedInAggregation, IsSomeSortOf } from "../../types/helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation
@@ -16,31 +14,51 @@ export type TTestAggs<
 	Agg,
 > = Agg extends {
 	t_test: {
-		a?: { field?: infer FieldA extends string; script?: unknown };
-		b?: { field?: infer FieldB extends string; script?: unknown };
+		a?: infer TA;
+		b?: infer TB;
 	};
 }
-	? CanBeUsedInAggregation<FieldA, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<FieldA, E, Index>, number> extends true
-			? CanBeUsedInAggregation<FieldB, Index, E> extends true
-				? IsSomeSortOf<TypeOfField<FieldB, E, Index>, number> extends true
-					? {
-							value: number;
-						}
-					: InvalidFieldTypeInAggregation<
-							FieldB,
-							Index,
-							Agg,
-							TypeOfField<FieldB, E, Index>,
-							number
-						>
-				: InvalidFieldInAggregation<FieldB, Index, Agg>
+	// Extract field names, defaulting to `never` if not provided.
+	// This handles cases where `a`, `b`, or their `field` properties are missing.
+	? type FieldA = TA extends { field: infer F extends string } ? F : never;
+	  type FieldB = TB extends { field: infer F extends string } ? F : never;
+
+	  // Local helper type to check if a field is numeric for the t-test aggregation.
+	  type CheckFieldIsNumeric<Field extends string, TSuccess> = IsSomeSortOf<
+			TypeOfField<Field, E, Index>,
+			number
+		> extends true
+			? TSuccess
 			: InvalidFieldTypeInAggregation<
-					FieldA,
+					Field,
 					Index,
-					Agg,
-					TypeOfField<FieldA, E, Index>,
+					"t-test",
+					TypeOfField<Field, E, Index>,
 					number
+				>;
+
+	  // Sequentially validate FieldA and FieldB using the helpers.
+	  IfFieldCanBeUsedInAggregation<
+			FieldA,
+			Index,
+			't-test',
+			// If FieldA is valid, check if it's numeric.
+			CheckFieldIsNumeric<
+				FieldA,
+				// If FieldA is also numeric, validate FieldB.
+				IfFieldCanBeUsedInAggregation<
+					FieldB,
+					Index,
+					't-test',
+					// If FieldB is valid, check if it's numeric.
+					CheckFieldIsNumeric<
+						FieldB,
+						// If all checks pass, define the aggregation result type.
+						{ value: number }
+					>,
+					E
 				>
-		: InvalidFieldInAggregation<FieldA, Index, Agg>
+			>,
+			E
+		>
 	: never;
