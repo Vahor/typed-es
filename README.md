@@ -112,7 +112,7 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 - **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
-- **Supports `search` and [`asyncSearch`](#usage-with-asyncsearch)**: You can still use the native types if something goes wrong (see [What if the library is missing a feature that you need?](#what-if-the-library-is-missing-a-feature-that-you-need)).
+- **Supports `search`, [`msearch`](#usage-with-msearch) and [`asyncSearch`](#usage-with-asyncsearch)**: You can still use the native types if something goes wrong (see [What if the library is missing a feature that you need?](#what-if-the-library-is-missing-a-feature-that-you-need)).
 
 ## Example Usage
 ```ts
@@ -343,6 +343,36 @@ const data = result.response; // Same type as if you used client.search(query);
 // If you don't have a query variable, you can pass the query type explicitly.
 const result = await client.asyncSearch.get<{ query: ...}>({ id: "abc" });
 ```
+
+## Usage with `msearch`
+
+Run multiple searches in a single request with [msearch](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-msearch). The top-level `index` is used as the default. You can override the index per-search using the header that precedes each body.
+
+```ts
+// Assuming `client` is a TypedClient<YourIndexes>
+const result = await client.msearch({
+	index: "first-index",
+	searches: [
+		// 1) Uses top-level `index`: "first-index"
+		{},
+		{ _source: ["id", "name"] },
+
+		// 2) Override index for this search
+		{ index: "second-index" },
+		{ _source: ["title"] },
+	],
+});
+
+const first = result.responses[0];
+const doc1 = first.hits.hits[0]._source; // { id: number; name: string }
+
+const second = result.responses[1];
+const doc2 = second.hits.hits[0]._source; // { title: string }
+```
+
+Notes:
+- Responses preserve per-search typing: each `responses[i]` matches the corresponding header/body pair.
+- `responses[i]` can be an error object if that search failed.
 
 ## What if the library is missing a feature that you need?
 
