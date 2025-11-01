@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.1.0
+
+### Minor Changes
+
+- [#292](https://github.com/Vahor/typed-es/pull/292) [`3560fa0`](https://github.com/Vahor/typed-es/commit/3560fa085d368322685dd7eddcff1cd6a16af9ee) Thanks [@Vahor](https://github.com/Vahor)! - Replace build process to have one dts file per type instead of one large one.
+
+  Should not be breaking.
+
 ## 0.0.35
 
 ### Patch Changes
