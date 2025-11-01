@@ -81,7 +81,7 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 ### Pipeline Aggregations
 | Aggregation | Status | Documentation |
 |-------------|--------|---------------|
-| Average Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-avg-bucket-aggregation) |
+| Average Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-avg-bucket-aggregation) |
 | Bucket Script | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-script-aggregation) |
 | Bucket Count K-S Test | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-count-ks-test-aggregation) |
 | Bucket Correlation | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-correlation-aggregation) |
@@ -91,18 +91,18 @@ Tested with Elasticsearch ^8 and Elasticsearch ^9
 | Cumulative Cardinality | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-cardinality-aggregation) |
 | Cumulative Sum | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-sum-aggregation) |
 | Derivative | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-derivative-aggregation) |
-| Extended Stats Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-extended-stats-bucket-aggregation) |
+| Extended Stats Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-extended-stats-bucket-aggregation) |
 | Inference | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-inference-bucket-aggregation) |
-| Max Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-max-bucket-aggregation) |
-| Min Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
+| Max Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-max-bucket-aggregation) |
+| Min Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
 | Moving Average | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
 | Moving Function | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
 | Moving Percentiles | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation) |
 | Normalize | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
-| Percentiles Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation) |
+| Percentiles Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation) |
 | Serial Differencing | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-serialdiff-aggregation) |
-| Stats Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-stats-bucket-aggregation) |
-| Sum Bucket | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-sum-bucket-aggregation) |
+| Stats Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-stats-bucket-aggregation) |
+| Sum Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-sum-bucket-aggregation) |
 
 </details>
 
