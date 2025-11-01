@@ -36,5 +36,13 @@ export type ExtendedStatsBucketAggs<Agg> = Agg extends {
 				upper_sampling: number;
 				lower_sampling: number;
 			};
+			std_deviation_bounds_as_string?: {
+				upper: string;
+				lower: string;
+				upper_population: string;
+				lower_population: string;
+				upper_sampling: string;
+				lower_sampling: string;
+			};
 		}
 	: never;

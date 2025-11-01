@@ -46,6 +46,14 @@ describe("Extended Stats Bucket Pipeline Aggregation", () => {
 					upper_sampling: number;
 					lower_sampling: number;
 				};
+				std_deviation_bounds_as_string?: {
+					upper: string;
+					lower: string;
+					upper_population: string;
+					lower_population: string;
+					upper_sampling: string;
+					lower_sampling: string;
+				};
 				min_as_string?: string;
 				max_as_string?: string;
 				avg_as_string?: string;
