@@ -1,10 +1,6 @@
 import type { estypes } from "@elastic/elasticsearch";
 import type { AdjacencyMatrixAggs } from "./aggregations/bucket/adjacency_matrix";
 import type { AutoDateHistogramAggs } from "./aggregations/bucket/auto_date_histogram";
-import type {
-	BucketAggFunction,
-	BucketAggs,
-} from "./aggregations/bucket/bucket_agg";
 import type { CategorizeTextAggs } from "./aggregations/bucket/categorize_text";
 import type { ChildrenAggs } from "./aggregations/bucket/children";
 import type { CompositeAggs } from "./aggregations/bucket/composite";
@@ -57,6 +53,9 @@ import type { TTestAggs } from "./aggregations/metrics/t_test";
 import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
 import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
+import type { AvgBucketAggs } from "./aggregations/pipeline/avg_bucket";
+import type { StatsBucketAggs } from "./aggregations/pipeline/stats_bucket";
+import type { SumBucketAggs } from "./aggregations/pipeline/sum_bucket";
 import type {
 	AnyString,
 	DeepPickPaths,
@@ -328,8 +327,12 @@ export type NextAggsParentKey<
 	| "top_metrics"
 	| "variable_width_histogram"
 	| "reverse_nested"
+	//
 	| AggFunction
-	| BucketAggFunction
+	// Pipeline
+	| "avg_bucket"
+	| "stats_bucket"
+	| "sum_bucket"
 >;
 
 export type AggregationOutput<
@@ -341,7 +344,7 @@ export type AggregationOutput<
 	Agg = UnionToIntersection<ExtractAggs<Query>[CurrentAggregationKey]>,
 > = IsNever<CurrentAggregationKey> extends true
 	? never
-	:
+	: // Bucket Aggs
 			| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
 			| AutoDateHistogramAggs<BaseQuery, E, Index, Agg>
 			| CategorizeTextAggs<BaseQuery, E, Index, Agg>
@@ -373,7 +376,7 @@ export type AggregationOutput<
 			| MultiTermsAggs<BaseQuery, E, Index, Agg>
 			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
 			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
-			//
+			// Metric Aggs
 			| BoxplotAggs<E, Index, Agg>
 			| CartesianBoundsAggs<E, Index, Agg>
 			| CartesianCentroidAggs<E, Index, Agg>
@@ -394,8 +397,10 @@ export type AggregationOutput<
 			| TopHitsAggs<BaseQuery, E, Index, Agg>
 			| TopMetricsAggs<E, Index, Agg>
 			| WeightedAvgAggs<E, Index, Agg>
-			//
-			| BucketAggs<Agg>;
+			// Pipeline Aggs
+			| AvgBucketAggs<Agg>
+			| StatsBucketAggs<Agg>
+			| SumBucketAggs<Agg>;
 
 export type AppendSubAggs<
 	BaseQuery extends SearchRequest,

@@ -51,7 +51,7 @@ describe("Date Histogram Aggregations", () => {
 						}>;
 					};
 					yearly_avg: {
-						value: unknown;
+						value: number;
 						value_as_string?: string;
 					};
 				}>;
