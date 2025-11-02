@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO implement aggregation
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
@@ -17,7 +15,7 @@ describe("Moving Percentiles Pipeline Aggregation", () => {
 						the_movperc: {
 							moving_percentiles: {
 								buckets_path: "the_percentile";
-								window: number;
+								window: 10;
 							};
 						};
 					};
@@ -32,7 +30,9 @@ describe("Moving Percentiles Pipeline Aggregation", () => {
 					key: number;
 					doc_count: number;
 					the_percentile: { values: { "1.0": number; "99.0": number } };
-					the_movperc?: { values: { "1.0": number; "99.0": number } };
+					the_movperc:
+						| { values: { "1.0": number; "99.0": number } }
+						| undefined;
 				}>;
 			};
 		}>();
@@ -70,11 +70,19 @@ describe("Moving Percentiles Pipeline Aggregation", () => {
 					key: number;
 					doc_count: number;
 					the_percentile: {
-						values: Array<{ key: "1.0" | "99.0"; value: number }>;
+						values: [
+							{ key: "1.0"; value: number },
+							{ key: "99.0"; value: number },
+						];
 					};
-					the_movperc?: {
-						values: Array<{ key: "1.0" | "99.0"; value: number }>;
-					};
+					the_movperc:
+						| {
+								values: [
+									{ key: "1.0"; value: number },
+									{ key: "99.0"; value: number },
+								];
+						  }
+						| undefined;
 				}>;
 			};
 		}>();

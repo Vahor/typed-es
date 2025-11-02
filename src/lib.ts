@@ -57,6 +57,7 @@ import type { AvgBucketAggs } from "./aggregations/pipeline/avg_bucket";
 import type { ExtendedStatsBucketAggs } from "./aggregations/pipeline/extended_stats_bucket";
 import type { MaxBucketAggs } from "./aggregations/pipeline/max_bucket";
 import type { MinBucketAggs } from "./aggregations/pipeline/min_bucket";
+import type { MovingPercentilesAggs } from "./aggregations/pipeline/moving_percentiles";
 import type { PercentilesBucketAggs } from "./aggregations/pipeline/percentiles_bucket";
 import type { StatsBucketAggs } from "./aggregations/pipeline/stats_bucket";
 import type { SumBucketAggs } from "./aggregations/pipeline/sum_bucket";
@@ -341,6 +342,7 @@ export type NextAggsParentKey<
 	| "max_bucket"
 	| "extended_stats_bucket"
 	| "percentiles_bucket"
+	| "moving_percentiles"
 >;
 
 export type AggregationOutput<
@@ -407,12 +409,13 @@ export type AggregationOutput<
 			| WeightedAvgAggs<E, Index, Agg>
 			// Pipeline Aggs
 			| AvgBucketAggs<Agg>
-			| StatsBucketAggs<Agg>
-			| SumBucketAggs<Agg>
-			| MinBucketAggs<Agg>
-			| MaxBucketAggs<Agg>
 			| ExtendedStatsBucketAggs<Agg>
-			| PercentilesBucketAggs<Agg>;
+			| MaxBucketAggs<Agg>
+			| MinBucketAggs<Agg>
+			| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
+			| PercentilesBucketAggs<Agg>
+			| StatsBucketAggs<Agg>
+			| SumBucketAggs<Agg>;
 
 export type AppendSubAggs<
 	BaseQuery extends SearchRequest,
