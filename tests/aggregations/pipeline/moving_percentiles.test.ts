@@ -23,8 +23,6 @@ describe("Moving Percentiles Pipeline Aggregation", () => {
 			}
 		>;
 
-		type A = Aggregations["aggregations"];
-		//   ^?
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			my_date_histo: {
 				buckets: Array<{
