@@ -412,7 +412,7 @@ export type AggregationOutput<
 			| ExtendedStatsBucketAggs<Agg>
 			| MaxBucketAggs<Agg>
 			| MinBucketAggs<Agg>
-			| MovingPercentilesAggs<ExtractAggs<Query>, Agg>
+			| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
 			| PercentilesBucketAggs<Agg>
 			| StatsBucketAggs<Agg>
 			| SumBucketAggs<Agg>;
