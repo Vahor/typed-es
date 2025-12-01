@@ -41,7 +41,7 @@
 		"tsdown": "^0.15.11",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.6",
-		"pkg-pr-new": "^0.0.60",
+		"pkg-pr-new": "^0.0.62",
 		"typescript": "^5.9.3"
 	},
 	"scripts": {
