@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.2
+
+### Patch Changes
+
+- [#301](https://github.com/Vahor/typed-es/pull/301) [`73a5435`](https://github.com/Vahor/typed-es/commit/73a5435ecd9b67661098d54b3ec0d953023b3b54) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `moving_percentiles` pipeline aggregation
+
 ## 0.1.1
 
 ### Patch Changes
