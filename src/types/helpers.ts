@@ -26,13 +26,14 @@ export type IsNumericLiteral<T> = T extends number
 		: true // it's a literal
 	: false;
 
-export type IsFloatLiteral<T> = IsNumericLiteral<T> extends true
-	? T extends number // only here to make type narrowing work
-		? `${T}` extends `${string}.${string}`
-			? true
+export type IsFloatLiteral<T> =
+	IsNumericLiteral<T> extends true
+		? T extends number // only here to make type narrowing work
+			? `${T}` extends `${string}.${string}`
+				? true
+				: false
 			: false
-		: false
-	: false;
+		: false;
 
 export type IsStringLiteral<T> = T extends string
 	? string extends T
@@ -64,11 +65,12 @@ export type IsSomeSortOf<T, U, AllowNever = true> = IsNever<T> extends true
 			? true
 			: false;
 
-export type ToDecimal<N> = IsFloatLiteral<N> extends true
-	? ToString<N>
-	: IsNumericLiteral<N> extends true
-		? `${ToString<N>}.0`
-		: never;
+export type ToDecimal<N> =
+	IsFloatLiteral<N> extends true
+		? ToString<N>
+		: IsNumericLiteral<N> extends true
+			? `${ToString<N>}.0`
+			: never;
 
 export type Enumerate<T extends number, Acc extends number[] = []> = T extends 0
 	? Acc

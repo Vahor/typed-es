@@ -21,23 +21,24 @@ type ValidProbabilityRange = "0 < probability < 0.5 or probability === 1";
  *
  * @template P - The probability value to validate
  */
-type ValidateProbability<P> = IsNumericLiteral<P> extends true
-	? P extends 1
-		? true
-		: P extends number
-			? `${P}` extends `0.${string}`
-				? `${P}` extends `0.${infer D}${string}`
-					? D extends "5" | "6" | "7" | "8" | "9"
-						? false
+type ValidateProbability<P> =
+	IsNumericLiteral<P> extends true
+		? P extends 1
+			? true
+			: P extends number
+				? `${P}` extends `0.${string}`
+					? `${P}` extends `0.${infer D}${string}`
+						? D extends "5" | "6" | "7" | "8" | "9"
+							? false
+							: true
 						: true
-					: true
-				: `${P}` extends `-${string}`
-					? false
-					: `${P}` extends "0"
+					: `${P}` extends `-${string}`
 						? false
-						: false
-			: false
-	: true; // Allow non-literal numbers (variables) to pass through
+						: `${P}` extends "0"
+							? false
+							: false
+				: false
+		: true; // Allow non-literal numbers (variables) to pass through
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-random-sampler-aggregation

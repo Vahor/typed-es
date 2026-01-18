@@ -457,15 +457,12 @@ export type AppendSubAggs<
  */
 export type ElasticsearchIndexes = Record<string, Record<string, unknown>>;
 
-export type QueryTotal<Query extends SearchRequest> = HasOption<
-	Query,
-	"track_total_hits",
-	false
-> extends true
-	? never
-	: HasOption<Query, "rest_total_hits_as_int", true> extends true
-		? number
-		: estypes.SearchTotalHits;
+export type QueryTotal<Query extends SearchRequest> =
+	HasOption<Query, "track_total_hits", false> extends true
+		? never
+		: HasOption<Query, "rest_total_hits_as_int", true> extends true
+			? number
+			: estypes.SearchTotalHits;
 
 type IsParentKeyALeaf<
 	K extends string,

@@ -18,11 +18,12 @@ type RangeSpec = {
 	to?: number | undefined;
 };
 
-type FormatToKey<N> = IsNever<ToDecimal<N>> extends false
-	? ToDecimal<N>
-	: undefined extends N
-		? "*"
-		: ToString<N>;
+type FormatToKey<N> =
+	IsNever<ToDecimal<N>> extends false
+		? ToDecimal<N>
+		: undefined extends N
+			? "*"
+			: ToString<N>;
 
 type RangeOutput<
 	BaseQuery extends SearchRequest,
