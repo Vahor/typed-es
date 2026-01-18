@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.3
+
+### Patch Changes
+
+- [`6d91c4b`](https://github.com/Vahor/typed-es/commit/6d91c4be6b82e57e8ebbe65c11637ab8bdcc3647) Thanks [@Vahor](https://github.com/Vahor)! - update build dependencies
+
 ## 0.1.2
 
 ### Patch Changes
