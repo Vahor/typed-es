@@ -95,7 +95,7 @@ describe.skip("Should return the correct type", () => {
 		}
 	});
 
-	test("support array of searches with non-tuple ty	pe", async () => {
+	test("support array of searches with non-tuple type", async () => {
 		const fakeQuery = ["hello", "world"];
 		const response = await client.msearch({
 			index: "issues",
