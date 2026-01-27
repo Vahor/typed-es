@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.1.4
+
+### Patch Changes
+
+- [#311](https://github.com/Vahor/typed-es/pull/311) [`82e5993`](https://github.com/Vahor/typed-es/commit/82e599331622e64e2537d61704d636b37390263b) Thanks [@Vahor](https://github.com/Vahor)! - Add support for non-tuple msearch `searches` field
+
+- [`aad5cda`](https://github.com/Vahor/typed-es/commit/aad5cda2b34aba44e891b39b4f51a5bc4924b998) Thanks [@Vahor](https://github.com/Vahor)! - Add `hits` as discrimated union key for msearch, to make type check easier
+
 ## 0.1.3
 
 ### Patch Changes
