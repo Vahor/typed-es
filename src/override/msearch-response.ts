@@ -67,6 +67,6 @@ export type TypedMSearchResponse<
 					>,
 					E
 			  >
-			| estypes.ErrorResponseBase;
+			| (estypes.ErrorResponseBase & { hits: undefined });
 	};
 };

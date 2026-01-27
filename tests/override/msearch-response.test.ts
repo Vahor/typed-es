@@ -44,7 +44,7 @@ describe.skip("Should return the correct type", () => {
 			],
 		});
 		const firstResponse = response.responses[0];
-		if ("hits" in firstResponse) {
+		if (firstResponse.hits) {
 			const hits = firstResponse.hits;
 			type Fields = (typeof hits.hits)[0]["_source"];
 			expectTypeOf<Fields>().toEqualTypeOf<
@@ -52,7 +52,7 @@ describe.skip("Should return the correct type", () => {
 			>();
 		}
 		const secondResponse = response.responses[1];
-		if ("hits" in secondResponse) {
+		if (secondResponse.hits) {
 			const hits = secondResponse.hits;
 			type Fields = (typeof hits.hits)[0]["_source"];
 			expectTypeOf<Fields>().toEqualTypeOf<
