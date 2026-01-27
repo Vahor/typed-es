@@ -16,4 +16,5 @@ export default defineConfig({
 		dts: ctx.format === "cjs" ? ".d.cts" : ".d.mts",
 		js: ctx.format === "cjs" ? ".cjs" : ".mjs",
 	}),
+	inlineOnly: [],
 });
