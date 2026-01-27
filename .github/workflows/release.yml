@@ -1,3 +1,5 @@
+# https://docs.npmjs.com/trusted-publishers#step-2-configure-your-cicd-workflow
+
 name: Release
 
 on:
@@ -25,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Build package
-        run: bun run build 
+        run: bun run build
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
