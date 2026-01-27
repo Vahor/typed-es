@@ -53,7 +53,7 @@
 		"format": "bunx @biomejs/biome check ./ --write",
 		"typecheck": "tsc --noEmit --declaration",
 		"ci:version": "bunx @changesets/cli version && bun update",
-		"ci:publish": "bun run build && (bun publish || true) && bunx changeset tag"
+		"ci:publish": "bun run build && bun publish && bunx changeset tag"
 	},
 	"lint-staged": {
 		"*": [
