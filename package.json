@@ -1,6 +1,6 @@
 {
 	"name": "@vahor/typed-es",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Automatically add output types to your Elasticsearch queries.",
 	"license": "MIT",
 	"repository": {
@@ -44,8 +44,8 @@
 		"typescript": "^5.9.3"
 	},
 	"peerDependencies": {
-		"@elastic/elasticsearch": ">=8",
-		"@elastic/transport": ">=8"
+		"@elastic/elasticsearch": "^9.2.0",
+		"@elastic/transport": "^9.2.0"
 	},
 	"scripts": {
 		"prepare": "husky",

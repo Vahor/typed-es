@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.5
+
+### Patch Changes
+
+- [`5d8d314`](https://github.com/Vahor/typed-es/commit/5d8d314ecc03d009599d92d8c1761404f77d69ae) Thanks [@Vahor](https://github.com/Vahor)! - trigger npm publish
+
 ## 0.1.4
 
 ### Patch Changes
