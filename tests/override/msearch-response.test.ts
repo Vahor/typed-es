@@ -15,7 +15,7 @@ describe.skip("Should return the correct type", () => {
 			],
 		});
 		for (const search of response.responses) {
-			if ("hits" in search) {
+			if (search.hits) {
 				const hits = search.hits;
 				type Fields = (typeof hits.hits)[0]["_source"];
 
@@ -78,7 +78,7 @@ describe.skip("Should return the correct type", () => {
 			],
 		});
 		const firstResponse = response.responses[0];
-		if ("hits" in firstResponse) {
+		if (firstResponse.hits) {
 			const hits = firstResponse.hits;
 			type Fields = (typeof hits.hits)[0]["_source"];
 			expectTypeOf<Fields>().toEqualTypeOf<{
@@ -86,12 +86,32 @@ describe.skip("Should return the correct type", () => {
 			}>();
 		}
 		const secondResponse = response.responses[1];
-		if ("hits" in secondResponse) {
+		if (secondResponse.hits) {
 			const hits = secondResponse.hits;
 			type Fields = (typeof hits.hits)[0]["_source"];
 			expectTypeOf<Fields>().toEqualTypeOf<
 				Pick<CustomIndexes["orders"], "status" | "product_ids">
 			>();
+		}
+	});
+
+	test("support array of searches with non-tuple ty	pe", async () => {
+		const fakeQuery = ["hello", "world"];
+		const response = await client.msearch({
+			index: "issues",
+			searches: fakeQuery.flatMap(
+				(search) =>
+					[{}, { _source: ["comments.created_at"], query: search }] as const,
+			),
+		});
+		for (const result of response.responses) {
+			if (result.hits) {
+				const hits = result.hits;
+				type Fields = (typeof hits.hits)[0]["_source"];
+				expectTypeOf<Fields>().toEqualTypeOf<{
+					comments: { created_at: string };
+				}>();
+			}
 		}
 	});
 });
