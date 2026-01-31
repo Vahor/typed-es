@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup Biome
@@ -34,7 +34,7 @@ jobs:
       matrix:
         elasticsearch-version: ["^8", "^9"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
@@ -43,4 +43,24 @@ jobs:
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
         run: bun add @elastic/elasticsearch@"${{ matrix.elasticsearch-version }}" --dev
       - name: Run typecheck
-        run: bun run typecheck
+        run: bun run typecheck -- --extendedDiagnostics
+
+  typecheck-tsgo:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        elasticsearch-version: ["^8", "^9"]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
+        run: bun add @elastic/elasticsearch@"${{ matrix.elasticsearch-version }}" --dev
+      - name: Install tsgo compiler
+        run: bun add @typescript/native-preview@latest --dev
+      - name: Run typecheck with tsgo
+        run: bunx tsgo --project tsconfig.json --extendedDiagnostics
