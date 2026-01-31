@@ -371,6 +371,26 @@ Notes:
 - Responses preserve per-search typing: each `responses[i]` matches the corresponding header/body pair.
 - `responses[i]` can be an error object if that search failed.
 
+<details>
+    <summary>Example with a dymamic search list</summary>
+
+```ts
+const ids = ["batman", "superman"];
+const searches = ids.flatMap((id) => [{}, { query: { match: { id } }, _source: ["name"] }] as const);
+//    ^? [{}, { query: { match: { id: "batman" | "superman" } }, _source: ["name"] }]
+const result = await client.msearch({ index: "superheroes", searches);
+
+for(const match of result.responses) {
+    if(match.hits) {
+	const hits = match.hits; // { hits: { _source: { name: string } } }
+    }
+}
+```
+
+Notes:
+- You can still mix indexes, _searches, but here response[i] will be a union of the types of the responses.
+</details>
+
 ## What if the library is missing a feature that you need?
 
 Please open an issue or a PR.
