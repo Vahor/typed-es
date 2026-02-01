@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.6
+
+### Patch Changes
+
+- [`84574c4`](https://github.com/Vahor/typed-es/commit/84574c428d144ee1900c8ab12e4dca49ba8b12e3) Thanks [@Vahor](https://github.com/Vahor)! - Make peer dependencies versions for @elastic/elasticsearch and @elastic/transport less strict, limiting to `>=8` only.
+
 ## 0.1.5
 
 ### Patch Changes
