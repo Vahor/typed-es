@@ -44,8 +44,8 @@
 		"typescript": "^5.9.3"
 	},
 	"peerDependencies": {
-		"@elastic/elasticsearch": "^9.2.0",
-		"@elastic/transport": "^9.2.0"
+		"@elastic/elasticsearch": ">=8.0.0",
+		"@elastic/transport": ">=8.0.0"
 	},
 	"scripts": {
 		"prepare": "husky",
