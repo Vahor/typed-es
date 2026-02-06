@@ -140,11 +140,12 @@ export type CanBeUsedInAggregation<
 	Field extends string,
 	Index extends string,
 	E extends ElasticsearchIndexes,
-> = IsStringLiteral<Field> extends false
-	? true
-	: Field extends PossibleFields<Index, E, true, true>
+> =
+	IsStringLiteral<Field> extends false
 		? true
-		: false;
+		: Field extends PossibleFields<Index, E, true, true>
+			? true
+			: false;
 
 /**
  * Error type returned when a field cannot be used in an aggregation.
@@ -352,87 +353,89 @@ export type AggregationOutput<
 	CurrentAggregationKey extends keyof ExtractAggs<Query>,
 	Index extends string = RequestedIndex<Query>,
 	Agg = UnionToIntersection<ExtractAggs<Query>[CurrentAggregationKey]>,
-> = IsNever<CurrentAggregationKey> extends true
-	? never
-	: // Bucket Aggs
-			| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
-			| AutoDateHistogramAggs<BaseQuery, E, Index, Agg>
-			| CategorizeTextAggs<BaseQuery, E, Index, Agg>
-			| ChildrenAggs<BaseQuery, E, Index, Agg>
-			| CompositeAggs<BaseQuery, E, Index, Agg>
-			| DateHistogramAggs<BaseQuery, E, Index, Agg>
-			| DateRangeAggs<BaseQuery, E, Index, Agg>
-			| DiversifiedSamplerAggs<BaseQuery, E, Index, Agg>
-			| FilterAggs<BaseQuery, E, Index, Agg>
-			| FiltersAggs<BaseQuery, E, Index, Agg>
-			| FrequentItemSetsAggs<BaseQuery, E, Index, Agg>
-			| GeoHashGridAggs<BaseQuery, E, Index, Agg>
-			| GeoHexGridAggs<BaseQuery, E, Index, Agg>
-			| GeoTileGridAggs<BaseQuery, E, Index, Agg>
-			| HistogramAggs<BaseQuery, E, Index, Agg>
-			| IpPrefixAggs<BaseQuery, E, Index, Agg>
-			| IpRangeAggs<BaseQuery, E, Index, Agg>
-			| ParentAggs<BaseQuery, E, Index, Agg>
-			| GlobalAggs<BaseQuery, E, Index, Agg>
-			| MissingAggs<BaseQuery, E, Index, Agg>
-			| NestedAggs<BaseQuery, E, Index, Agg>
-			| RangeAggs<BaseQuery, E, Index, Agg>
-			| RandomSamplerAggs<BaseQuery, E, Index, Agg>
-			| SamplerAggs<BaseQuery, E, Index, Agg>
-			| SignificantTextAggs<BaseQuery, E, Index, Agg>
-			| SignificantTermsAggs<BaseQuery, E, Index, Agg>
-			| TermsAggs<BaseQuery, E, Index, Agg>
-			| RareTermsAggs<BaseQuery, E, Index, Agg>
-			| MultiTermsAggs<BaseQuery, E, Index, Agg>
-			| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
-			| ReverseNestedAggs<BaseQuery, E, Index, Agg>
-			// Metric Aggs
-			| BoxplotAggs<E, Index, Agg>
-			| CartesianBoundsAggs<E, Index, Agg>
-			| CartesianCentroidAggs<E, Index, Agg>
-			| ExtendedStatsAggs<E, Index, Agg>
-			| FunctionAggs<E, Index, Agg>
-			| GeoBoundsAggs<E, Index, Agg>
-			| GeoCentroidAggs<E, Index, Agg>
-			| GeoLineAggs<E, Index, Agg>
-			| MatrixStatsAggs<E, Index, Agg>
-			| MedianAbsoluteDeviationAggs<E, Index, Agg>
-			| PercentilesAggs<E, Index, Agg>
-			| PercentileRanksAggs<E, Index, Agg>
-			| RateAggs<E, Index, Agg>
-			| ScriptedMetricAggs<Agg>
-			| StatsAggs<E, Index, Agg>
-			| StringStatsAggs<E, Index, Agg>
-			| TTestAggs<E, Index, Agg>
-			| TopHitsAggs<BaseQuery, E, Index, Agg>
-			| TopMetricsAggs<E, Index, Agg>
-			| WeightedAvgAggs<E, Index, Agg>
-			// Pipeline Aggs
-			| AvgBucketAggs<Agg>
-			| ExtendedStatsBucketAggs<Agg>
-			| MaxBucketAggs<Agg>
-			| MinBucketAggs<Agg>
-			| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
-			| PercentilesBucketAggs<Agg>
-			| StatsBucketAggs<Agg>
-			| SumBucketAggs<Agg>;
+> =
+	IsNever<CurrentAggregationKey> extends true
+		? never
+		: // Bucket Aggs
+				| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
+				| AutoDateHistogramAggs<BaseQuery, E, Index, Agg>
+				| CategorizeTextAggs<BaseQuery, E, Index, Agg>
+				| ChildrenAggs<BaseQuery, E, Index, Agg>
+				| CompositeAggs<BaseQuery, E, Index, Agg>
+				| DateHistogramAggs<BaseQuery, E, Index, Agg>
+				| DateRangeAggs<BaseQuery, E, Index, Agg>
+				| DiversifiedSamplerAggs<BaseQuery, E, Index, Agg>
+				| FilterAggs<BaseQuery, E, Index, Agg>
+				| FiltersAggs<BaseQuery, E, Index, Agg>
+				| FrequentItemSetsAggs<BaseQuery, E, Index, Agg>
+				| GeoHashGridAggs<BaseQuery, E, Index, Agg>
+				| GeoHexGridAggs<BaseQuery, E, Index, Agg>
+				| GeoTileGridAggs<BaseQuery, E, Index, Agg>
+				| HistogramAggs<BaseQuery, E, Index, Agg>
+				| IpPrefixAggs<BaseQuery, E, Index, Agg>
+				| IpRangeAggs<BaseQuery, E, Index, Agg>
+				| ParentAggs<BaseQuery, E, Index, Agg>
+				| GlobalAggs<BaseQuery, E, Index, Agg>
+				| MissingAggs<BaseQuery, E, Index, Agg>
+				| NestedAggs<BaseQuery, E, Index, Agg>
+				| RangeAggs<BaseQuery, E, Index, Agg>
+				| RandomSamplerAggs<BaseQuery, E, Index, Agg>
+				| SamplerAggs<BaseQuery, E, Index, Agg>
+				| SignificantTextAggs<BaseQuery, E, Index, Agg>
+				| SignificantTermsAggs<BaseQuery, E, Index, Agg>
+				| TermsAggs<BaseQuery, E, Index, Agg>
+				| RareTermsAggs<BaseQuery, E, Index, Agg>
+				| MultiTermsAggs<BaseQuery, E, Index, Agg>
+				| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
+				| ReverseNestedAggs<BaseQuery, E, Index, Agg>
+				// Metric Aggs
+				| BoxplotAggs<E, Index, Agg>
+				| CartesianBoundsAggs<E, Index, Agg>
+				| CartesianCentroidAggs<E, Index, Agg>
+				| ExtendedStatsAggs<E, Index, Agg>
+				| FunctionAggs<E, Index, Agg>
+				| GeoBoundsAggs<E, Index, Agg>
+				| GeoCentroidAggs<E, Index, Agg>
+				| GeoLineAggs<E, Index, Agg>
+				| MatrixStatsAggs<E, Index, Agg>
+				| MedianAbsoluteDeviationAggs<E, Index, Agg>
+				| PercentilesAggs<E, Index, Agg>
+				| PercentileRanksAggs<E, Index, Agg>
+				| RateAggs<E, Index, Agg>
+				| ScriptedMetricAggs<Agg>
+				| StatsAggs<E, Index, Agg>
+				| StringStatsAggs<E, Index, Agg>
+				| TTestAggs<E, Index, Agg>
+				| TopHitsAggs<BaseQuery, E, Index, Agg>
+				| TopMetricsAggs<E, Index, Agg>
+				| WeightedAvgAggs<E, Index, Agg>
+				// Pipeline Aggs
+				| AvgBucketAggs<Agg>
+				| ExtendedStatsBucketAggs<Agg>
+				| MaxBucketAggs<Agg>
+				| MinBucketAggs<Agg>
+				| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
+				| PercentilesBucketAggs<Agg>
+				| StatsBucketAggs<Agg>
+				| SumBucketAggs<Agg>;
 
 export type AppendSubAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg extends Record<string, unknown>,
-> = IsNever<NextAggsParentKey<Agg>> extends true
-	? {}
-	: {
-			[k in NextAggsParentKey<Agg>]: AggregationOutput<
-				BaseQuery,
-				Agg,
-				E,
-				k,
-				Index
-			>;
-		};
+> =
+	IsNever<NextAggsParentKey<Agg>> extends true
+		? {}
+		: {
+				[k in NextAggsParentKey<Agg>]: AggregationOutput<
+					BaseQuery,
+					Agg,
+					E,
+					k,
+					Index
+				>;
+			};
 
 /**
  * The base type for defining your Elasticsearch index mappings.
