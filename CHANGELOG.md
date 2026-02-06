@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.7
+
+### Patch Changes
+
+- [`d99ee99`](https://github.com/Vahor/typed-es/commit/d99ee994a77b432f4cd4d0d9f825248f8f5ba862) Thanks [@Vahor](https://github.com/Vahor)! - fix: remove autoupdate
+
 ## 0.1.6
 
 ### Patch Changes
