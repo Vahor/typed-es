@@ -44,15 +44,15 @@
 		"typescript": "^5.9.3"
 	},
 	"peerDependencies": {
-		"@elastic/elasticsearch": "^9.2.0",
-		"@elastic/transport": "^9.2.0"
+		"@elastic/elasticsearch": ">=8.0.0",
+		"@elastic/transport": ">=8.0.0"
 	},
 	"scripts": {
 		"prepare": "husky",
 		"build": "bunx tsdown",
 		"format": "bunx @biomejs/biome check ./ --write",
 		"typecheck": "tsc --noEmit --declaration",
-		"ci:version": "bunx @changesets/cli version && bun update",
+		"ci:version": "bunx @changesets/cli version",
 		"ci:publish": "bun run build && bun publish && bunx changeset tag"
 	},
 	"lint-staged": {
