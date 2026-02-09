@@ -3,6 +3,7 @@ import type { ElasticsearchIndexes, TypedSearchRequest } from "../lib";
 import type {
 	AlternatingPair,
 	IsNever,
+	MergeProperties,
 	Prettify,
 	RArray,
 	UnionToIntersection,
@@ -46,7 +47,10 @@ type ExtractAllPairs<Data> = Data extends readonly [
 				]
 		: [];
 
-export type TypedMsearchRequest<Indexes extends ElasticsearchIndexes> = {
+export type TypedMsearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
+	estypes.MsearchRequest,
+	"index" | "searches"
+> & {
 	index: keyof Indexes;
 	searches: MRequestSearches<Indexes>;
 };
@@ -82,8 +86,13 @@ export type TypedMSearchResponse<
 			| TypedSearchResponse<
 					// @ts-expect-error: TODO: see why ts is no happy about this
 					{ index: Pairs[Index]["Index"] } & Omit<
-						// @ts-expect-error: TODO: see why ts is no happy about this
-						Pairs[Index]["Query"],
+						MergeProperties<
+							// @ts-expect-error: TODO: see why ts is no happy about this
+							Pairs[Index]["Query"],
+							Query,
+							// @ts-expect-error: Same issue as above
+							"rest_total_hits_as_int"
+						>,
 						"index"
 					>,
 					E

@@ -6,6 +6,16 @@ export type PrettyArray<T> = Array<Prettify<T>>;
 
 export type RArray<T> = readonly T[] | T[];
 
+export type MergeProperties<
+	A,
+	B,
+	Properties extends keyof A & keyof B,
+> = Prettify<
+	Omit<A, Properties> & {
+		[K in Properties]: A[K] & B[K];
+	}
+>;
+
 // https://stackoverflow.com/a/73641837/12903953
 export type UnionToIntersection<U> = (
 	U extends any
