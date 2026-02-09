@@ -4,6 +4,8 @@ export type Prettify<T> = {
 
 export type PrettyArray<T> = Array<Prettify<T>>;
 
+export type RArray<T> = readonly T[] | T[];
+
 // https://stackoverflow.com/a/73641837/12903953
 export type UnionToIntersection<U> = (
 	U extends any
