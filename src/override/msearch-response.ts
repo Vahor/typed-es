@@ -4,6 +4,7 @@ import type {
 	AlternatingPair,
 	IsNever,
 	Prettify,
+	RArray,
 	UnionToIntersection,
 } from "../types/helpers";
 import type { TypedSearchResponse } from "./search-response";
@@ -52,7 +53,7 @@ export type TypedMsearchRequest<Indexes extends ElasticsearchIndexes> = {
 
 export type MRequestSearches<E extends ElasticsearchIndexes> =
 	| AlternatingPair<PairType<E>["header"], PairType<E>["request"]>
-	| Array<PairType<E>["header"] | PairType<E>["request"]>;
+	| RArray<PairType<E>["header"] | PairType<E>["request"]>;
 
 type ParsedSearches<
 	Query extends TypedMsearchRequest<E>,

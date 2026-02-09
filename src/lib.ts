@@ -66,6 +66,7 @@ import type {
 	DeepPickPaths,
 	IsNever,
 	IsStringLiteral,
+	RArray,
 	ToString,
 	UnionToIntersection,
 } from "./types/helpers";
@@ -571,22 +572,22 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 		[K in keyof Indexes]: {
 			index: K;
 			_source?:
-				| Array<PossibleFieldsWithWildcards<K, Indexes>>
+				| RArray<PossibleFieldsWithWildcards<K, Indexes>>
 				| false
 				| {
-						includes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						include?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						excludes?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
-						exclude?: Array<PossibleFieldsWithWildcards<K, Indexes>>;
+						includes?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
+						include?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
+						excludes?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
+						exclude?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
 				  };
-			fields?: Array<
+			fields?: RArray<
 				| PossibleFieldsWithWildcards<K, Indexes, true>
 				| {
 						field: PossibleFieldsWithWildcards<K, Indexes, true>;
 						format?: string;
 				  }
 			>;
-			docvalue_fields?: Array<
+			docvalue_fields?: RArray<
 				| PossibleFieldsWithWildcards<K, Indexes, true>
 				| {
 						field: PossibleFieldsWithWildcards<K, Indexes, true>;

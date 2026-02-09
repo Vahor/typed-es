@@ -114,4 +114,25 @@ describe.skip("Should return the correct type", () => {
 			}
 		}
 	});
+
+	test("works even with readonly search query", async () => {
+		const fakeQuery = ["hello", "world"] as const;
+		const searches = fakeQuery.flatMap(
+			(search) =>
+				[{}, { _source: ["comments.created_at"], query: search }] as const,
+		);
+		const response = await client.msearch({
+			index: "issues",
+			searches,
+		});
+		for (const result of response.responses) {
+			if (result.hits) {
+				const hits = result.hits;
+				type Fields = (typeof hits.hits)[0]["_source"];
+				expectTypeOf<Fields>().toEqualTypeOf<{
+					comments: { created_at: string };
+				}>();
+			}
+		}
+	});
 });
