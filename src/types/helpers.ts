@@ -11,10 +11,9 @@ export type MergeProperties<
 	B,
 	Properties extends keyof A & keyof B,
 > = Prettify<
-	Omit<A, Properties> &
-		Omit<B, Properties> & {
-			[K in Properties]: A[K] & B[K];
-		}
+	Omit<A, Properties> & {
+		[K in Properties]: A[K] & B[K];
+	}
 >;
 
 // https://stackoverflow.com/a/73641837/12903953
