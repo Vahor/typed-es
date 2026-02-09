@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.8
+
+### Patch Changes
+
+- [#318](https://github.com/Vahor/typed-es/pull/318) [`f8c1f17`](https://github.com/Vahor/typed-es/commit/f8c1f1734500b7f1c209f4585d5cef4867279eb1) Thanks [@Vahor](https://github.com/Vahor)! - fix: support readonly arrays in msearch
+
 ## 0.1.7
 
 ### Patch Changes
