@@ -22,12 +22,14 @@ describe.skip("Should return the correct type", () => {
 				expectTypeOf<Fields>().toEqualTypeOf<
 					Pick<CustomIndexes["demo"], "score">
 				>();
+				expectTypeOf<typeof hits.total>().not.toEqualTypeOf<number>();
 			}
 		}
 	});
 	test("with multiple search", async () => {
 		const response = await client.msearch({
 			index: "demo",
+			rest_total_hits_as_int: true,
 			searches: [
 				{
 					index: "demo",
@@ -50,6 +52,7 @@ describe.skip("Should return the correct type", () => {
 			expectTypeOf<Fields>().toEqualTypeOf<
 				Pick<CustomIndexes["demo"], "score" | "price">
 			>();
+			expectTypeOf<typeof hits.total>().toEqualTypeOf<number>();
 		}
 		const secondResponse = response.responses[1];
 		if (secondResponse.hits) {
@@ -58,6 +61,7 @@ describe.skip("Should return the correct type", () => {
 			expectTypeOf<Fields>().toEqualTypeOf<
 				Pick<CustomIndexes["orders"], "status" | "product_ids">
 			>();
+			expectTypeOf<typeof hits.total>().toEqualTypeOf<number>();
 		}
 	});
 	test("with multiple search - one missing index", async () => {
@@ -68,12 +72,14 @@ describe.skip("Should return the correct type", () => {
 				{},
 				{
 					_source: ["comments.created_at"],
+					rest_total_hits_as_int: true,
 				},
 				{
 					index: "orders",
 				},
 				{
 					_source: ["status", "product_ids"],
+					rest_total_hits_as_int: false,
 				},
 			],
 		});
@@ -84,6 +90,7 @@ describe.skip("Should return the correct type", () => {
 			expectTypeOf<Fields>().toEqualTypeOf<{
 				comments: { created_at: string };
 			}>();
+			expectTypeOf<typeof hits.total>().toEqualTypeOf<number>();
 		}
 		const secondResponse = response.responses[1];
 		if (secondResponse.hits) {
@@ -92,6 +99,7 @@ describe.skip("Should return the correct type", () => {
 			expectTypeOf<Fields>().toEqualTypeOf<
 				Pick<CustomIndexes["orders"], "status" | "product_ids">
 			>();
+			expectTypeOf<typeof hits.total>().not.toEqualTypeOf<number>();
 		}
 	});
 
@@ -101,7 +109,14 @@ describe.skip("Should return the correct type", () => {
 			index: "issues",
 			searches: fakeQuery.flatMap(
 				(search) =>
-					[{}, { _source: ["comments.created_at"], query: search }] as const,
+					[
+						{},
+						{
+							_source: ["comments.created_at"],
+							query: search,
+							rest_total_hits_as_int: true,
+						},
+					] as const,
 			),
 		});
 		for (const result of response.responses) {
@@ -111,6 +126,7 @@ describe.skip("Should return the correct type", () => {
 				expectTypeOf<Fields>().toEqualTypeOf<{
 					comments: { created_at: string };
 				}>();
+				expectTypeOf<typeof hits.total>().toEqualTypeOf<number>();
 			}
 		}
 	});
@@ -119,7 +135,14 @@ describe.skip("Should return the correct type", () => {
 		const fakeQuery = ["hello", "world"] as const;
 		const searches = fakeQuery.flatMap(
 			(search) =>
-				[{}, { _source: ["comments.created_at"], query: search }] as const,
+				[
+					{},
+					{
+						_source: ["comments.created_at"],
+						query: search,
+						rest_total_hits_as_int: true,
+					},
+				] as const,
 		);
 		const response = await client.msearch({
 			index: "issues",
@@ -132,6 +155,7 @@ describe.skip("Should return the correct type", () => {
 				expectTypeOf<Fields>().toEqualTypeOf<{
 					comments: { created_at: string };
 				}>();
+				expectTypeOf<typeof hits.total>().toEqualTypeOf<number>();
 			}
 		}
 	});
