@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.1.9
+
+### Patch Changes
+
+- [#320](https://github.com/Vahor/typed-es/pull/320) [`c9e76c2`](https://github.com/Vahor/typed-es/commit/c9e76c2c04fc66f8c28958ae2ae3e81b1d452004) Thanks [@Vahor](https://github.com/Vahor)! - feat: propagate `rest_total_hits_as_int` from query to searches
+
 ## 0.1.8
 
 ### Patch Changes
