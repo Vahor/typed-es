@@ -90,6 +90,7 @@ export type TypedMSearchResponse<
 							// @ts-expect-error: TODO: see why ts is no happy about this
 							Pairs[Index]["Query"],
 							Query,
+							// @ts-expect-error: Same issue as above
 							"rest_total_hits_as_int"
 						>,
 						"index"
