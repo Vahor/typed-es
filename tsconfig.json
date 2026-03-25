@@ -19,7 +19,8 @@
 		"noImplicitOverride": true,
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false
+		"noPropertyAccessFromIndexSignature": false,
+		"types": ["bun"]
 	},
 	"include": ["src/**/*.ts", "tests/**/*.ts"],
 	"exclude": ["node_modules"]
