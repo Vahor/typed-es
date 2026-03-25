@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.2.0
+
+### Minor Changes
+
+- [#333](https://github.com/Vahor/typed-es/pull/333) [`70c1e06`](https://github.com/Vahor/typed-es/commit/70c1e0658eb8491ddadc407ff96ed9204a0df1af) Thanks [@Vahor](https://github.com/Vahor)! - Add support for `script_fields` in output. Result will be of type unknown
+
 ## 0.1.9
 
 ### Patch Changes
