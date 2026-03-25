@@ -5,11 +5,30 @@ import type {
 	ElasticsearchOutputFields,
 	ExtractAggs,
 	ExtractAggsKey,
+	ExtractScriptFieldsKeys,
 	QueryTotal,
 	RequestedIndex,
 	SearchRequest,
 } from "../lib";
 import type { IsNever, Prettify, UnionToIntersection } from "../types/helpers";
+
+type BuildFieldsResult<
+	Query extends SearchRequest,
+	T_Fields,
+	T_ScriptFields extends string,
+> =
+	| ("fields" extends keyof Query ? T_Fields : never)
+	| ("docvalue_fields" extends keyof Query ? T_Fields : never)
+	| ("script_fields" extends keyof Query
+			? Record<T_ScriptFields, unknown>
+			: never)
+	| ("fields" extends keyof Query
+			? never
+			: "docvalue_fields" extends keyof Query
+				? never
+				: "script_fields" extends keyof Query
+					? never
+					: undefined);
 
 /**
  * Internal helper type that overrides the runtime Search Response
@@ -29,6 +48,7 @@ type OverrideSearchResponse<
 	Query extends SearchRequest,
 	T_Source,
 	T_Fields,
+	T_ScriptFields extends string,
 	T_Aggs,
 	T_Doc = UnionToIntersection<T_Source | T_Fields>,
 > = Prettify<
@@ -41,11 +61,9 @@ type OverrideSearchResponse<
 					"_source" | "fields" | "sort"
 				> & {
 					_source: Query["_source"] extends false ? undefined : T_Source;
-					fields: "fields" extends keyof Query
-						? T_Fields
-						: "docvalue_fields" extends keyof Query
-							? T_Fields
-							: undefined;
+					fields: UnionToIntersection<
+						BuildFieldsResult<Query, T_Fields, T_ScriptFields>
+					>;
 					sort: "sort" extends keyof Query ? estypes.SortResults : undefined;
 				}
 			>;
@@ -76,6 +94,7 @@ export type TypedSearchResponse<
 			Query,
 			ElasticsearchOutputFields<Query, E, Index, "_source">,
 			ElasticsearchOutputFields<Query, E, Index, "fields">,
+			ExtractScriptFieldsKeys<Query>,
 			{
 				[K in ExtractAggsKey<Query>]: AggregationOutput<
 					Query,

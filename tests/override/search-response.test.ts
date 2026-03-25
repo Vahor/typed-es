@@ -342,13 +342,82 @@ describe("Should return the correct type", () => {
 					index: "orders",
 					_source: ["*_at"],
 					docvalue_fields: ["shipping_address.city"],
-					fields: ["shipping_address.street", "shipping_address"],
+					fields: ["shipping_address.street"],
 				});
 				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
 				type Hits = Output["hits"]["hits"][0];
 				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
 					"shipping_address.street": string[];
 					"shipping_address.city": string[];
+				}>();
+				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
+					created_at: string;
+				}>();
+			});
+		});
+
+		describe("script_fields", () => {
+			const script_fields = {
+				test1: {
+					script: {
+						lang: "painless",
+						source: "doc['price'].value * 2",
+					},
+				},
+				test2: {
+					script: {
+						lang: "painless",
+						source: "doc['price'].value * params.factor",
+						params: {
+							factor: 2.0,
+						},
+					},
+				},
+			};
+			test("with script_fields", () => {
+				const query = typedEs(client, {
+					index: "orders",
+					_source: false,
+					script_fields: script_fields,
+				});
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
+				type Hits = Output["hits"]["hits"][0];
+				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
+					test1: unknown;
+					test2: unknown;
+				}>();
+			});
+
+			test("with script_fields and _source", () => {
+				const query = typedEs(client, {
+					index: "orders",
+					_source: ["*_at"],
+					script_fields: script_fields,
+				});
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
+				type Hits = Output["hits"]["hits"][0];
+				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
+					test1: unknown;
+					test2: unknown;
+				}>();
+				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
+					created_at: string;
+				}>();
+			});
+
+			test("with script_fields and fields and _source and wildcard", () => {
+				const query = typedEs(client, {
+					index: "orders",
+					_source: ["*_at"],
+					script_fields: script_fields,
+					fields: ["shipping_address.street"],
+				});
+				type Output = TypedSearchResponse<typeof query, CustomIndexes>;
+				type Hits = Output["hits"]["hits"][0];
+				expectTypeOf<Hits["fields"]>().toEqualTypeOf<{
+					test1: unknown;
+					test2: unknown;
+					"shipping_address.street": string[];
 				}>();
 				expectTypeOf<Hits["_source"]>().toEqualTypeOf<{
 					created_at: string;

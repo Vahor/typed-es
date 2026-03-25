@@ -512,11 +512,21 @@ export type ElasticsearchOutputFields<
 				: Array<Output[K]>;
 		};
 
+export type ExtractScriptFieldsKeys<Query extends SearchRequest> =
+	Query extends {
+		script_fields: infer S;
+	}
+		? S extends Record<string, { script: unknown }>
+			? keyof S
+			: never
+		: never;
+
 export type UsefulSearchRequestFields =
 	| "_source"
 	| "aggs"
 	| "aggregations"
 	| "docvalue_fields"
+	| "script_fields"
 	| "fields"
 	| "index"
 	| "track_total_hits"
