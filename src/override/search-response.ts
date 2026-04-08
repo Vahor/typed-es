@@ -5,7 +5,9 @@ import type {
 	ElasticsearchOutputFields,
 	ExtractAggs,
 	ExtractAggsKey,
+	ExtractHasChildInnerHitsKeys,
 	ExtractScriptFieldsKeys,
+	InnerHitsQueryTotal,
 	QueryTotal,
 	RequestedIndex,
 	SearchRequest,
@@ -58,13 +60,23 @@ type OverrideSearchResponse<
 			hits: Array<
 				Omit<
 					estypes.SearchHitsMetadata<T_Doc>["hits"][number],
-					"_source" | "fields" | "sort"
+					"_source" | "fields" | "sort" | "inner_hits"
 				> & {
 					_source: Query["_source"] extends false ? undefined : T_Source;
 					fields: UnionToIntersection<
 						BuildFieldsResult<Query, T_Fields, T_ScriptFields>
 					>;
 					sort: "sort" extends keyof Query ? estypes.SortResults : undefined;
+					inner_hits: IsNever<ExtractHasChildInnerHitsKeys<Query>> extends true
+						? undefined
+						: {
+								[K in ExtractHasChildInnerHitsKeys<Query>]: {
+									hits: {
+										total: InnerHitsQueryTotal<Query>;
+										hits: Array<estypes.SearchHit<unknown>>;
+									};
+								};
+							};
 				}
 			>;
 		};

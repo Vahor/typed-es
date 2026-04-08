@@ -521,6 +521,32 @@ export type ExtractScriptFieldsKeys<Query extends SearchRequest> =
 			: never
 		: never;
 
+type RecursiveExtractHasChild<Q> =
+	Q extends Array<infer I>
+		? RecursiveExtractHasChild<I>
+		: Q extends Record<string, unknown>
+			? {
+					[K in keyof Q]: K extends "has_child"
+						? Q[K] extends { inner_hits: { name: infer N extends string } }
+							? N
+							: Q[K] extends {
+										inner_hits: NonNullable<unknown>;
+										type: infer T extends string;
+									}
+								? T
+								: never
+						: RecursiveExtractHasChild<Q[K]>;
+				}[keyof Q]
+			: never;
+
+export type ExtractHasChildInnerHitsKeys<Query extends SearchRequest> =
+	Query extends { query: infer Q } ? RecursiveExtractHasChild<Q> : never;
+
+export type InnerHitsQueryTotal<Query extends SearchRequest> =
+	HasOption<Query, "rest_total_hits_as_int", true> extends true
+		? number
+		: estypes.SearchTotalHits;
+
 export type UsefulSearchRequestFields =
 	| "_source"
 	| "aggs"
@@ -529,6 +555,7 @@ export type UsefulSearchRequestFields =
 	| "script_fields"
 	| "fields"
 	| "index"
+	| "query"
 	| "track_total_hits"
 	| "rest_total_hits_as_int";
 
