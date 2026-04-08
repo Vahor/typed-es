@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.2.2
+
+### Patch Changes
+
+- [`236919a`](https://github.com/Vahor/typed-es/commit/236919a0db9028457bf65529e05f265855302d73) Thanks [@Vahor](https://github.com/Vahor)! - fix: ignore query type as it cause issues and not actually needed
+
 ## 0.2.1
 
 ### Patch Changes
