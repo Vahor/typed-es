@@ -113,7 +113,7 @@ describe.skip("Should return the correct type", () => {
 						{},
 						{
 							_source: ["comments.created_at"],
-							query: search,
+							query: { match: { title: search } },
 							rest_total_hits_as_int: true,
 						},
 					] as const,
@@ -139,7 +139,7 @@ describe.skip("Should return the correct type", () => {
 					{},
 					{
 						_source: ["comments.created_at"],
-						query: search,
+						query: { match: { title: search } },
 						rest_total_hits_as_int: true,
 					},
 				] as const,

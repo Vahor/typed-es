@@ -110,6 +110,7 @@ Tested with Elasticsearch `8` and `9`.
   For example, given an index with fields `{ created_at: string; title: string }`,  
   specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
 - **Supports `search`, [`msearch`](#usage-with-msearch) and [`asyncSearch`](#usage-with-asyncsearch)**: You can still use the native types if something goes wrong (see [What if the library is missing a feature that you need?](#what-if-the-library-is-missing-a-feature-that-you-need)).
+- **Typed `inner_hits` for `has_child` queries**: When using `has_child` with `inner_hits`, the response `hit.inner_hits` is automatically keyed by the child `type` (or `inner_hits.name` when specified).
 
 ## Example Usage
 ```ts
