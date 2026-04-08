@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.2.1
+
+### Patch Changes
+
+- [#340](https://github.com/Vahor/typed-es/pull/340) [`76823bf`](https://github.com/Vahor/typed-es/commit/76823bff0edf94267d2a62b3d59bc16efac5363d) Thanks [@Vahor](https://github.com/Vahor)! - Add typed `inner_hits` support for `has_child` queries. The response `hit.inner_hits` is now keyed by the child `type`, or by `inner_hits.name` when specified.
+
 ## 0.2.0
 
 ### Minor Changes
