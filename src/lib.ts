@@ -529,7 +529,10 @@ type RecursiveExtractHasChild<Q> =
 					[K in keyof Q]: K extends "has_child"
 						? Q[K] extends { inner_hits: { name: infer N extends string } }
 							? N
-							: Q[K] extends { type: infer T extends string }
+							: Q[K] extends {
+										inner_hits: NonNullable<unknown>;
+										type: infer T extends string;
+									}
 								? T
 								: never
 						: RecursiveExtractHasChild<Q[K]>;
