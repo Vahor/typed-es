@@ -1,8 +1,12 @@
 import { describe, expectTypeOf, test } from "bun:test";
 import type { estypes } from "@elastic/elasticsearch";
 import { typedEs } from "../../src";
+import type {
+	TypedMSearchResponse,
+	TypedMsearchRequest,
+} from "../../src/override/msearch-response";
 import type { TypedSearchResponse } from "../../src/override/search-response";
-import { client } from "../shared";
+import { type CustomIndexes, client } from "../shared";
 
 describe("has_child with inner_hits", () => {
 	test("inner_hits keyed by has_child type, total follows rest_total_hits_as_int", () => {
@@ -120,6 +124,55 @@ describe("has_child with inner_hits", () => {
 				};
 			};
 		}>();
+	});
+
+	test.skip("msearch: inner_hits keyed by has_child type", async () => {
+		const fields = ["hello", "world"] as string[];
+		const searches = fields.flatMap((field) => {
+			return [
+				{},
+				{
+					_source: ["comments.created_at"],
+					query: {
+						function_score: {
+							query: {
+								bool: {
+									filter: [
+										{
+											has_child: {
+												type: "aa",
+												inner_hits: { size: 0 },
+											},
+										},
+									],
+								},
+							},
+							functions: [{ filter: { exists: { field: field } }, weight: 1 }],
+						},
+					},
+				},
+			] as const;
+		});
+		const response = await client.msearch({
+			index: "issues",
+			rest_total_hits_as_int: true,
+			searches,
+		});
+
+		for (const result of response.responses) {
+			if (result.hits) {
+				const hits = result.hits;
+				type Hit = (typeof hits)["hits"][number];
+				expectTypeOf<Hit["inner_hits"]>().toEqualTypeOf<{
+					aa: {
+						hits: {
+							total: number;
+							hits: Array<estypes.SearchHit<unknown>>;
+						};
+					};
+				}>();
+			}
+		}
 	});
 
 	test("without rest_total_hits_as_int, total is SearchTotalHits", () => {

@@ -522,7 +522,7 @@ export type ExtractScriptFieldsKeys<Query extends SearchRequest> =
 		: never;
 
 type RecursiveExtractHasChild<Q> =
-	Q extends Array<infer I>
+	Q extends ReadonlyArray<infer I>
 		? RecursiveExtractHasChild<I>
 		: Q extends Record<string, unknown>
 			? {
@@ -555,7 +555,6 @@ export type UsefulSearchRequestFields =
 	| "script_fields"
 	| "fields"
 	| "index"
-	| "query"
 	| "track_total_hits"
 	| "rest_total_hits_as_int";
 
