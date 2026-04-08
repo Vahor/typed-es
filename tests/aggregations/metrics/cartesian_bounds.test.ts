@@ -6,7 +6,6 @@ describe("CartesianBounds Aggregation", () => {
 	test("simple", () => {
 		type Aggregations = TestAggregationOutput<
 			"orders",
-			// @ts-expect-error - Missing in elasticsearch doc
 			{
 				viewport: {
 					cartesian_bounds: {
@@ -34,7 +33,6 @@ describe("CartesianBounds Aggregation", () => {
 	test("fails when using an invalid field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",
-			// @ts-expect-error - Missing in elasticsearch doc
 			{
 				viewport: {
 					cartesian_bounds: {

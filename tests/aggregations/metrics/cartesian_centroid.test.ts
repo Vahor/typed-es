@@ -10,7 +10,6 @@ describe("CartesianCentroid Aggregations", () => {
 	test("default", () => {
 		type Aggregations = TestAggregationOutput<
 			"orders",
-			// @ts-expect-error - Missing in elasticsearch doc
 			{
 				centroid: {
 					cartesian_centroid: {
@@ -33,7 +32,6 @@ describe("CartesianCentroid Aggregations", () => {
 	test("inside a terms aggregation", () => {
 		type Aggregations = TestAggregationOutput<
 			"orders",
-			// @ts-expect-error - Missing in elasticsearch doc
 			{
 				cities: {
 					terms: { field: "shipping_address.city" };
@@ -67,7 +65,6 @@ describe("CartesianCentroid Aggregations", () => {
 	test("fails when using an invalid field type", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",
-			// @ts-expect-error - Missing in elasticsearch doc
 			{
 				invalid_stats: {
 					cartesian_centroid: {
@@ -90,7 +87,6 @@ describe("CartesianCentroid Aggregations", () => {
 	test("fails when using an invalid field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",
-			// @ts-expect-error - Missing in elasticsearch doc
 			{
 				invalid_stats: {
 					cartesian_centroid: {
