@@ -11,10 +11,15 @@ export default defineConfig({
 	dts: {
 		sourcemap: false,
 	},
-	format: ["cjs", "esm"],
-	outExtensions: (ctx) => ({
-		dts: ctx.format === "cjs" ? ".d.cts" : ".d.mts",
-		js: ctx.format === "cjs" ? ".cjs" : ".mjs",
-	}),
-	inlineOnly: [],
+	format: {
+		cjs: {
+			outDir: "./dist/cjs",
+		},
+		esm: {
+			outDir: "./dist/esm",
+		},
+	},
+	deps: {
+		onlyBundle: [],
+	},
 });
