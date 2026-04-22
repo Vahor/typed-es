@@ -543,19 +543,6 @@ type RecursiveExtractHasChild<Q> =
 				}[keyof Q]
 			: never;
 
-type A = RecursiveExtractHasChild<{
-	query: {
-		bool: {
-			filter: {
-				has_child: {
-					inner_hits: { name: "hello" } | undefined;
-					type: "aa";
-				};
-			}[];
-		};
-	};
-}>;
-
 export type ExtractHasChildInnerHitsKeys<Query extends SearchRequest> =
 	Query extends { query: infer Q } ? RecursiveExtractHasChild<Q> : never;
 
