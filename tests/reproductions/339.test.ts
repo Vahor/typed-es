@@ -1,12 +1,8 @@
 import { describe, expectTypeOf, test } from "bun:test";
 import type { estypes } from "@elastic/elasticsearch";
 import { typedEs } from "../../src";
-import type {
-	TypedMSearchResponse,
-	TypedMsearchRequest,
-} from "../../src/override/msearch-response";
 import type { TypedSearchResponse } from "../../src/override/search-response";
-import { type CustomIndexes, client } from "../shared";
+import { client } from "../shared";
 
 describe("has_child with inner_hits", () => {
 	test("inner_hits keyed by has_child type, total follows rest_total_hits_as_int", () => {

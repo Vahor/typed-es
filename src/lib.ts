@@ -65,7 +65,9 @@ import type {
 	AnyString,
 	DeepPickPaths,
 	IsNever,
+	IsOptional,
 	IsStringLiteral,
+	Optional,
 	RArray,
 	ToString,
 	UnionToIntersection,
@@ -527,13 +529,15 @@ type RecursiveExtractHasChild<Q> =
 		: Q extends Record<string, unknown>
 			? {
 					[K in keyof Q]: K extends "has_child"
-						? Q[K] extends { inner_hits: { name: infer N extends string } }
-							? N
+						? Q[K] extends {
+								inner_hits: Optional<{ name: infer N extends string }>;
+							}
+							? { name: N; optional: IsOptional<Q[K]["inner_hits"]> }
 							: Q[K] extends {
-										inner_hits: NonNullable<unknown>;
+										inner_hits: Optional<unknown>;
 										type: infer T extends string;
 									}
-								? T
+								? { name: T; optional: IsOptional<Q[K]["inner_hits"]> }
 								: never
 						: RecursiveExtractHasChild<Q[K]>;
 				}[keyof Q]

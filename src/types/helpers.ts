@@ -228,3 +228,9 @@ export type AlternatingPair<
 > = Current["length"] extends Max
 	? Current
 	: Current | AlternatingPair<T1, T2, [...Current, T1, T2], Max>;
+
+export type Optional<T, B extends boolean = true> = B extends true
+	? T | undefined
+	: T;
+
+export type IsOptional<T> = undefined extends T ? true : false;
