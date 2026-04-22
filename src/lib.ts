@@ -529,21 +529,32 @@ type RecursiveExtractHasChild<Q> =
 		: Q extends Record<string, unknown>
 			? {
 					[K in keyof Q]: K extends "has_child"
-						? Q[K] extends Optional<{
-								inner_hits: { name: infer N extends string };
-							}>
-							? // @ts-expect-error: we can index it
-								{ name: N; optional: IsOptional<Q[K]["inner_hits"]> }
-							: Q[K] extends Optional<{
-										inner_hits: unknown;
+						? Q[K] extends {
+								inner_hits: Optional<{ name: infer N extends string }>;
+							}
+							? { name: N; optional: IsOptional<Q[K]["inner_hits"]> }
+							: Q[K] extends {
+										inner_hits: Optional<unknown>;
 										type: infer T extends string;
-									}>
-								? // @ts-expect-error: we can index it
-									{ name: T; optional: IsOptional<Q[K]["inner_hits"]> }
+									}
+								? { name: T; optional: IsOptional<Q[K]["inner_hits"]> }
 								: never
 						: RecursiveExtractHasChild<Q[K]>;
 				}[keyof Q]
 			: never;
+
+type A = RecursiveExtractHasChild<{
+	query: {
+		bool: {
+			filter: {
+				has_child: {
+					inner_hits: { name: "hello" } | undefined;
+					type: "aa";
+				};
+			}[];
+		};
+	};
+}>;
 
 export type ExtractHasChildInnerHitsKeys<Query extends SearchRequest> =
 	Query extends { query: infer Q } ? RecursiveExtractHasChild<Q> : never;
