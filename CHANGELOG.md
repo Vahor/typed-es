@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.2.3
+
+### Patch Changes
+
+- [#350](https://github.com/Vahor/typed-es/pull/350) [`da11a6a`](https://github.com/Vahor/typed-es/commit/da11a6a6cf21a643d9b98ccab8959e4b9f3a0e49) Thanks [@Vahor](https://github.com/Vahor)! - Add support for optional `inner_hits` inside `has_child` filters.
+
+  Result type will be `{...} | undefined` depending on whether `inner_hits` is present.
+
 ## 0.2.2
 
 ### Patch Changes
