@@ -12,7 +12,12 @@ import type {
 	RequestedIndex,
 	SearchRequest,
 } from "../lib";
-import type { IsNever, Prettify, UnionToIntersection } from "../types/helpers";
+import type {
+	IsNever,
+	Optional,
+	Prettify,
+	UnionToIntersection,
+} from "../types/helpers";
 
 type BuildFieldsResult<
 	Query extends SearchRequest,
@@ -70,12 +75,15 @@ type OverrideSearchResponse<
 					inner_hits: IsNever<ExtractHasChildInnerHitsKeys<Query>> extends true
 						? undefined
 						: {
-								[K in ExtractHasChildInnerHitsKeys<Query>]: {
-									hits: {
-										total: InnerHitsQueryTotal<Query>;
-										hits: Array<estypes.SearchHit<unknown>>;
-									};
-								};
+								[K in ExtractHasChildInnerHitsKeys<Query> as K["name"]]: Optional<
+									{
+										hits: {
+											total: InnerHitsQueryTotal<Query>;
+											hits: Array<estypes.SearchHit<unknown>>;
+										};
+									},
+									K["optional"]
+								>;
 							};
 				}
 			>;
