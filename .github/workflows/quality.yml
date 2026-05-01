@@ -29,10 +29,12 @@ jobs:
 
   typecheck:
     runs-on: ubuntu-latest
+    name: typecheck (${{ matrix.elasticsearch-version }}, ${{ matrix.typescript }})
     strategy:
       fail-fast: false
       matrix:
         elasticsearch-version: ["^8", "^9"]
+        typescript: [tsgo, typescript]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -48,31 +50,13 @@ jobs:
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
         run: bun remove @elastic/elasticsearch && bun add @elastic/elasticsearch@"${{
           matrix.elasticsearch-version }}" --dev
-      - name: Run typecheck
-        run: bun run typecheck -- --extendedDiagnostics
 
-  typecheck-tsgo:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        elasticsearch-version: ["^8", "^9"]
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: oven-sh/setup-bun@v2
-      - name: Remove incompatible tests for v8 (catesian)
-        if: matrix.elasticsearch-version == '^8'
-        run: |
-          rm -f tests/aggregations/metrics/cartesian_bounds.test.ts
-          rm -f tests/aggregations/metrics/cartesian_centroid.test.ts
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-      - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
-        run: bun remove @elastic/elasticsearch && bun add @elastic/elasticsearch@"${{
-          matrix.elasticsearch-version }}" --dev
-      - name: Install tsgo compiler
-        run: bun add @typescript/native-preview@latest --dev
       - name: Run typecheck with tsgo
-        run: bunx tsgo --project tsconfig.json --extendedDiagnostics
+        if: matrix.typescript == 'tsgo'
+        run: |
+          bun add @typescript/native-preview@latest --dev
+          bunx tsgo --project tsconfig.json --extendedDiagnostics
+
+      - name: Run typecheck
+        if: matrix.typescript == 'typescript'
+        run: bun run typecheck -- --extendedDiagnostics
