@@ -10,10 +10,35 @@ on:
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
-    name: Release
+  check_version:
+    name: Check Version
     runs-on: ubuntu-latest
     if: github.repository == 'vahor/typed-es'
+    outputs:
+      should_release: ${{ steps.version_check.outputs.should_release }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Check if version changed
+        id: version_check
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "Latest tag: $LATEST_TAG"
+          echo "Package version: $PACKAGE_VERSION"
+          if [ "$LATEST_TAG" = "v$PACKAGE_VERSION" ]; then
+            echo "should_release=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_release=true" >> $GITHUB_OUTPUT
+          fi
+
+  release:
+    name: Release
+    needs: check_version
+    if: github.repository == 'vahor/typed-es' && needs.check_version.outputs.should_release == 'true'
+    runs-on: ubuntu-latest
     permissions:
       contents: write # to create release (changesets/action)
       id-token: write # OpenID Connect token needed for provenance
