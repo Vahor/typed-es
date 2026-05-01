@@ -41,7 +41,8 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
-        run: bun add @elastic/elasticsearch@"${{ matrix.elasticsearch-version }}" --dev
+        run: bun remove @elastic/elasticsearch && bun add @elastic/elasticsearch@"${{
+          matrix.elasticsearch-version }}" --dev
       - name: Run typecheck
         run: bun run typecheck -- --extendedDiagnostics
 
@@ -59,7 +60,8 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
-        run: bun add @elastic/elasticsearch@"${{ matrix.elasticsearch-version }}" --dev
+        run: bun remove @elastic/elasticsearch && bun add @elastic/elasticsearch@"${{
+          matrix.elasticsearch-version }}" --dev
       - name: Install tsgo compiler
         run: bun add @typescript/native-preview@latest --dev
       - name: Run typecheck with tsgo
