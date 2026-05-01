@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.2.4
+
+### Patch Changes
+
+- [#354](https://github.com/Vahor/typed-es/pull/354) [`440adf0`](https://github.com/Vahor/typed-es/commit/440adf00fc1a5e54effc885bb4a23b350857af97) Thanks [@Vahor](https://github.com/Vahor)! - `TypedSearchRequest` now includes all standard Elasticsearch request fields (e.g. `timeout`, `size`, `from`), providing autocomplete for any field not overwritten by typed-es. `typedEs` also widens its return type accordingly, so those fields can be assigned after creation.
+
 ## 0.2.3
 
 ### Patch Changes
