@@ -38,6 +38,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
+      - name: Remove incompatible tests for v8 (catesian)
+        if: matrix.elasticsearch-version == '^8'
+        run: |
+          rm -f tests/aggregations/metrics/cartesian_bounds.test.ts
+          rm -f tests/aggregations/metrics/cartesian_centroid.test.ts
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
@@ -57,6 +62,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
+      - name: Remove incompatible tests for v8 (catesian)
+        if: matrix.elasticsearch-version == '^8'
+        run: |
+          rm -f tests/aggregations/metrics/cartesian_bounds.test.ts
+          rm -f tests/aggregations/metrics/cartesian_centroid.test.ts
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
