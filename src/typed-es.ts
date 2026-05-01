@@ -1,4 +1,10 @@
-import type { ElasticsearchIndexes, TypedClient, TypedSearchRequest } from ".";
+import type { estypes } from "@elastic/elasticsearch";
+import type {
+	ElasticsearchIndexes,
+	OverwrittenSearchRequestFields,
+	TypedClient,
+	TypedSearchRequest,
+} from ".";
 
 /**
  * Creates a type-safe Elasticsearch search query with automatic type inference for results.
@@ -12,7 +18,7 @@ import type { ElasticsearchIndexes, TypedClient, TypedSearchRequest } from ".";
  *
  * @param _client - Your TypedClient instance (used for type inference only)
  * @param query - The Elasticsearch search query
- * @returns The same query, but with enhanced type information
+ * @returns The query widened with all standard `estypes.SearchRequest` fields (except `OverwrittenSearchRequestFields`), so fields like `timeout`, `size`, and `from` can be assigned after creation
  *
  * @example
  * ```typescript
@@ -72,6 +78,10 @@ import type { ElasticsearchIndexes, TypedClient, TypedSearchRequest } from ".";
 export function typedEs<
 	Indexes extends ElasticsearchIndexes,
 	const Query extends TypedSearchRequest<Indexes>,
->(_client: TypedClient<Indexes>, query: Query): Query {
-	return query;
+>(
+	_client: TypedClient<Indexes>,
+	query: Query,
+): Query & Omit<estypes.SearchRequest, OverwrittenSearchRequestFields> {
+	return query as Query &
+		Omit<estypes.SearchRequest, OverwrittenSearchRequestFields>;
 }
