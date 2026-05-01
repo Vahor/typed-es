@@ -1,7 +1,7 @@
 import type { estypes } from "@elastic/elasticsearch";
 import type {
 	ElasticsearchIndexes,
-	InferredSearchRequestFields,
+	OverwrittenSearchRequestFields,
 	TypedClient,
 	TypedSearchRequest,
 } from ".";
@@ -18,7 +18,7 @@ import type {
  *
  * @param _client - Your TypedClient instance (used for type inference only)
  * @param query - The Elasticsearch search query
- * @returns The same query, but with enhanced type information
+ * @returns The query widened with all standard `estypes.SearchRequest` fields (except `OverwrittenSearchRequestFields`), so fields like `timeout`, `size`, and `from` can be assigned after creation
  *
  * @example
  * ```typescript
@@ -81,7 +81,7 @@ export function typedEs<
 >(
 	_client: TypedClient<Indexes>,
 	query: Query,
-): Query & Omit<estypes.SearchRequest, InferredSearchRequestFields> {
+): Query & Omit<estypes.SearchRequest, OverwrittenSearchRequestFields> {
 	return query as Query &
-		Omit<estypes.SearchRequest, InferredSearchRequestFields>;
+		Omit<estypes.SearchRequest, OverwrittenSearchRequestFields>;
 }

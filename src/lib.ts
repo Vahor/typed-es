@@ -551,7 +551,10 @@ export type InnerHitsQueryTotal<Query extends SearchRequest> =
 		? number
 		: estypes.SearchTotalHits;
 
-export type UsefulSearchRequestFields =
+/**
+ * Fields that are updated by this lib.
+ */
+export type OverwrittenSearchRequestFields =
 	| "_source"
 	| "aggs"
 	| "aggregations"
@@ -560,22 +563,20 @@ export type UsefulSearchRequestFields =
 	| "fields"
 	| "index"
 	| "track_total_hits"
-	| "rest_total_hits_as_int";
+	| "rest_total_hits_as_int"
+	| "sort"
+	| "query";
 
 export type SearchRequest = Pick<
 	estypes.SearchRequest,
-	UsefulSearchRequestFields
+	Exclude<OverwrittenSearchRequestFields, IssueWithReadonlyArray>
 >;
 
 /**
- * Fields omitted from the extendable query return type because `TypedSearchResponse`
- * uses structural key-presence checks on them to determine output types.
- * Adding them as optional fields would corrupt that inference.
+ * HACK: const Query modifier cause sort/query to be readonly. which cause issues with estypes versions as it has mutable arrays in types.
+ * The correct fix would be to overrides these types but as we don't really have to, we simply skip them.
  */
-export type InferredSearchRequestFields =
-	| keyof SearchRequest
-	| "sort" // "sort" extends keyof Query -> hit.sort type
-	| "query"; // Query extends { query: infer Q } -> inner_hits type
+type IssueWithReadonlyArray = "sort" | "query";
 
 /**
  * A type-safe Elasticsearch search request that provides autocomplete and validation
@@ -615,8 +616,8 @@ export type InferredSearchRequestFields =
  * ```
  */
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
-	SearchRequest,
-	"index" | "_source" | "fields" | "docvalue_fields"
+	estypes.SearchRequest,
+	"index" | "_source" | "fields" | "docvalue_fields" | IssueWithReadonlyArray
 > &
 	{
 		[K in keyof Indexes]: {

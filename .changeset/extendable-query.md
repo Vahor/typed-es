@@ -2,4 +2,4 @@
 "@vahor/typed-es": patch
 ---
 
-`typedEs` now returns `Query & Omit<estypes.SearchRequest, InferredSearchRequestFields>`, allowing the query object to be extended after creation with any standard Elasticsearch request field (e.g. `timeout`, `size`, `from`).
+`TypedSearchRequest` now includes all standard Elasticsearch request fields (e.g. `timeout`, `size`, `from`), providing autocomplete for any field not overwritten by typed-es. `typedEs` also widens its return type accordingly, so those fields can be assigned after creation.
