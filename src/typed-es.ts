@@ -1,4 +1,10 @@
-import type { ElasticsearchIndexes, TypedClient, TypedSearchRequest } from ".";
+import type { estypes } from "@elastic/elasticsearch";
+import type {
+	ElasticsearchIndexes,
+	InferredSearchRequestFields,
+	TypedClient,
+	TypedSearchRequest,
+} from ".";
 
 /**
  * Creates a type-safe Elasticsearch search query with automatic type inference for results.
@@ -72,6 +78,10 @@ import type { ElasticsearchIndexes, TypedClient, TypedSearchRequest } from ".";
 export function typedEs<
 	Indexes extends ElasticsearchIndexes,
 	const Query extends TypedSearchRequest<Indexes>,
->(_client: TypedClient<Indexes>, query: Query): Query {
-	return query;
+>(
+	_client: TypedClient<Indexes>,
+	query: Query,
+): Query & Omit<estypes.SearchRequest, InferredSearchRequestFields> {
+	return query as Query &
+		Omit<estypes.SearchRequest, InferredSearchRequestFields>;
 }

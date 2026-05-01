@@ -124,4 +124,13 @@ describe("Query Options", () => {
 			expectTypeOf<Source>().toEqualTypeOf<{}>();
 		});
 	});
+
+	describe("can be extended after creation", () => {
+		test("timeout", () => {
+			const query = typedEs(client, {
+				index: "demo",
+			});
+			query.timeout = "10s";
+		});
+	});
 });

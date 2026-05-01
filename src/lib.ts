@@ -568,6 +568,16 @@ export type SearchRequest = Pick<
 >;
 
 /**
+ * Fields omitted from the extendable query return type because `TypedSearchResponse`
+ * uses structural key-presence checks on them to determine output types.
+ * Adding them as optional fields would corrupt that inference.
+ */
+export type InferredSearchRequestFields =
+	| keyof SearchRequest
+	| "sort" // "sort" extends keyof Query -> hit.sort type
+	| "query"; // Query extends { query: infer Q } -> inner_hits type
+
+/**
  * A type-safe Elasticsearch search request that provides autocomplete and validation
  * for index names, _source fields, fields, and docvalue_fields.
  *
