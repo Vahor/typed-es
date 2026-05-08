@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.2.5
+
+### Patch Changes
+
+- [#358](https://github.com/Vahor/typed-es/pull/358) [`fd1d646`](https://github.com/Vahor/typed-es/commit/fd1d646f6d5e457fd3f0eb95130c9d9c8f813ed3) Thanks [@Vahor](https://github.com/Vahor)! - Improve package metadata, README positioning, examples, and issue templates for discovery and adoption.
+
 ## 0.2.4
 
 ### Patch Changes
