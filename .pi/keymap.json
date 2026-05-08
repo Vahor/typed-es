@@ -1,4 +1,5 @@
 {
+	"$schema": "https://raw.githubusercontent.com/Vahor/pi-extensions/main/packages/pi-keymap/schemas/keymap.schema.json",
 	"leader": "space",
 	"keymaps": [
 		{
