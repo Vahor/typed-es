@@ -126,7 +126,7 @@ npm install -D @vahor/typed-es
 | Min Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
 | Moving Function | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
 | Moving Percentiles | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation) |
-| Normalize | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
+| Normalize | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
 | Percentiles Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation) |
 | Serial Differencing | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-serialdiff-aggregation) |
 | Stats Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-stats-bucket-aggregation) |
