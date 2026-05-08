@@ -1,0 +1,11 @@
+{
+	"leader": "space",
+	"keymaps": [
+		{
+			"key": "<leader>ai",
+			"description": "Prompt agent to fix a random github issue",
+			"prompt": "Check issues and fix an easy one",
+			"send": true
+		}
+	]
+}
