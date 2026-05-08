@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.3.0
+
+### Minor Changes
+
+- [`0c53109`](https://github.com/Vahor/typed-es/commit/0c5310984af0b26fdfef4d8ea51c8f293139b5a8) Thanks [@Vahor](https://github.com/Vahor)! - Improve TypeScript compatibility for projects mixing ESM and CJS resolution. Types now resolve from the ESM declarations for both module systems, while `typedEs` remains importable from ESM and CJS.
+
 ## 0.2.5
 
 ### Patch Changes
