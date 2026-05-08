@@ -65,6 +65,7 @@ import type { MinBucketAggs } from "./aggregations/pipeline/min_bucket";
 import type { MovingPercentilesAggs } from "./aggregations/pipeline/moving_percentiles";
 import type { NormalizeAggs } from "./aggregations/pipeline/normalize";
 import type { PercentilesBucketAggs } from "./aggregations/pipeline/percentiles_bucket";
+import type { SerialDiffAggs } from "./aggregations/pipeline/serial_diff";
 import type { StatsBucketAggs } from "./aggregations/pipeline/stats_bucket";
 import type { SumBucketAggs } from "./aggregations/pipeline/sum_bucket";
 import type {
@@ -359,6 +360,7 @@ export type NextAggsParentKey<
 	| "normalize"
 	| "percentiles_bucket"
 	| "moving_percentiles"
+	| "serial_diff"
 >;
 
 export type AggregationOutput<
@@ -437,6 +439,7 @@ export type AggregationOutput<
 				| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
 				| NormalizeAggs<Agg>
 				| PercentilesBucketAggs<Agg>
+				| SerialDiffAggs<Agg>
 				| StatsBucketAggs<Agg>
 				| SumBucketAggs<Agg>;
 

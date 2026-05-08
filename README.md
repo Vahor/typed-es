@@ -128,7 +128,7 @@ npm install -D @vahor/typed-es
 | Moving Percentiles | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation) |
 | Normalize | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
 | Percentiles Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation) |
-| Serial Differencing | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-serialdiff-aggregation) |
+| Serial Differencing | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-serialdiff-aggregation) |
 | Stats Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-stats-bucket-aggregation) |
 | Sum Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-sum-bucket-aggregation) |
 
