@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO implement aggregation
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
