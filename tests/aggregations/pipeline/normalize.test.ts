@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO implement aggregation
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
@@ -16,7 +14,7 @@ describe("Normalize Pipeline Aggregation", () => {
 							normalize: {
 								buckets_path: "sales";
 								method: "percent_of_sum";
-								format?: string;
+								format: "00.00%";
 							};
 						};
 					};
