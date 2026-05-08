@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO implement aggregation
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
@@ -41,7 +39,7 @@ describe("Bucket Script Pipeline Aggregation", () => {
 						doc_count: number;
 						sales: { value: number; value_as_string?: string };
 					};
-					"t-shirt-percentage": { value: number };
+					"t-shirt-percentage": { value: number; value_as_string?: string };
 				}>;
 			};
 		}>();
