@@ -1,0 +1,41 @@
+name: Bug report
+description: Report an incorrect type, broken inference, or runtime interop issue
+title: "Bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve `@vahor/typed-es`.
+        Please include a minimal TypeScript example so the inferred type can be reproduced.
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Show the index type, query, expected type, and actual type/error.
+      placeholder: |
+        ```ts
+        type Indexes = { ... };
+        const query = typedEs(client, { ... });
+        const result = await client.search(query);
+        ```
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: typed-es, @elastic/elasticsearch, and TypeScript versions
+      placeholder: "@vahor/typed-es 0.2.4, @elastic/elasticsearch 8.x, TypeScript 6.x"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Any relevant Elasticsearch docs, mapping snippets, or screenshots
+    validations:
+      required: false

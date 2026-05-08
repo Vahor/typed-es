@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest a new typing feature, supported API, or inference improvement
+title: "Feature: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement to `@vahor/typed-es`.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What TypeScript or Elasticsearch typing pain should this solve?
+      placeholder: "I currently have to write `as any` when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-api
+    attributes:
+      label: Desired usage
+      description: Show the query/result shape you would like to work.
+      placeholder: |
+        ```ts
+        const query = typedEs(client, { ... });
+        const result = await client.search(query);
+        // result... should be typed as ...
+        ```
+    validations:
+      required: false
+
+  - type: input
+    id: docs
+    attributes:
+      label: Elasticsearch documentation URL
+      description: Link to relevant Elasticsearch API or aggregation docs, if available
+      placeholder: https://www.elastic.co/docs/...
+    validations:
+      required: false
