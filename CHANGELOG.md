@@ -1,5 +1,29 @@
 # @vahor/typed-es
 
+## 0.3.1
+
+### Patch Changes
+
+- [#367](https://github.com/Vahor/typed-es/pull/367) [`34acba4`](https://github.com/Vahor/typed-es/commit/34acba45111afd871f24c9d453766538c8d0557a) Thanks [@Vahor](https://github.com/Vahor)! - Add bucket correlation pipeline aggregation output typing.
+
+- [#366](https://github.com/Vahor/typed-es/pull/366) [`d828ddf`](https://github.com/Vahor/typed-es/commit/d828ddfdaadcb00806d051e720fdc85374671a53) Thanks [@Vahor](https://github.com/Vahor)! - Add `bucket_count_ks_test` pipeline aggregation output typing.
+
+- [#365](https://github.com/Vahor/typed-es/pull/365) [`0613a96`](https://github.com/Vahor/typed-es/commit/0613a96c8596e27bb4d7a29333144d482ef07c31) Thanks [@Vahor](https://github.com/Vahor)! - Add output typing for the `bucket_script` pipeline aggregation.
+
+- [#363](https://github.com/Vahor/typed-es/pull/363) [`724d878`](https://github.com/Vahor/typed-es/commit/724d87890cbc44aaa1dce979c7507b245e0edc24) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `cumulative_sum` pipeline aggregation.
+
+- [#364](https://github.com/Vahor/typed-es/pull/364) [`af5225b`](https://github.com/Vahor/typed-es/commit/af5225bb2008453ab59ce3d661426d9ff58d4566) Thanks [@Vahor](https://github.com/Vahor)! - Add response typing for the derivative pipeline aggregation.
+
+- [#370](https://github.com/Vahor/typed-es/pull/370) [`e83d71c`](https://github.com/Vahor/typed-es/commit/e83d71cf79d926671032f48368ac4e18150ace83) Thanks [@Vahor](https://github.com/Vahor)! - Add type support for the `moving_fn` pipeline aggregation.
+
+- [#361](https://github.com/Vahor/typed-es/pull/361) [`0ea12a9`](https://github.com/Vahor/typed-es/commit/0ea12a94a397963e2174160ab025ccf6e752ce3d) Thanks [@Vahor](https://github.com/Vahor)! - Add type tests for msearch responses with different aggregations.
+
+- [#368](https://github.com/Vahor/typed-es/pull/368) [`c12c4d7`](https://github.com/Vahor/typed-es/commit/c12c4d77a681018686d84d94ca3d0c1e0d499286) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `normalize` pipeline aggregation.
+
+- [#369](https://github.com/Vahor/typed-es/pull/369) [`9be0e4a`](https://github.com/Vahor/typed-es/commit/9be0e4a90de15edce58d2126f9280bfa4331ce87) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `serial_diff` pipeline aggregation.
+
+- [#371](https://github.com/Vahor/typed-es/pull/371) [`7cc6e07`](https://github.com/Vahor/typed-es/commit/7cc6e071d7d069c3680489d957d5ed06bd5dfb3b) Thanks [@Vahor](https://github.com/Vahor)! - Add optional `value_as_string` fields to additional aggregation response types.
+
 ## 0.3.0
 
 ### Minor Changes
