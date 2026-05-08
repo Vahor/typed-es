@@ -47,10 +47,12 @@ describe("PercentileRanks Aggregation", () => {
 					{
 						key: "500.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "600.0";
 						value: number;
+						value_as_string?: string;
 					},
 				];
 			};

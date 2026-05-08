@@ -29,6 +29,7 @@ describe("Median Absolute Deviation Aggregation", () => {
 			};
 			review_variability: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});

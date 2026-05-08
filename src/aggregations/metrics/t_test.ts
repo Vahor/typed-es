@@ -26,6 +26,7 @@ export type TTestAggs<
 				? IsSomeSortOf<TypeOfField<FieldB, E, Index>, number> extends true
 					? {
 							value: number;
+							value_as_string?: string;
 						}
 					: InvalidFieldTypeInAggregation<
 							FieldB,

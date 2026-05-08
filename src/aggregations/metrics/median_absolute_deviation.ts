@@ -23,6 +23,7 @@ export type MedianAbsoluteDeviationAggs<
 		? IsSomeSortOf<TypeOfField<Field, E, Index>, number> extends true
 			? {
 					value: number;
+					value_as_string?: string;
 				}
 			: InvalidFieldTypeInAggregation<
 					Field,

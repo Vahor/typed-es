@@ -61,6 +61,7 @@ describe("Bucket Correlation Pipeline Aggregation", () => {
 			Aggregations["aggregations"]["buckets"]["buckets"][number]["bucket_correlation"]
 		>().toEqualTypeOf<{
 			value: number;
+			value_as_string?: string;
 		}>();
 	});
 
@@ -105,6 +106,7 @@ describe("Bucket Correlation Pipeline Aggregation", () => {
 			Aggregations["aggregations"]["buckets"]["buckets"][number]["correlation"]
 		>().toEqualTypeOf<{
 			value: number;
+			value_as_string?: string;
 		}>();
 	});
 });

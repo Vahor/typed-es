@@ -33,6 +33,7 @@ describe("Rate Aggregations", () => {
 					doc_count: number;
 					my_rate: {
 						value: number;
+						value_as_string?: string;
 					};
 				}>;
 			};
@@ -67,6 +68,7 @@ describe("Rate Aggregations", () => {
 					doc_count: number;
 					avg_price: {
 						value: number;
+						value_as_string?: string;
 					};
 				}>;
 			};
@@ -116,6 +118,7 @@ describe("Rate Aggregations", () => {
 					doc_count: number;
 					avg_price: {
 						value: number;
+						value_as_string?: string;
 					};
 				}>;
 			};

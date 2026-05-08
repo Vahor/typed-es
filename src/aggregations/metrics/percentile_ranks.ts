@@ -11,6 +11,7 @@ type PercentilesValues<Percents extends readonly number[]> = {
 	[index in keyof Percents]: {
 		key: ToDecimal<Percents[index]>;
 		value: number;
+		value_as_string?: string;
 	};
 };
 

@@ -8,5 +8,6 @@ export type BucketCorrelationAggs<Agg> = Agg extends {
 }
 	? Prettify<{
 			value: number;
+			value_as_string?: string;
 		}>
 	: never;

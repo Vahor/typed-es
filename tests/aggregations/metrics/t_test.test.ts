@@ -26,6 +26,7 @@ describe("T-Test Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			t_test_result: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
@@ -50,6 +51,7 @@ describe("T-Test Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			my_ttest: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
@@ -74,6 +76,7 @@ describe("T-Test Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			price_diff: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
@@ -97,6 +100,7 @@ describe("T-Test Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			default_test: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});
@@ -122,6 +126,7 @@ describe("T-Test Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			scripted_test: {
 				value: number;
+				value_as_string?: string;
 			};
 		}>();
 	});

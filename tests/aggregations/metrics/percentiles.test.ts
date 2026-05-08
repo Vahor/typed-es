@@ -73,30 +73,37 @@ describe("Percentiles Aggregation", () => {
 					{
 						key: "1.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "5.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "25.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "50.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "75.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "95.0";
 						value: number;
+						value_as_string?: string;
 					},
 					{
 						key: "99.0";
 						value: number;
+						value_as_string?: string;
 					},
 				];
 			};
