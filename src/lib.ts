@@ -55,6 +55,7 @@ import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
 import type { AvgBucketAggs } from "./aggregations/pipeline/avg_bucket";
 import type { DerivativeAggs } from "./aggregations/pipeline/derivative";
+import type { CumulativeSumAggs } from "./aggregations/pipeline/cumulative_sum";
 import type { ExtendedStatsBucketAggs } from "./aggregations/pipeline/extended_stats_bucket";
 import type { MaxBucketAggs } from "./aggregations/pipeline/max_bucket";
 import type { MinBucketAggs } from "./aggregations/pipeline/min_bucket";
@@ -341,6 +342,7 @@ export type NextAggsParentKey<
 	| AggFunction
 	// Pipeline
 	| "avg_bucket"
+	| "cumulative_sum"
 	| "derivative"
 	| "stats_bucket"
 	| "sum_bucket"
@@ -416,6 +418,7 @@ export type AggregationOutput<
 				| WeightedAvgAggs<E, Index, Agg>
 				// Pipeline Aggs
 				| AvgBucketAggs<Agg>
+				| CumulativeSumAggs<Agg>
 				| DerivativeAggs<Agg>
 				| ExtendedStatsBucketAggs<Agg>
 				| MaxBucketAggs<Agg>
