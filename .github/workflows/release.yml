@@ -18,7 +18,7 @@ jobs:
       should_release: ${{ steps.version_check.outputs.should_release }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
       - name: Check if version changed
@@ -37,7 +37,8 @@ jobs:
   release:
     name: Release
     needs: check_version
-    if: github.repository == 'vahor/typed-es' && needs.check_version.outputs.should_release == 'true'
+    if: github.repository == 'vahor/typed-es' &&
+      needs.check_version.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write # to create release (changesets/action)
@@ -45,10 +46,14 @@ jobs:
       pull-requests: write # to create pull request (changesets/action)
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@v2.2.0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -57,7 +62,7 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1.6.0
+        uses: changesets/action@v1.8.0
         with:
           commit: "chore(release): version packages"
           title: "chore(release): version packages"

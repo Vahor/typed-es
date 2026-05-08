@@ -1,12 +1,43 @@
-# Typed ES
+# Typed ES — type-safe Elasticsearch responses for TypeScript
 
 [![Code quality](https://github.com/vahor/typed-es/actions/workflows/quality.yml/badge.svg)](https://github.com/vahor/typed-es/actions/workflows/quality.yml)
+[![npm version](https://img.shields.io/npm/v/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
 [![npm downloads](https://img.shields.io/npm/dm/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
+[![license](https://img.shields.io/npm/l/%40vahor%2Ftyped-es)](https://github.com/Vahor/typed-es/blob/main/LICENSE)
 
+Type-safe Elasticsearch responses for TypeScript, inferred from your actual search query.
 
-Automatically add output types to your Elasticsearch queries.
+`@vahor/typed-es` augments the official `@elastic/elasticsearch` client types so `_source`, `fields`, `hits.total`, `aggregations`, `msearch`, `asyncSearch`, and `inner_hits` stay synchronized with the query you wrote.
 
-Tested with Elasticsearch `8` and `9`.
+Without it, keeping correct manual response types means duplicating your query shape in TypeScript. Every time `_source`, `fields`, `track_total_hits`, or `aggs` changes, the matching `client.search<TDocument, TAggregations>()` types need to change too. That is tedious, easy to forget, and often ends in `as any`.
+
+If you have ever written or maintained `client.search<TDocument, TAggregations>()`, `result.aggregations as any`, or `hit._source as MyType`, this library is for you.
+
+- Works with the official Elasticsearch JavaScript client.
+- No query builder or runtime DSL to learn: keep writing normal Elasticsearch requests.
+- `typedEs` is a pass-through helper for type inference and does not change the Elasticsearch request.
+- Can be used as a type-only/dev dependency if you only need the exported types.
+- Tested with Elasticsearch `8` and `9`.
+
+## Install
+
+```sh
+npm install @vahor/typed-es
+
+# or with -D if you don't intend to use the typedEs wrapper. 
+npm install -D @vahor/typed-es
+```
+
+`@vahor/typed-es` can be a type-only dependency. Install it as a dev dependency if you only use its exported types and do not call `typedEs` at runtime.
+
+## Common problems solved
+
+- Type-safe Elasticsearch aggregations in TypeScript.
+- Inferred `_source` response types from selected fields and wildcards.
+- Autocomplete for valid index names and requested fields.
+- Safer `msearch` response typing per request.
+- Fewer duplicated response interfaces that drift from the query over time.
+- Fewer `as any`, non-null assertions, and hand-written aggregation result types.
 
 <details>
 <summary>Supported Aggregations</summary>
@@ -103,53 +134,62 @@ Tested with Elasticsearch `8` and `9`.
 
 </details>
 
-## Features
-- **Automatic type based on options**: Automatically infers output types from query options (e.g., returning `total` count).  
-- **Automatic output type based on requested fields and aggregations**: Derives precise types from specified `_source`, `fields`, `docvalue_fields` and `aggregations` configurations.  
-- **Understand wildcards**: The library correctly detects and infers output types even when using wildcards in `_source`.  
-  For example, given an index with fields `{ created_at: string; title: string }`,  
-  specifying `_source: ["*_at"]` will correctly return `{ created_at: string }` in the output type.  
-- **Supports `search`, [`msearch`](#usage-with-msearch) and [`asyncSearch`](#usage-with-asyncsearch)**: You can still use the native types if something goes wrong (see [What if the library is missing a feature that you need?](#what-if-the-library-is-missing-a-feature-that-you-need)).
-- **Typed `inner_hits` for `has_child` queries**: When using `has_child` with `inner_hits`, the response `hit.inner_hits` is automatically keyed by the child `type` (or `inner_hits.name` when specified).
+## What gets typed
 
-## Example Usage
+- **Search hits**: `_source` is inferred from the requested `_source` fields.
+- **Elasticsearch aggregations**: aggregation output types are inferred from the `aggs`/`aggregations` object.
+- **Requested fields**: `fields` and `docvalue_fields` appear on the response with the right field names.
+- **Script fields**: `script_fields` appear on the response under `fields` with `unknown` values.
+- **Total hits**: `hits.total` follows `track_total_hits` and `rest_total_hits_as_int`.
+- **Wildcard `_source` selections**: `_source: ["*_at"]` narrows the response to matching fields like `created_at`.
+- **Multi-search**: `msearch` responses preserve the type of each request pair.
+- **Async search**: `asyncSearch.get<typeof query>()` can recover the original response type.
+- **Child inner hits**: `has_child` + `inner_hits` is keyed by child `type` or `inner_hits.name`.
+
+## Quick example
+
 ```ts
-type MyIndex = {
-   "my-index": {
-      id: number;
-      name: string;
-      created_at: string;
-   }
+import { Client } from "@elastic/elasticsearch";
+import { type TypedClient, typedEs } from "@vahor/typed-es";
+
+type MyIndexes = {
+	"my-index": {
+		id: number;
+		name: string;
+		created_at: string;
+	};
 };
 
-// Having to use `as unknown` is less than ideal, but as we're overriding types, typescript isn't very happy
-const client = new Client({/* config */}) as unknown as TypedClient<Indexes>;
+const client = new Client({ /* config */ }) as unknown as TypedClient<MyIndexes>;
 
-// Query with _source (wildcard), fields, aggregation, and options
 const query = typedEs(client, {
 	index: "my-index",
 	_source: ["id", "na*"],
-	fields: [
-		{
-			field: "created_at",
-			format: "yyyy-MM-dd",
-		},
-	],
+	fields: [{ field: "created_at", format: "yyyy-MM-dd" }],
 	track_total_hits: true,
-	rest_total_hits_as_int: true, // Ensures total value is returned as a number
+	rest_total_hits_as_int: true,
 	aggs: {
 		name_counts: { terms: { field: "name" } },
 	},
 });
 
 const result = await client.search(query);
-const total = result.hits.total; // number
-const firstHit = result.hits.hits[0]; // { _source: { id: number; name: string}, fields: { created_at: string[] } }
-const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ key: string | number; doc_count: number; }>
+
+const total = result.hits.total;
+//    ^? number
+
+const firstHit = result.hits.hits[0];
+//    ^? { _source: { id: number; name: string }, fields: { created_at: string[] } }
+
+const buckets = result.aggregations.name_counts.buckets;
+//    ^? Array<{ key: string | number; doc_count: number }>
 ```
 
-## Why This Library?
-To highlight the benefits, here's a comparison with/without the library:
+See [`examples/search-and-aggregations.ts`](./examples/search-and-aggregations.ts) and the [`tests`](./tests) directory for more inference examples.
+
+## Before / after
+
+The official Elasticsearch client is flexible, but TypeScript often loses the exact response shape. You can write correct manual types, but then every query change also becomes a type-maintenance task. `@vahor/typed-es` keeps the query and response connected.
 
 <details>
 <summary>Same Example Without This Library</summary>
@@ -164,6 +204,8 @@ const aggregationBuckets = result.aggregations!.name_counts.buckets; // any, ts 
 ```
 
 #### With manual type definitions
+
+This works, but it duplicates the query shape. If you add a field to `_source`, rename `name_counts`, or change the aggregation type, you must remember to update these types too.
 
 ```ts
 const result = await client.search<
@@ -191,14 +233,6 @@ const aggregationBuckets = result.aggregations.name_counts.buckets; // Array<{ k
 ```
 
 </details>
-
-## Install
-
-```bash
-bun add @vahor/typed-es
-```
-
-Note: you can install it in dev-dependencies if you don't plan to use the `typedEs` function.
 
 ## Usage
 
@@ -254,10 +288,10 @@ type CustomIndexes = {
 
 ```ts
 import { Client } from "@elastic/elasticsearch";
-import { TypedClient } from "@vahor/typed-es";
+import type { TypedClient } from "@vahor/typed-es";
 
 const client = new Client({
-    ... // elasticsearch client config
+	// Elasticsearch client config
 }) as unknown as TypedClient<CustomIndexes>;
 ```
 
@@ -284,15 +318,15 @@ const queryWithAggs = typedEs(client, {
 });
 ```
 
-`typedEs` is a simple wrapper that adds type safety to index, autocompletes on _source. 
-Check its definition in [typed-es.ts](./src/typed-es.ts), you can reuse the same definition to add default values to your queries.
+`typedEs` is a simple wrapper that adds type safety to `index` and autocompletes `_source`.
+Check its definition in [typed-es.ts](./src/typed-es.ts); you can reuse the same pattern to add default values to your queries.
 
-Note: when `_source` is missing, the output will contain every fields.
+Note: when `_source` is missing, the output contains every field.
 
 ### Step 4: Enjoy an easy type-safe output
 
 ```ts
-// Use the elasticsearch client as usual
+// Use the Elasticsearch client as usual
 const output = await client.search(query);
 
 // And without having to add .search<Sources, Aggs>(query) everywhere, you now have access to the correct types
@@ -329,17 +363,20 @@ See more examples in the test files.
 
 ## Usage with `asyncSearch`
 
-The [asyncSearch](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-get) API has some complexity for us. The `get` method does not include the original query type information by default.
-To work around that we've added a new type definition.
+The [asyncSearch](https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-async-search-get) API has some complexity for us. `submit` can infer the response type directly from the submitted query, but `get` does not include the original query type information by default.
+To work around that, pass the original query type to `get`.
 
 ```typescript
 const query = typedEs(...);
 
+const submitted = await client.asyncSearch.submit(query);
+const submittedData = submitted.response; // Same type as if you used client.search(query)
+
 const result = await client.asyncSearch.get<typeof query>({ id: "abc" });
-const data = result.response; // Same type as if you used client.search(query);
+const data = result.response; // Same type as if you used client.search(query)
 
 // If you don't have a query variable, you can pass the query type explicitly.
-const result = await client.asyncSearch.get<{ query: ...}>({ id: "abc" });
+const result = await client.asyncSearch.get<{ query: ... }>({ id: "abc" });
 ```
 
 ## Usage with `msearch`
@@ -373,7 +410,7 @@ Notes:
 - `responses[i]` can be an error object if that search failed.
 
 <details>
-    <summary>Example with a dymamic search list</summary>
+    <summary>Example with a dynamic search list</summary>
 
 ```ts
 const ids = ["batman", "superman"];
@@ -409,12 +446,11 @@ const result = await (client as unknown as Client).search<TDocument, TAggregatio
 
 ## Limitations
 
-- query fields and aggs fields are not typed.
-- Some agg functions might be missing.
-- _source fields allow any string as you can use wildcards. On the other hand, wildcards will result in the **correct type** in the output.
-- has to use `as unknown as TypedClient<Indexes>` which I don't like.
-- Expect `index` to be a string. Currently we don't support wildcard or `_all` for the index name.
-
+- Query clauses and aggregation field parameters are not fully field-validated yet.
+- Some aggregation functions might be missing.
+- `_source` accepts arbitrary strings to support wildcards. Wildcards still produce the **correct inferred output type**.
+- Client setup currently requires `as unknown as TypedClient<Indexes>` because the official client types are being augmented.
+- `index` must be a concrete string key. Wildcard index names and `_all` are not supported yet.
 
 PRs are welcome to fix these limitations.
 
