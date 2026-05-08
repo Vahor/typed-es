@@ -10,8 +10,10 @@ export type CustomIndexes = {
 		score: number;
 		score_array: Array<number>;
 		entity_id: string;
+		version: string;
 		date: string;
 		ip: `${string}.${string}.${string}.${string}`;
+		latency: number;
 		load_time: number;
 		weight: number;
 		price: number;

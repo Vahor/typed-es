@@ -112,7 +112,7 @@ npm install -D @vahor/typed-es
 |-------------|--------|---------------|
 | Average Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-avg-bucket-aggregation) |
 | Bucket Script | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-script-aggregation) |
-| Bucket Count K-S Test | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-count-ks-test-aggregation) |
+| Bucket Count K-S Test | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-count-ks-test-aggregation) |
 | Bucket Correlation | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-correlation-aggregation) |
 | Bucket Selector | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-selector-aggregation) |
 | Bucket Sort | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-bucket-sort-aggregation) |
