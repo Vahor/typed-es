@@ -54,6 +54,7 @@ import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
 import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
 import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
 import type { AvgBucketAggs } from "./aggregations/pipeline/avg_bucket";
+import type { BucketScriptAggs } from "./aggregations/pipeline/bucket_script";
 import type { CumulativeSumAggs } from "./aggregations/pipeline/cumulative_sum";
 import type { DerivativeAggs } from "./aggregations/pipeline/derivative";
 import type { ExtendedStatsBucketAggs } from "./aggregations/pipeline/extended_stats_bucket";
@@ -342,6 +343,7 @@ export type NextAggsParentKey<
 	| AggFunction
 	// Pipeline
 	| "avg_bucket"
+	| "bucket_script"
 	| "cumulative_sum"
 	| "derivative"
 	| "stats_bucket"
@@ -418,6 +420,7 @@ export type AggregationOutput<
 				| WeightedAvgAggs<E, Index, Agg>
 				// Pipeline Aggs
 				| AvgBucketAggs<Agg>
+				| BucketScriptAggs<Agg>
 				| CumulativeSumAggs<Agg>
 				| DerivativeAggs<Agg>
 				| ExtendedStatsBucketAggs<Agg>
