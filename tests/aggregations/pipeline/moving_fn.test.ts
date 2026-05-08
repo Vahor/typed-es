@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO implement aggregation
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
@@ -31,7 +29,7 @@ describe("Moving Function Pipeline Aggregation", () => {
 					key: number;
 					doc_count: number;
 					the_sum: { value: number; value_as_string?: string };
-					the_movfn: { value: number | null };
+					the_movfn: { value: number | null; value_as_string?: string };
 				}>;
 			};
 		}>();

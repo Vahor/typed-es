@@ -62,6 +62,7 @@ import type { DerivativeAggs } from "./aggregations/pipeline/derivative";
 import type { ExtendedStatsBucketAggs } from "./aggregations/pipeline/extended_stats_bucket";
 import type { MaxBucketAggs } from "./aggregations/pipeline/max_bucket";
 import type { MinBucketAggs } from "./aggregations/pipeline/min_bucket";
+import type { MovingFunctionAggs } from "./aggregations/pipeline/moving_fn";
 import type { MovingPercentilesAggs } from "./aggregations/pipeline/moving_percentiles";
 import type { NormalizeAggs } from "./aggregations/pipeline/normalize";
 import type { PercentilesBucketAggs } from "./aggregations/pipeline/percentiles_bucket";
@@ -357,6 +358,7 @@ export type NextAggsParentKey<
 	| "min_bucket"
 	| "max_bucket"
 	| "extended_stats_bucket"
+	| "moving_fn"
 	| "normalize"
 	| "percentiles_bucket"
 	| "moving_percentiles"
@@ -436,6 +438,7 @@ export type AggregationOutput<
 				| ExtendedStatsBucketAggs<Agg>
 				| MaxBucketAggs<Agg>
 				| MinBucketAggs<Agg>
+				| MovingFunctionAggs<Agg>
 				| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
 				| NormalizeAggs<Agg>
 				| PercentilesBucketAggs<Agg>
