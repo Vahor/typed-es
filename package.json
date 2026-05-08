@@ -1,17 +1,22 @@
 {
 	"name": "@vahor/typed-es",
 	"version": "0.2.4",
-	"description": "Automatically add output types to your Elasticsearch queries.",
+	"description": "Infer type-safe Elasticsearch search, msearch, and aggregation responses from your query.",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Vahor/typed-es.git"
+	},
+	"homepage": "https://github.com/Vahor/typed-es#readme",
+	"bugs": {
+		"url": "https://github.com/Vahor/typed-es/issues"
 	},
 	"module": "./dist/esm/index.mjs",
 	"types": "./dist/cjs/index.d.cts",
 	"type": "module",
 	"exports": {
 		".": {
+			"types": "./dist/cjs/index.d.cts",
 			"import": "./dist/esm/index.mjs",
 			"require": "./dist/cjs/index.cjs"
 		},
@@ -22,14 +27,30 @@
 	"files": [
 		"dist"
 	],
+	"sideEffects": false,
 	"author": {
 		"email": "me@vahor.fr"
 	},
+	"funding": {
+		"type": "github",
+		"url": "https://github.com/sponsors/vahor"
+	},
 	"keywords": [
 		"elasticsearch",
-		"typed",
-		"types",
+		"elastic",
+		"elastic-search",
+		"@elastic/elasticsearch",
 		"typescript",
+		"types",
+		"typed",
+		"type-safe",
+		"type-safe-elasticsearch",
+		"elasticsearch-typescript",
+		"elasticsearch-client",
+		"elasticsearch-aggregations",
+		"aggregations",
+		"search",
+		"msearch",
 		"query"
 	],
 	"devDependencies": {
@@ -62,8 +83,5 @@
 	},
 	"publishConfig": {
 		"access": "public"
-	},
-	"engines": {
-		"bun": ">=1.3.0"
 	}
 }
