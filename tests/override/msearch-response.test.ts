@@ -1,5 +1,81 @@
 import { describe, expectTypeOf, test } from "bun:test";
+import type {
+	TypedMSearchResponse,
+	TypedMsearchRequest,
+} from "../../src/override/msearch-response";
 import { type CustomIndexes, client } from "../shared";
+
+type SuccessfulMsearchResponse<T> = Extract<
+	T,
+	{ "~type": "TypedSearchResponse" }
+>;
+
+describe("msearch aggregation response types", () => {
+	test("preserves different aggregations per search", () => {
+		const query = {
+			index: "demo",
+			searches: [
+				{ index: "demo" },
+				{
+					_source: false,
+					size: 0,
+					aggregations: {
+						score_stats: {
+							stats: {
+								field: "score",
+							},
+						},
+					},
+				},
+				{ index: "orders" },
+				{
+					_source: false,
+					size: 0,
+					aggs: {
+						statuses: {
+							terms: {
+								field: "status",
+							},
+						},
+					},
+				},
+			] as const,
+		} as const satisfies TypedMsearchRequest<CustomIndexes>;
+
+		type Responses = TypedMSearchResponse<
+			typeof query,
+			CustomIndexes
+		>["responses"];
+
+		expectTypeOf<
+			SuccessfulMsearchResponse<Responses[0]>["aggregations"]
+		>().toEqualTypeOf<{
+			score_stats: {
+				count: number;
+				min: number;
+				min_as_string?: string;
+				max: number;
+				max_as_string?: string;
+				avg: number;
+				avg_as_string?: string;
+				sum: number;
+				sum_as_string?: string;
+			};
+		}>();
+		expectTypeOf<
+			SuccessfulMsearchResponse<Responses[1]>["aggregations"]
+		>().toEqualTypeOf<{
+			statuses: {
+				doc_count_error_upper_bound: number;
+				sum_other_doc_count: number;
+				buckets: Array<{
+					key: "pending" | "completed" | "cancelled";
+					doc_count: number;
+				}>;
+			};
+		}>();
+	});
+});
 
 describe.skip("Should return the correct type", () => {
 	test("with a single search", async () => {
