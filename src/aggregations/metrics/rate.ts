@@ -32,5 +32,6 @@ export type RateAggs<
 				>
 			: {
 					value: number;
+					value_as_string?: string;
 				}
 	: never;

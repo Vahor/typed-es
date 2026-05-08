@@ -71,15 +71,15 @@ describe("Moving Percentiles Pipeline Aggregation", () => {
 					doc_count: number;
 					the_percentile: {
 						values: [
-							{ key: "1.0"; value: number },
-							{ key: "99.0"; value: number },
+							{ key: "1.0"; value: number; value_as_string?: string },
+							{ key: "99.0"; value: number; value_as_string?: string },
 						];
 					};
 					the_movperc:
 						| {
 								values: [
-									{ key: "1.0"; value: number },
-									{ key: "99.0"; value: number },
+									{ key: "1.0"; value: number; value_as_string?: string },
+									{ key: "99.0"; value: number; value_as_string?: string },
 								];
 						  }
 						| undefined;
