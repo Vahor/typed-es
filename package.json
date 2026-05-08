@@ -12,7 +12,7 @@
 		"url": "https://github.com/Vahor/typed-es/issues"
 	},
 	"module": "./dist/esm/index.mjs",
-	"types": "./dist/cjs/index.d.cts",
+	"types": "./dist/esm/index.d.mts",
 	"type": "module",
 	"exports": {
 		".": {

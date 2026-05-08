@@ -10,6 +10,7 @@ export default defineConfig({
 	exports: true,
 	dts: {
 		sourcemap: false,
+		cjsReexport: true,
 	},
 	format: {
 		cjs: {
