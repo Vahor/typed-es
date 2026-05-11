@@ -73,17 +73,7 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 	search<
 		Query extends TypedSearchRequest<E>,
 		O extends TransportOptions = TransportRequestOptionsWithOutMeta,
-	>(
-		query: Query,
-		options?: O,
-	): WithTransport<
-		O,
-		TypedSearchResponse<
-			// @ts-expect-error: Same as above
-			Query,
-			E
-		>
-	>;
+	>(query: Query, options?: O): WithTransport<O, TypedSearchResponse<Query, E>>;
 
 	/**
 	 * Run multiple independent searches in a single request.
@@ -108,14 +98,7 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 		>(
 			params: estypes.AsyncSearchGetRequest,
 			options?: O,
-		): WithTransport<
-			O,
-			TypedAsyncSearchGetResponse<
-				// @ts-expect-error: Same as above
-				Query,
-				E
-			>
-		>;
+		): WithTransport<O, TypedAsyncSearchGetResponse<Query, E>>;
 
 		/**
 		 * Run an async search. When the primary sort of the results is an indexed field, shards get sorted based on minimum and maximum value that they hold for that field. Partial results become available following the sort criteria that was requested. Warning: Asynchronous search does not support scroll or search requests that include only the suggest section. By default, Elasticsearch does not allow you to store an async search response larger than 10Mb and an attempt to do this results in an error. The maximum allowed size for a stored async search response can be set by changing the `search.max_async_search_response_size` cluster level setting.
@@ -127,13 +110,6 @@ export interface TypedClient<E extends ElasticsearchIndexes> extends Client {
 		>(
 			params: Query,
 			options?: O,
-		): WithTransport<
-			O,
-			TypedAsyncSearchSubmitResponse<
-				// @ts-expect-error: Same as above
-				Query,
-				E
-			>
-		>;
+		): WithTransport<O, TypedAsyncSearchSubmitResponse<Query, E>>;
 	};
 }

@@ -610,16 +610,47 @@ export type OverwrittenSearchRequestFields =
 	| "sort"
 	| "query";
 
+type SearchSourceRequest<Field extends string> =
+	| RArray<Field>
+	| false
+	| {
+			includes?: RArray<Field>;
+			include?: RArray<Field>;
+			excludes?: RArray<Field>;
+			exclude?: RArray<Field>;
+	  };
+
+type SearchFieldsRequest<Field extends string> = RArray<
+	| Field
+	| {
+			field: Field;
+			format?: string;
+	  }
+>;
+
 export type SearchRequest = Pick<
 	estypes.SearchRequest,
 	Exclude<OverwrittenSearchRequestFields, IssueWithReadonlyArray>
->;
+> & {
+	index?: estypes.SearchRequest["index"] | RArray<string>;
+	_source?: estypes.SearchRequest["_source"] | SearchSourceRequest<string>;
+	fields?: estypes.SearchRequest["fields"] | SearchFieldsRequest<string>;
+	docvalue_fields?:
+		| estypes.SearchRequest["docvalue_fields"]
+		| SearchFieldsRequest<string>;
+};
 
 /**
- * HACK: const Query modifier cause sort/query to be readonly. which cause issues with estypes versions as it has mutable arrays in types.
- * The correct fix would be to overrides these types but as we don't really have to, we simply skip them.
+ * HACK: const Query modifier cause some search options to be readonly. which cause issues with estypes versions as it has mutable arrays in types.
+ * The correct fix would be to override these types but as we don't really have to, we simply skip them.
  */
-type IssueWithReadonlyArray = "sort" | "query";
+type IssueWithReadonlyArray =
+	| "sort"
+	| "query"
+	| "index"
+	| "_source"
+	| "fields"
+	| "docvalue_fields";
 
 /**
  * A type-safe Elasticsearch search request that provides autocomplete and validation
@@ -664,28 +695,12 @@ type TypedSearchRequestForIndex<
 	IndexInput = Index,
 > = {
 	index: IndexInput;
-	_source?:
-		| RArray<PossibleFieldsWithWildcards<Index, Indexes>>
-		| false
-		| {
-				includes?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
-				include?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
-				excludes?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
-				exclude?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
-		  };
-	fields?: RArray<
-		| PossibleFieldsWithWildcards<Index, Indexes, true>
-		| {
-				field: PossibleFieldsWithWildcards<Index, Indexes, true>;
-				format?: string;
-		  }
+	_source?: SearchSourceRequest<PossibleFieldsWithWildcards<Index, Indexes>>;
+	fields?: SearchFieldsRequest<
+		PossibleFieldsWithWildcards<Index, Indexes, true>
 	>;
-	docvalue_fields?: RArray<
-		| PossibleFieldsWithWildcards<Index, Indexes, true>
-		| {
-				field: PossibleFieldsWithWildcards<Index, Indexes, true>;
-				format?: string;
-		  }
+	docvalue_fields?: SearchFieldsRequest<
+		PossibleFieldsWithWildcards<Index, Indexes, true>
 	>;
 };
 
