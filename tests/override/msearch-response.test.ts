@@ -27,7 +27,7 @@ describe("msearch aggregation response types", () => {
 		>().toEqualTypeOf<CustomIndexes[keyof CustomIndexes]>();
 		expectTypeOf<
 			SuccessfulMsearchResponse<Responses[1]>["hits"]["hits"][0]["_source"]
-		>().toEqualTypeOf<CustomIndexes[keyof CustomIndexes]>();
+		>().toEqualTypeOf<Pick<CustomIndexes["demo"], "score"> | {}>();
 	});
 
 	test("preserves different aggregations per search", () => {

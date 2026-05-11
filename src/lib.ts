@@ -464,12 +464,28 @@ type IsParentKeyALeaf<
 			: false
 	: false;
 
+type DeepPickFieldsForAllIndex<
+	E extends ElasticsearchIndexes,
+	Paths extends string,
+> = {
+	[K in Extract<keyof E, string>]: Extract<
+		Paths,
+		PossibleFields<K, E>
+	> extends never
+		? {}
+		: DeepPickPaths<E[K], Extract<Paths, PossibleFields<K, E>>>;
+}[Extract<keyof E, string>];
+
 type DeepPickFieldsForIndex<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Paths extends string,
 > = Index extends AllIndex
-	? E[Extract<keyof E, string>]
+	? [Paths] extends [PossibleFields<Index, E>]
+		? [PossibleFields<Index, E>] extends [Paths]
+			? E[Extract<keyof E, string>]
+			: DeepPickFieldsForAllIndex<E, Paths>
+		: DeepPickFieldsForAllIndex<E, Paths>
 	: Index extends keyof E
 		? DeepPickPaths<E[Index], Paths>
 		: never;
