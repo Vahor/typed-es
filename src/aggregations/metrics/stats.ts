@@ -1,5 +1,5 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation
@@ -13,10 +13,11 @@ export type Stats<
 		field: infer Field extends string;
 	};
 }
-	? AggregationFieldResult<
+	? AggregationFieldTypeResult<
 			E,
 			Index,
 			Agg,
+			number,
 			{
 				count: number;
 				min: number;
