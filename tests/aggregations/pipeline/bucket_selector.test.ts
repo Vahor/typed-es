@@ -1,7 +1,19 @@
 import { describe, expectTypeOf, test } from "bun:test";
+import type { BucketSelector } from "../../../src/aggregations/pipeline/bucket_selector";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Bucket Selector Pipeline Aggregation", () => {
+	test("bucket_selector does not add an output entry", () => {
+		type Output = BucketSelector<{
+			bucket_selector: {
+				buckets_path: { totalSales: "total_sales" };
+				script: "params.totalSales > 200";
+			};
+		}>;
+
+		expectTypeOf<Output>().toEqualTypeOf<never>();
+	});
+
 	test("docs example: retain months with total_sales > 200", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",
