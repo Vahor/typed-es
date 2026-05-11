@@ -7,7 +7,7 @@ import type {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation
  */
-export type CartesianBoundsAggs<
+export type CartesianBounds<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

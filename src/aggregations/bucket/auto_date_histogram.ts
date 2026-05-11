@@ -10,7 +10,7 @@ import type { PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-autodatehistogram-aggregation
  */
-export type AutoDateHistogramAggs<
+export type AutoDateHistogram<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

@@ -7,7 +7,7 @@ import type {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line
  */
-export type GeoLineAggs<
+export type GeoLine<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

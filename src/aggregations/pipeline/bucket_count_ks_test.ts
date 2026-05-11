@@ -10,7 +10,7 @@ type BucketCountKSTestOutput<Alternatives> =
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-count-ks-test-aggregation
  */
-export type BucketCountKSTestAggs<Agg> = Agg extends {
+export type BucketCountKSTest<Agg> = Agg extends {
 	bucket_count_ks_test: {
 		buckets_path: BucketsPath;
 		alternative?: infer Alternatives;

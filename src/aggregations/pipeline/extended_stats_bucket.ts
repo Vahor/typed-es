@@ -1,7 +1,7 @@
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-extended-stats-bucket-aggregation
  */
-export type ExtendedStatsBucketAggs<Agg> = Agg extends {
+export type ExtendedStatsBucket<Agg> = Agg extends {
 	extended_stats_bucket: { buckets_path: string };
 }
 	? {

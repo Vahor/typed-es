@@ -19,7 +19,7 @@ type Range_0_15 = RangeInclusive<0, 15>;
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohexgrid-aggregation
  */
-export type GeoHexGridAggs<
+export type GeoHexGrid<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

@@ -11,7 +11,7 @@ import type { IsStringLiteral, PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation
  */
-export type TermsAggs<
+export type Terms<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

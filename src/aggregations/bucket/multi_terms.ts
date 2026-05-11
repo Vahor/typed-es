@@ -11,7 +11,7 @@ import type { PrettyArray, SeparatedString } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation
  */
-export type MultiTermsAggs<
+export type MultiTerms<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

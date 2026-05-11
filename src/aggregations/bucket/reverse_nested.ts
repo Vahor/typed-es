@@ -4,7 +4,7 @@ import type { Prettify } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-reverse-nested-aggregation
  */
-export type ReverseNestedAggs<
+export type ReverseNested<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

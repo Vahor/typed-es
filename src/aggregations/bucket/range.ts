@@ -53,7 +53,7 @@ type RangeOutput<
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-range-aggregation
  */
-export type RangeAggs<
+export type Range<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

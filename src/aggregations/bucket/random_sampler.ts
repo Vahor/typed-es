@@ -43,7 +43,7 @@ type ValidateProbability<P> =
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-random-sampler-aggregation
  */
-export type RandomSamplerAggs<
+export type RandomSampler<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

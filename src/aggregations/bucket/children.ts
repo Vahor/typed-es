@@ -4,7 +4,7 @@ import type { Prettify } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-children-aggregation.html
  */
-export type ChildrenAggs<
+export type Children<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

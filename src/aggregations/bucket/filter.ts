@@ -4,7 +4,7 @@ import type { Prettify } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filter-aggregation
  */
-export type FilterAggs<
+export type Filter<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

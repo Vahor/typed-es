@@ -9,7 +9,7 @@ import type { PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-hits-aggregation
  */
-export type TopHitsAggs<
+export type TopHits<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

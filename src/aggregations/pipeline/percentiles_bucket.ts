@@ -8,7 +8,7 @@ type GetPercents<Percents> = Percents extends number[]
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-percentiles-bucket-aggregation
  */
-export type PercentilesBucketAggs<Agg> = Agg extends {
+export type PercentilesBucket<Agg> = Agg extends {
 	percentiles_bucket: { buckets_path: string; percents?: infer Percents };
 }
 	? {

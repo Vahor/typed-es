@@ -12,7 +12,7 @@ import type { IsSomeSortOf, PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation
  */
-export type SignificantTermsAggs<
+export type SignificantTerms<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

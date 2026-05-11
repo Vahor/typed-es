@@ -24,7 +24,7 @@ type PercentilesValuesToObject<Values> = Values extends { key: string }[]
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-percentile-rank-aggregation
  */
-export type PercentileRanksAggs<
+export type PercentileRanks<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

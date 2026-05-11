@@ -12,7 +12,7 @@ import type { IsSomeSortOf, PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-categorize-text-aggregation
  */
-export type CategorizeTextAggs<
+export type CategorizeText<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
