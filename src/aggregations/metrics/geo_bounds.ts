@@ -1,5 +1,8 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldResult } from "../helpers";
+import type {
+	AggregationFieldResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation
@@ -9,10 +12,9 @@ export type GeoBounds<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	geo_bounds: {
-		field: infer Field extends string;
-		wrap_longitude?: boolean;
-	};
+	geo_bounds: infer GeoBounds extends
+		| { field: string; wrap_longitude?: boolean }
+		| { script: unknown; wrap_longitude?: boolean };
 }
 	? AggregationFieldResult<
 			E,
@@ -30,6 +32,6 @@ export type GeoBounds<
 					};
 				};
 			},
-			Field
+			ExtractFieldFromFieldOrScript<GeoBounds>
 		>
 	: never;

@@ -6,7 +6,7 @@ import type {
 	InvalidPropertyTypeInAggregation,
 	TypeOfField,
 } from "../lib";
-import type { IsSomeSortOf } from "../types/helpers";
+import type { IsNever, IsSomeSortOf } from "../types/helpers";
 
 export type AggregationPropertyTypeResult<
 	PropertyName extends string,
@@ -33,6 +33,14 @@ type ExtractAggregationField<Aggregation> = {
 		: never;
 }[keyof Aggregation];
 
+export type ExtractFieldFromFieldOrScript<Config> = Config extends {
+	field: infer Field extends string;
+}
+	? Field
+	: Config extends { script: unknown }
+		? never
+		: never;
+
 export type AggregationFieldResult<
 	E extends ElasticsearchIndexes,
 	Index extends string,
@@ -40,9 +48,11 @@ export type AggregationFieldResult<
 	Result,
 	Field extends string = ExtractAggregationField<Aggregation>,
 > =
-	CanBeUsedInAggregation<Field, Index, E> extends true
+	IsNever<Field> extends true
 		? Result
-		: InvalidFieldInAggregation<Field, Index, Aggregation>;
+		: CanBeUsedInAggregation<Field, Index, E> extends true
+			? Result
+			: InvalidFieldInAggregation<Field, Index, Aggregation>;
 
 type AggregationFieldTypeCheckResult<
 	E extends ElasticsearchIndexes,
@@ -69,20 +79,48 @@ export type AggregationFieldTypeResult<
 	Expected,
 	Result,
 	Field extends string = ExtractAggregationField<Aggregation>,
-> = AggregationFieldResult<
-	E,
-	Index,
+> =
+	IsNever<Field> extends true
+		? Result
+		: AggregationFieldResult<
+				E,
+				Index,
+				Aggregation,
+				AggregationFieldTypeCheckResult<
+					E,
+					Index,
+					Aggregation,
+					Field,
+					Expected,
+					Result
+				>,
+				Field
+			>;
+
+type AggregationMaybeFieldTypeResult<
+	E extends ElasticsearchIndexes,
+	Index extends string,
 	Aggregation,
-	AggregationFieldTypeCheckResult<
-		E,
-		Index,
-		Aggregation,
-		Field,
-		Expected,
-		Result
-	>,
-	Field
->;
+	Field extends string,
+	Expected,
+	Result,
+> =
+	IsNever<Field> extends true
+		? Result
+		: AggregationFieldResult<
+				E,
+				Index,
+				Aggregation,
+				AggregationFieldTypeCheckResult<
+					E,
+					Index,
+					Aggregation,
+					Field,
+					Expected,
+					Result
+				>,
+				Field
+			>;
 
 export type AggregationTwoFieldTypeResult<
 	E extends ElasticsearchIndexes,
@@ -93,30 +131,18 @@ export type AggregationTwoFieldTypeResult<
 	SecondField extends string,
 	SecondExpected,
 	Result,
-> = AggregationFieldResult<
+> = AggregationMaybeFieldTypeResult<
 	E,
 	Index,
 	Aggregation,
-	AggregationFieldResult<
+	FirstField,
+	FirstExpected,
+	AggregationMaybeFieldTypeResult<
 		E,
 		Index,
 		Aggregation,
-		AggregationFieldTypeCheckResult<
-			E,
-			Index,
-			Aggregation,
-			FirstField,
-			FirstExpected,
-			AggregationFieldTypeCheckResult<
-				E,
-				Index,
-				Aggregation,
-				SecondField,
-				SecondExpected,
-				Result
-			>
-		>,
-		SecondField
-	>,
-	FirstField
+		SecondField,
+		SecondExpected,
+		Result
+	>
 >;

@@ -1,5 +1,8 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldResult } from "../helpers";
+import type {
+	AggregationFieldResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation
@@ -9,9 +12,9 @@ export type ExtendedStats<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	extended_stats: {
-		field: infer Field extends string;
-	};
+	extended_stats: infer ExtendedStats extends
+		| { field: string }
+		| { script: unknown };
 }
 	? AggregationFieldResult<
 			E,
@@ -56,6 +59,6 @@ export type ExtendedStats<
 					lower_sampling_as_string?: string;
 				};
 			},
-			Field
+			ExtractFieldFromFieldOrScript<ExtendedStats>
 		>
 	: never;

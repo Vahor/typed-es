@@ -29,6 +29,32 @@ describe("Stats Aggregation", () => {
 		}>();
 	});
 
+	test("with script instead of field", () => {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
+				total_stats: {
+					stats: {
+						script: "doc['total'].value * 2";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			total_stats: {
+				count: number;
+				min: number;
+				min_as_string?: string;
+				max: number;
+				max_as_string?: string;
+				avg: number;
+				avg_as_string?: string;
+				sum: number;
+				sum_as_string?: string;
+			};
+		}>();
+	});
+
 	test("fails when using an invalid field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",

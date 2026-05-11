@@ -27,6 +27,36 @@ describe("Leaf Function Aggregations", () => {
 		}>();
 	});
 
+	test("with script-only metric functions", () => {
+		type Aggregations = TestAggregationOutput<
+			"orders",
+			{
+				sum_script: {
+					sum: {
+						script: {
+							source: "doc['total'].value * 2";
+						};
+					};
+				};
+				value_count_script: {
+					value_count: {
+						script: "doc['total'].value";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			sum_script: {
+				value: number;
+				value_as_string?: string;
+			};
+			value_count_script: {
+				value: number;
+				value_as_string?: string;
+			};
+		}>();
+	});
+
 	test("with generic function", () => {
 		const fn = "" as "min" | "max" | "sum" | "avg";
 		const query = typedEs(client, {

@@ -1,6 +1,9 @@
 import type { ElasticsearchIndexes } from "../..";
 import type { EsPoint, EsShape } from "../../types/fields";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type {
+	AggregationFieldTypeResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation
@@ -10,9 +13,9 @@ export type CartesianCentroid<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	cartesian_centroid: {
-		field: infer Field extends string;
-	};
+	cartesian_centroid: infer CartesianCentroid extends
+		| { field: string }
+		| { script: unknown };
 }
 	? AggregationFieldTypeResult<
 			E,
@@ -26,6 +29,6 @@ export type CartesianCentroid<
 				};
 				count: number;
 			},
-			Field
+			ExtractFieldFromFieldOrScript<CartesianCentroid>
 		>
 	: never;

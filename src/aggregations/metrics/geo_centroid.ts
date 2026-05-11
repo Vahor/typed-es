@@ -1,5 +1,8 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldResult } from "../helpers";
+import type {
+	AggregationFieldResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation
@@ -9,9 +12,9 @@ export type GeoCentroid<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	geo_centroid: {
-		field: infer Field extends string;
-	};
+	geo_centroid: infer GeoCentroid extends
+		| { field: string }
+		| { script: unknown };
 }
 	? AggregationFieldResult<
 			E,
@@ -24,6 +27,6 @@ export type GeoCentroid<
 				};
 				count: number;
 			},
-			Field
+			ExtractFieldFromFieldOrScript<GeoCentroid>
 		>
 	: never;

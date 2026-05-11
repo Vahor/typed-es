@@ -1,5 +1,8 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type {
+	AggregationFieldTypeResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation
@@ -9,9 +12,7 @@ export type Boxplot<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	boxplot: {
-		field: infer Field extends string;
-	};
+	boxplot: infer Boxplot extends { field: string } | { script: unknown };
 }
 	? AggregationFieldTypeResult<
 			E,
@@ -27,6 +28,6 @@ export type Boxplot<
 				lower: number;
 				upper: number;
 			},
-			Field
+			ExtractFieldFromFieldOrScript<Boxplot>
 		>
 	: never;

@@ -68,6 +68,30 @@ describe("WeightedAvg Aggregations", () => {
 		}>();
 	});
 
+	test("with value and weight scripts", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				weighted_score: {
+					weighted_avg: {
+						value: {
+							script: "doc.score.value + 1";
+						};
+						weight: {
+							script: "1";
+						};
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			weighted_score: {
+				value: number;
+				value_as_string?: string;
+			};
+		}>();
+	});
+
 	test("fails when using an invalid field type (weight)", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",

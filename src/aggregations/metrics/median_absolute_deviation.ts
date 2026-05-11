@@ -1,5 +1,8 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type {
+	AggregationFieldTypeResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation
@@ -9,9 +12,9 @@ export type MedianAbsoluteDeviation<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	median_absolute_deviation: {
-		field: infer Field extends string;
-	};
+	median_absolute_deviation: infer MedianAbsoluteDeviation extends
+		| { field: string }
+		| { script: unknown };
 }
 	? AggregationFieldTypeResult<
 			E,
@@ -22,6 +25,6 @@ export type MedianAbsoluteDeviation<
 				value: number;
 				value_as_string?: string;
 			},
-			Field
+			ExtractFieldFromFieldOrScript<MedianAbsoluteDeviation>
 		>
 	: never;

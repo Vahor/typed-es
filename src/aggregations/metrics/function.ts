@@ -1,4 +1,5 @@
 import type { ElasticsearchIndexes, TypeOfField } from "../..";
+import type { IsNever } from "../../types/helpers";
 import type { AggregationFieldResult } from "../helpers";
 
 type ExtractAggField<Agg> = {
@@ -6,10 +7,30 @@ type ExtractAggField<Agg> = {
 		field: infer F;
 	}
 		? { fn: Fn; field: F }
-		: never;
+		: Agg[Fn] extends { script: unknown }
+			? { fn: Fn; script: unknown }
+			: never;
 }[Extract<keyof Agg, AggFunction>];
 
 type AggFunctionsNumber = "value_count" | "cardinality";
+
+type FunctionResult<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Fn,
+	Field = never,
+> = {
+	value_as_string?: string;
+	value: Fn extends AggFunctionsNumber
+		? number
+		: IsNever<Field> extends true
+			? number
+			: Field extends string
+				? TypeOfField<Field, E, Index> extends number
+					? number
+					: number | string
+				: number;
+};
 
 export type AggFunction = AggFunctionsNumber | "sum" | "avg" | "max" | "min";
 
@@ -23,13 +44,8 @@ export type Function<
 			E,
 			Index,
 			Agg,
-			{
-				value_as_string?: string;
-				value: FieldAgg["fn"] extends AggFunctionsNumber
-					? number
-					: TypeOfField<FieldAgg["field"], E, Index> extends number
-						? number
-						: number | string;
-			}
+			FunctionResult<E, Index, FieldAgg["fn"], FieldAgg["field"]>
 		>
-	: never;
+	: FieldAgg extends { fn: string; script: unknown }
+		? FunctionResult<E, Index, FieldAgg["fn"]>
+		: never;

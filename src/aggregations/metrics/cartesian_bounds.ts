@@ -1,5 +1,8 @@
 import type { ElasticsearchIndexes } from "../..";
-import type { AggregationFieldResult } from "../helpers";
+import type {
+	AggregationFieldResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation
@@ -9,9 +12,9 @@ export type CartesianBounds<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	cartesian_bounds: {
-		field: infer Field extends string;
-	};
+	cartesian_bounds: infer CartesianBounds extends
+		| { field: string }
+		| { script: unknown };
 }
 	? AggregationFieldResult<
 			E,
@@ -29,6 +32,6 @@ export type CartesianBounds<
 					};
 				};
 			},
-			Field
+			ExtractFieldFromFieldOrScript<CartesianBounds>
 		>
 	: never;

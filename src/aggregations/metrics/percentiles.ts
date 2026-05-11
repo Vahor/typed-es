@@ -1,6 +1,9 @@
 import type { ElasticsearchIndexes } from "../..";
 import type { ToDecimal } from "../../types/helpers";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type {
+	AggregationFieldTypeResult,
+	ExtractFieldFromFieldOrScript,
+} from "../helpers";
 
 type DefaultPercents = [1, 5, 25, 50, 75, 95, 99];
 
@@ -26,30 +29,34 @@ export type Percentiles<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	percentiles: {
-		field: infer Field extends string;
-		percents?: infer Percents;
-		keyed?: infer Keyed;
-	};
+	percentiles: infer Percentiles extends
+		| { field: string; percents?: unknown; keyed?: unknown }
+		| { script: unknown; percents?: unknown; keyed?: unknown };
 }
 	? AggregationFieldTypeResult<
 			E,
 			Index,
 			Agg,
 			number,
-			Keyed extends false
+			Percentiles extends { keyed: false }
 				? {
 						values: PercentilesValues<
-							Percents extends number[] ? Percents : DefaultPercents
+							Percentiles extends { percents: infer Percents extends number[] }
+								? Percents
+								: DefaultPercents
 						>;
 					}
 				: {
 						values: PercentilesValuesToObject<
 							PercentilesValues<
-								Percents extends number[] ? Percents : DefaultPercents
+								Percentiles extends {
+									percents: infer Percents extends number[];
+								}
+									? Percents
+									: DefaultPercents
 							>
 						>;
 					},
-			Field
+			ExtractFieldFromFieldOrScript<Percentiles>
 		>
 	: never;
