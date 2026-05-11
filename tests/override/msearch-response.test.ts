@@ -11,6 +11,25 @@ type SuccessfulMsearchResponse<T> = Extract<
 >;
 
 describe("msearch aggregation response types", () => {
+	test("supports _all index", () => {
+		const query = {
+			index: "_all",
+			searches: [{ index: "_all" }, {}, {}, { _source: ["score"] }],
+		} as const satisfies TypedMsearchRequest<CustomIndexes>;
+
+		type Responses = TypedMSearchResponse<
+			typeof query,
+			CustomIndexes
+		>["responses"];
+
+		expectTypeOf<
+			SuccessfulMsearchResponse<Responses[0]>["hits"]["hits"][0]["_source"]
+		>().toEqualTypeOf<CustomIndexes[keyof CustomIndexes]>();
+		expectTypeOf<
+			SuccessfulMsearchResponse<Responses[1]>["hits"]["hits"][0]["_source"]
+		>().toEqualTypeOf<Pick<CustomIndexes["demo"], "score"> | {}>();
+	});
+
 	test("preserves different aggregations per search", () => {
 		const query = {
 			index: "demo",

@@ -24,6 +24,20 @@ describe("Should return the correct type", () => {
 				expectTypeOf<Output>().toEqualTypeOf<CustomIndexes["demo"]>();
 			});
 
+			test("with _all index", () => {
+				const query = typedEs(client, {
+					index: "_all",
+				});
+				type Output = TypedSearchResponse<
+					typeof query,
+					CustomIndexes
+				>["hits"]["hits"][0]["_source"];
+
+				expectTypeOf<Output>().toEqualTypeOf<
+					CustomIndexes[keyof CustomIndexes]
+				>();
+			});
+
 			describe("handle custom fields", () => {
 				describe("on direct values", () => {
 					// not an object

@@ -19,6 +19,13 @@ describe("typedEs Function", () => {
 				_source: [],
 			});
 		});
+
+		test("with _all index", () => {
+			const query = typedEs(client, {
+				index: "_all",
+			});
+			expectTypeOf<RequestedIndex<typeof query>>().toEqualTypeOf<"_all">();
+		});
 	});
 
 	describe("Should enforce correct _source", () => {

@@ -1,5 +1,9 @@
 import type { estypes } from "@elastic/elasticsearch";
-import type { ElasticsearchIndexes, TypedSearchRequest } from "../lib";
+import type {
+	ElasticsearchIndex,
+	ElasticsearchIndexes,
+	TypedSearchRequest,
+} from "../lib";
 import type {
 	AlternatingPair,
 	IsNever,
@@ -11,7 +15,9 @@ import type {
 import type { TypedSearchResponse } from "./search-response";
 
 type PairType<E extends ElasticsearchIndexes> = {
-	header: Omit<estypes.MsearchMultisearchHeader, "index"> & { index?: keyof E };
+	header: Omit<estypes.MsearchMultisearchHeader, "index"> & {
+		index?: ElasticsearchIndex<E>;
+	};
 	request: Omit<TypedSearchRequest<E>, "index">;
 };
 type PopPair<Data> = Data extends [infer H, infer T, ...infer Rest]
@@ -51,7 +57,7 @@ export type TypedMsearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	estypes.MsearchRequest,
 	"index" | "searches"
 > & {
-	index: keyof Indexes;
+	index: ElasticsearchIndex<Indexes>;
 	searches: MRequestSearches<Indexes>;
 };
 
