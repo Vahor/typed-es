@@ -1,6 +1,7 @@
 import type { estypes } from "@elastic/elasticsearch";
 import type {
 	AggregationOutput,
+	ElasticsearchIndex,
 	ElasticsearchIndexes,
 	ElasticsearchOutputFields,
 	ExtractAggsKey,
@@ -46,21 +47,22 @@ export type TypedAsyncSearchGetResponse<
 	Query extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string = RequestedIndex<Query>,
-> = Index extends keyof E
-	? OverrideAsyncSearchGetResponse<
-			Query,
-			E,
-			ElasticsearchOutputFields<Query, E, Index, "_source">,
-			ElasticsearchOutputFields<Query, E, Index, "fields">,
-			{
-				[K in ExtractAggsKey<Query>]: AggregationOutput<
-					Query,
-					Query,
-					E,
-					// @ts-expect-error: TODO
-					K,
-					Index
-				>;
-			}
-		>
-	: `Index '${Index}' not found`;
+> =
+	Index extends ElasticsearchIndex<E>
+		? OverrideAsyncSearchGetResponse<
+				Query,
+				E,
+				ElasticsearchOutputFields<Query, E, Index, "_source">,
+				ElasticsearchOutputFields<Query, E, Index, "fields">,
+				{
+					[K in ExtractAggsKey<Query>]: AggregationOutput<
+						Query,
+						Query,
+						E,
+						// @ts-expect-error: TODO
+						K,
+						Index
+					>;
+				}
+			>
+		: `Index '${Index}' not found`;

@@ -31,6 +31,11 @@ import type {
 } from "./types/wildcard-search";
 
 type WithVariants<T extends string> = `${T}.${string}` | T;
+type AllIndex = "_all";
+export type ElasticsearchIndex<Indexes extends ElasticsearchIndexes> =
+	| Extract<keyof Indexes, string>
+	| AllIndex;
+
 type FilterToOnlyLeaf<
 	T extends string,
 	E extends ElasticsearchIndexes,
@@ -69,17 +74,26 @@ export type PossibleFields<
 	Indexes extends ElasticsearchIndexes,
 	OnlyLeaf = false,
 	AllowVariants = false,
-> = Index extends keyof Indexes
-	? AllowVariants extends true
-		?
-				| FilterToOnlyLeaf<
-						WithVariants<JoinKeys<Indexes[Index], OnlyLeaf>>,
-						Indexes,
-						Index
-				  >
-				| JoinKeys<Indexes[Index], OnlyLeaf>
-		: JoinKeys<Indexes[Index], OnlyLeaf>
-	: never;
+> = Index extends AllIndex
+	? {
+			[K in Extract<keyof Indexes, string>]: PossibleFields<
+				K,
+				Indexes,
+				OnlyLeaf,
+				AllowVariants
+			>;
+		}[Extract<keyof Indexes, string>]
+	: Index extends keyof Indexes
+		? AllowVariants extends true
+			?
+					| FilterToOnlyLeaf<
+							WithVariants<JoinKeys<Indexes[Index], OnlyLeaf>>,
+							Indexes,
+							Extract<Index, string>
+					  >
+					| JoinKeys<Indexes[Index], OnlyLeaf>
+			: JoinKeys<Indexes[Index], OnlyLeaf>
+		: never;
 
 export type CanBeUsedInAggregation<
 	Field extends string,
@@ -196,8 +210,17 @@ export type PossibleFieldsWithWildcards<
 export type TypeOfField<
 	Field extends string,
 	Indexes extends ElasticsearchIndexes,
-	Index extends keyof Indexes,
-> = RecursiveDotNotation<Indexes[Index], Field>;
+	Index extends string,
+> = Index extends AllIndex
+	? {
+			[K in Extract<keyof Indexes, string>]: RecursiveDotNotation<
+				Indexes[K],
+				Field
+			>;
+		}[Extract<keyof Indexes, string>]
+	: Index extends keyof Indexes
+		? RecursiveDotNotation<Indexes[Index], Field>
+		: never;
 
 export type RequestedIndex<Query> = "index" extends keyof Query
 	? Query["index"] extends string
@@ -441,6 +464,16 @@ type IsParentKeyALeaf<
 			: false
 	: false;
 
+type DeepPickFieldsForIndex<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Paths extends string,
+> = Index extends AllIndex
+	? E[Extract<keyof E, string>]
+	: Index extends keyof E
+		? DeepPickPaths<E[Index], Paths>
+		: never;
+
 export type ElasticsearchOutputFields<
 	QueryWithSource extends Partial<SearchRequest>,
 	E extends ElasticsearchIndexes,
@@ -448,7 +481,12 @@ export type ElasticsearchOutputFields<
 	Type extends "_source" | "fields",
 	//
 	RequestedFields = Type extends "_source"
-		? ExtractQuery_Source<QueryWithSource, E, Index>
+		? ExtractQuery_Source<
+				QueryWithSource,
+				E,
+				Index,
+				Index extends keyof E ? keyof E[Index] : PossibleFields<Index, E>
+			>
 		: ExtractQueryFields<QueryWithSource>,
 	// TODO: make this a union string instead of an object. we no longer need the values
 	Output = {
@@ -463,7 +501,7 @@ export type ElasticsearchOutputFields<
 		> as IsParentKeyALeaf<K, E, Index> extends true ? K : never]: FLAT_UNKNOWN;
 	},
 > = Type extends "_source"
-	? DeepPickPaths<E[Index], Extract<keyof Output, string>>
+	? DeepPickFieldsForIndex<E, Index, Extract<keyof Output, string>>
 	: {
 			[K in keyof Output as Output[K] extends FLAT_UNKNOWN
 				? RemoveLastDot<K>
@@ -573,38 +611,49 @@ type IssueWithReadonlyArray = "sort" | "query";
  * };
  * ```
  */
+type TypedSearchRequestForIndex<
+	Indexes extends ElasticsearchIndexes,
+	Index extends string,
+> = {
+	index: Index;
+	_source?:
+		| RArray<PossibleFieldsWithWildcards<Index, Indexes>>
+		| false
+		| {
+				includes?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
+				include?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
+				excludes?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
+				exclude?: RArray<PossibleFieldsWithWildcards<Index, Indexes>>;
+		  };
+	fields?: RArray<
+		| PossibleFieldsWithWildcards<Index, Indexes, true>
+		| {
+				field: PossibleFieldsWithWildcards<Index, Indexes, true>;
+				format?: string;
+		  }
+	>;
+	docvalue_fields?: RArray<
+		| PossibleFieldsWithWildcards<Index, Indexes, true>
+		| {
+				field: PossibleFieldsWithWildcards<Index, Indexes, true>;
+				format?: string;
+		  }
+	>;
+};
+
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	estypes.SearchRequest,
 	"index" | "_source" | "fields" | "docvalue_fields" | IssueWithReadonlyArray
 > &
-	{
-		[K in keyof Indexes]: {
-			index: K;
-			_source?:
-				| RArray<PossibleFieldsWithWildcards<K, Indexes>>
-				| false
-				| {
-						includes?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
-						include?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
-						excludes?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
-						exclude?: RArray<PossibleFieldsWithWildcards<K, Indexes>>;
-				  };
-			fields?: RArray<
-				| PossibleFieldsWithWildcards<K, Indexes, true>
-				| {
-						field: PossibleFieldsWithWildcards<K, Indexes, true>;
-						format?: string;
-				  }
-			>;
-			docvalue_fields?: RArray<
-				| PossibleFieldsWithWildcards<K, Indexes, true>
-				| {
-						field: PossibleFieldsWithWildcards<K, Indexes, true>;
-						format?: string;
-				  }
-			>;
-		};
-	}[keyof Indexes];
+	(
+		| {
+				[K in Extract<keyof Indexes, string>]: TypedSearchRequestForIndex<
+					Indexes,
+					K
+				>;
+		  }[Extract<keyof Indexes, string>]
+		| TypedSearchRequestForIndex<Indexes, AllIndex>
+	);
 
 export type ExtractAggs<V> = V extends
 	| { aggs: infer A }
