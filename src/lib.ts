@@ -324,6 +324,7 @@ export type NextAggsParentKey<
 	| "max_bucket"
 	| "extended_stats_bucket"
 	| "inference"
+	| "moving_avg"
 	| "moving_fn"
 	| "normalize"
 	| "percentiles_bucket"
@@ -408,6 +409,7 @@ export type AggregationOutput<
 				| Pipeline.Inference<Agg>
 				| Pipeline.MaxBucket<Agg>
 				| Pipeline.MinBucket<Agg>
+				| Pipeline.MovingAverage<Agg>
 				| Pipeline.MovingFunction<Agg>
 				| Pipeline.MovingPercentiles<ExtractAggs<Query>, E, Index, Agg>
 				| Pipeline.Normalize<Agg>
@@ -604,10 +606,49 @@ export type OverwrittenSearchRequestFields =
 	| "sort"
 	| "query";
 
-export type SearchRequest = Pick<
-	estypes.SearchRequest,
-	Exclude<OverwrittenSearchRequestFields, IssueWithReadonlyArray>
->;
+type AggregationBucketsPath = string | string[] | Record<string, string>;
+
+type MovingAverageAggregationModel =
+	| "simple"
+	| "linear"
+	| "ewma"
+	| "holt"
+	| "holt_winters";
+
+type LooseMovingAverageAggregation = {
+	buckets_path?: AggregationBucketsPath;
+	model?: MovingAverageAggregationModel;
+	gap_policy?: string;
+	format?: string;
+	minimize?: boolean;
+	predict?: number;
+	window?: number;
+	settings?: Record<string, unknown>;
+};
+
+type TypedAggregationContainer = {
+	[K in keyof estypes.AggregationsAggregationContainer as K extends
+		| "aggs"
+		| "aggregations"
+		| "moving_avg"
+		? never
+		: K]?: estypes.AggregationsAggregationContainer[K];
+} & {
+	aggregations?: Record<string, TypedAggregationContainer>;
+	aggs?: Record<string, TypedAggregationContainer>;
+	moving_avg?: LooseMovingAverageAggregation;
+};
+
+export type SearchRequest = Omit<
+	Pick<
+		estypes.SearchRequest,
+		Exclude<OverwrittenSearchRequestFields, IssueWithReadonlyArray>
+	>,
+	"aggs" | "aggregations"
+> & {
+	aggs?: Record<string, TypedAggregationContainer>;
+	aggregations?: Record<string, TypedAggregationContainer>;
+};
 
 /**
  * HACK: const Query modifier cause sort/query to be readonly. which cause issues with estypes versions as it has mutable arrays in types.
@@ -685,9 +726,17 @@ type TypedSearchRequestForIndex<
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	estypes.SearchRequest,
-	"index" | "_source" | "fields" | "docvalue_fields" | IssueWithReadonlyArray
-> &
-	(
+	| "index"
+	| "_source"
+	| "fields"
+	| "docvalue_fields"
+	| "aggs"
+	| "aggregations"
+	| IssueWithReadonlyArray
+> & {
+	aggs?: Record<string, TypedAggregationContainer>;
+	aggregations?: Record<string, TypedAggregationContainer>;
+} & (
 		| {
 				[K in Extract<keyof Indexes, string>]: TypedSearchRequestForIndex<
 					Indexes,

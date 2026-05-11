@@ -10,6 +10,7 @@ export * from "./extended_stats_bucket";
 export * from "./inference";
 export * from "./max_bucket";
 export * from "./min_bucket";
+export * from "./moving_avg";
 export * from "./moving_fn";
 export * from "./moving_percentiles";
 export * from "./normalize";

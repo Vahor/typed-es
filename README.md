@@ -124,6 +124,7 @@ npm install -D @vahor/typed-es
 | Inference | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-inference-bucket-aggregation) |
 | Max Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-max-bucket-aggregation) |
 | Min Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
+| Moving Average | ✅ | [docs](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/search-aggregations-pipeline-movavg-aggregation.html) |
 | Moving Function | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
 | Moving Percentiles | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation) |
 | Normalize | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation) |
