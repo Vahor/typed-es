@@ -422,6 +422,24 @@ export type AggregationOutput<
 				| Pipeline.StatsBucket<Agg>
 				| Pipeline.SumBucket<Agg>;
 
+export type AggregationOutputs<
+	BaseQuery extends SearchRequest,
+	Query extends Record<string, unknown>,
+	E extends ElasticsearchIndexes,
+	Index extends string = RequestedIndex<Query>,
+> =
+	IsNever<ExtractAggs<Query>> extends true
+		? never
+		: {
+				[K in Extract<keyof ExtractAggs<Query>, string>]: AggregationOutput<
+					BaseQuery,
+					Query,
+					E,
+					K,
+					Index
+				>;
+			};
+
 export type AppendSubAggs<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
