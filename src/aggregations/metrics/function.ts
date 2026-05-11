@@ -1,9 +1,5 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	TypeOfField,
-} from "../..";
+import type { ElasticsearchIndexes, TypeOfField } from "../..";
+import type { AggregationFieldResult } from "../helpers";
 
 type ExtractAggField<Agg> = {
 	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {
@@ -22,9 +18,12 @@ export type Function<
 	Index extends string,
 	Agg,
 	FieldAgg = ExtractAggField<Agg>,
-> = FieldAgg extends { fn: string; field: infer Field extends string }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+> = FieldAgg extends { fn: string; field: string }
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				value_as_string?: string;
 				value: FieldAgg["fn"] extends AggFunctionsNumber
 					? number
@@ -32,5 +31,5 @@ export type Function<
 						? number
 						: number | string;
 			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+		>
 	: never;

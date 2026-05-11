@@ -1,21 +1,13 @@
-import type {
-	AppendSubAggs,
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-	SearchRequest,
-	TypeOfField,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type {
 	CidrIpv4,
 	CidrIpv6,
 	Ipv4,
 	Ipv6,
-	IsSomeSortOf,
 	KeyedArrayToObject,
 	PrettyArray,
 } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 type IpPrefixOutput<
 	BaseQuery extends SearchRequest,
@@ -60,9 +52,12 @@ export type IpPrefix<
 		append_prefix_length?: infer AppendPrefixLength; // default: false
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<Field, E, Index>, string> extends true
-			? Keyed extends true
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			string,
+			Keyed extends true
 				? {
 						buckets: KeyedArrayToObject<
 							IpPrefixOutput<
@@ -87,13 +82,7 @@ export type IpPrefix<
 							PrefixLength,
 							IsIpv6
 						>;
-					}
-			: InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					string
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+					},
+			Field
+		>
 	: never;

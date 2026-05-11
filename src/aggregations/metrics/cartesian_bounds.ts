@@ -1,8 +1,5 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-} from "../..";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationFieldResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-bounds-aggregation
@@ -16,8 +13,11 @@ export type CartesianBounds<
 		field: infer Field extends string;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				bounds: {
 					top_left: {
 						x: number;
@@ -28,6 +28,7 @@ export type CartesianBounds<
 						y: number;
 					};
 				};
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;

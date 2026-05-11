@@ -1,11 +1,6 @@
-import type {
-	AppendSubAggs,
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { PrettyArray } from "../../types/helpers";
+import type { AggregationFieldResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation
@@ -21,27 +16,31 @@ export type DateHistogram<
 		keyed?: infer Keyed;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? Keyed extends true
-			? {
-					buckets: Record<
-						string,
-						{
-							key_as_string: string;
-							key: number;
-							doc_count: number;
-						} & AppendSubAggs<BaseQuery, E, Index, Agg>
-					>;
-				}
-			: // array default (keyed: false)
-				{
-					buckets: PrettyArray<
-						{
-							key_as_string: string;
-							key: number;
-							doc_count: number;
-						} & AppendSubAggs<BaseQuery, E, Index, Agg>
-					>;
-				}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			Keyed extends true
+				? {
+						buckets: Record<
+							string,
+							{
+								key_as_string: string;
+								key: number;
+								doc_count: number;
+							} & AppendSubAggs<BaseQuery, E, Index, Agg>
+						>;
+					}
+				: // array default (keyed: false)
+					{
+						buckets: PrettyArray<
+							{
+								key_as_string: string;
+								key: number;
+								doc_count: number;
+							} & AppendSubAggs<BaseQuery, E, Index, Agg>
+						>;
+					},
+			Field
+		>
 	: never;

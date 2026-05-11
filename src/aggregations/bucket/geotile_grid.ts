@@ -1,16 +1,9 @@
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
+import type { PrettyArray, RangeInclusive } from "../../types/helpers";
 import type {
-	AppendSubAggs,
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidPropertyTypeInAggregation,
-	SearchRequest,
-} from "../..";
-import type {
-	IsSomeSortOf,
-	PrettyArray,
-	RangeInclusive,
-} from "../../types/helpers";
+	AggregationFieldResult,
+	AggregationPropertyTypeResult,
+} from "../helpers";
 
 type DefaultPrecision = 7;
 type GetPrecision<P> = P extends number ? P : DefaultPrecision;
@@ -30,21 +23,25 @@ export type GeoTileGrid<
 		precision?: infer Precision;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<GetPrecision<Precision>, Range_0_29> extends true
-			? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			AggregationPropertyTypeResult<
+				"precision",
+				Agg,
+				Precision,
+				Range_0_29,
+				{
 					buckets: PrettyArray<
 						{
 							key: `${GetPrecision<Precision>}/${number}/${number}`;
 							doc_count: number;
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
-				}
-			: InvalidPropertyTypeInAggregation<
-					"precision",
-					Agg,
-					Precision,
-					Range_0_29
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+				},
+				GetPrecision<Precision>
+			>,
+			Field
+		>
 	: never;

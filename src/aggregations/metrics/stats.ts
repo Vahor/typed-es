@@ -1,8 +1,5 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-} from "../..";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationFieldResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-stats-aggregation
@@ -16,8 +13,11 @@ export type Stats<
 		field: infer Field extends string;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				count: number;
 				min: number;
 				min_as_string?: string;
@@ -27,6 +27,7 @@ export type Stats<
 				avg_as_string?: string;
 				sum: number;
 				sum_as_string?: string;
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;

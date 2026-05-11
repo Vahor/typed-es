@@ -1,19 +1,15 @@
 import type {
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
 	InvalidPropertyTypeInAggregation,
 	SearchRequest,
-	TypeOfField,
 } from "../..";
 import type {
 	AtLeastOneOf,
-	IsSomeSortOf,
 	KeyedArrayToObject,
 	Prettify,
 } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 type IpRangeSpec =
 	| AtLeastOneOf<
@@ -84,9 +80,12 @@ export type IpRange<
 		ranges: infer Ranges;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<Field, E, Index>, string> extends true
-			? Ranges extends readonly IpRangeSpec[]
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			string,
+			Ranges extends readonly IpRangeSpec[]
 				? Keyed extends true
 					? {
 							buckets: KeyedArrayToObject<
@@ -102,13 +101,7 @@ export type IpRange<
 						Agg,
 						Ranges,
 						Array<IpRangeSpec>
-					>
-			: InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					string
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+					>,
+			Field
+		>
 	: never;

@@ -1,10 +1,4 @@
-import type {
-	AppendSubAggs,
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type {
 	IsNever,
 	KeyedArrayToObject,
@@ -12,6 +6,7 @@ import type {
 	ToDecimal,
 	ToString,
 } from "../../types/helpers";
+import type { AggregationFieldResult } from "../helpers";
 
 type RangeSpec = {
 	from?: number | undefined;
@@ -65,18 +60,22 @@ export type Range<
 		ranges: infer Ranges;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? Ranges extends readonly RangeSpec[]
-			? Keyed extends true
-				? {
-						buckets: KeyedArrayToObject<
-							RangeOutput<BaseQuery, E, Index, Agg, Ranges>
-						>;
-					}
-				: {
-						// array default (keyed: false)
-						buckets: RangeOutput<BaseQuery, E, Index, Agg, Ranges>;
-					}
-			: never
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			Ranges extends readonly RangeSpec[]
+				? Keyed extends true
+					? {
+							buckets: KeyedArrayToObject<
+								RangeOutput<BaseQuery, E, Index, Agg, Ranges>
+							>;
+						}
+					: {
+							// array default (keyed: false)
+							buckets: RangeOutput<BaseQuery, E, Index, Agg, Ranges>;
+						}
+				: never,
+			Field
+		>
 	: never;

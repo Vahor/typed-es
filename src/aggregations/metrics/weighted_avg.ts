@@ -1,11 +1,5 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-	TypeOfField,
-} from "../..";
-import type { IsSomeSortOf, Not } from "../../types/helpers";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationTwoFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation
@@ -26,35 +20,17 @@ export type WeightedAvg<
 		};
 	};
 }
-	? Not<CanBeUsedInAggregation<ValueField, Index, E>> extends true
-		? InvalidFieldInAggregation<ValueField, Index, Agg>
-		: Not<CanBeUsedInAggregation<WeightField, Index, E>> extends true
-			? InvalidFieldInAggregation<WeightField, Index, Agg>
-			: Not<
-						IsSomeSortOf<TypeOfField<WeightField, E, Index>, number>
-					> extends true
-				? InvalidFieldTypeInAggregation<
-						WeightField,
-						Index,
-						Agg,
-						TypeOfField<WeightField, E, Index>,
-						number
-					>
-				: Not<
-							IsSomeSortOf<
-								TypeOfField<ValueField, E, Index>,
-								number | Array<number>
-							>
-						> extends true
-					? InvalidFieldTypeInAggregation<
-							ValueField,
-							Index,
-							Agg,
-							TypeOfField<ValueField, E, Index>,
-							number | Array<number>
-						>
-					: {
-							value: number;
-							value_as_string?: string;
-						}
+	? AggregationTwoFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			ValueField,
+			number | Array<number>,
+			WeightField,
+			number,
+			{
+				value: number;
+				value_as_string?: string;
+			}
+		>
 	: never;

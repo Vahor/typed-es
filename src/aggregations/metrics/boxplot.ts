@@ -1,11 +1,5 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-	TypeOfField,
-} from "../..";
-import type { IsSomeSortOf } from "../../types/helpers";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation
@@ -19,23 +13,20 @@ export type Boxplot<
 		field: infer Field extends string;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<Field, E, Index>, number> extends true
-			? {
-					min: number;
-					max: number;
-					q1: number;
-					q2: number;
-					q3: number;
-					lower: number;
-					upper: number;
-				}
-			: InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					number
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			number,
+			{
+				min: number;
+				max: number;
+				q1: number;
+				q2: number;
+				q3: number;
+				lower: number;
+				upper: number;
+			},
+			Field
+		>
 	: never;
