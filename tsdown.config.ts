@@ -10,7 +10,7 @@ export default defineConfig({
 	exports: true,
 	dts: {
 		sourcemap: false,
-		cjsReexport: false, // assumes that we use the same outDir for both format.
+		cjsReexport: false, // true assumes that we use the same outDir for both format.
 	},
 	format: {
 		cjs: {
