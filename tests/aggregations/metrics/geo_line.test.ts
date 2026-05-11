@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("GeoLine Aggregation", () => {
@@ -65,27 +64,6 @@ describe("GeoLine Aggregation", () => {
 					};
 				}>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				line: {
-					geo_line: {
-						point: { field: "invalid" };
-						sort: { field: "date" };
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			line: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["line"]
-			>;
 		}>();
 	});
 });

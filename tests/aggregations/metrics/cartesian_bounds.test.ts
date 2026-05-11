@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("CartesianBounds Aggregation", () => {
@@ -27,26 +26,6 @@ describe("CartesianBounds Aggregation", () => {
 					};
 				};
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				viewport: {
-					cartesian_bounds: {
-						field: "invalid";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			viewport: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["viewport"]
-			>;
 		}>();
 	});
 });

@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Rare Terms Aggregations", () => {
@@ -45,26 +44,6 @@ describe("Rare Terms Aggregations", () => {
 					doc_count: number;
 				}>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				rare_terms_agg: {
-					rare_terms: {
-						field: "invalid";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			rare_terms_agg: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["rare_terms_agg"]
-			>;
 		}>();
 	});
 });

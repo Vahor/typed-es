@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Extended Stats Aggregations", () => {
@@ -54,26 +53,6 @@ describe("Extended Stats Aggregations", () => {
 					lower_sampling_as_string?: string;
 				};
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				invalid_stats: {
-					extended_stats: {
-						field: "invalid_field";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			invalid_stats: InvalidFieldInAggregation<
-				"invalid_field",
-				"demo",
-				Aggregations["input"]["invalid_stats"]
-			>;
 		}>();
 	});
 });

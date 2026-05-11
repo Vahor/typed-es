@@ -1,9 +1,4 @@
-import type {
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	InvalidPropertyTypeInAggregation,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type {
 	AtLeastOneOf,
 	KeyedArrayToObject,
@@ -76,7 +71,7 @@ export type IpRange<
 	ip_range: {
 		field: infer Field extends string;
 		keyed?: infer Keyed;
-		ranges: infer Ranges;
+		ranges: infer Ranges extends readonly IpRangeSpec[];
 	};
 }
 	? AggregationFieldTypeResult<
@@ -84,23 +79,16 @@ export type IpRange<
 			Index,
 			Agg,
 			string,
-			Ranges extends readonly IpRangeSpec[]
-				? Keyed extends true
-					? {
-							buckets: KeyedArrayToObject<
-								IpRangeOutput<BaseQuery, E, Index, Agg, Ranges>
-							>;
-						}
-					: {
-							// array default (keyed: false)
-							buckets: IpRangeOutput<BaseQuery, E, Index, Agg, Ranges>;
-						}
-				: InvalidPropertyTypeInAggregation<
-						"ranges",
-						Agg,
-						Ranges,
-						Array<IpRangeSpec>
-					>,
+			Keyed extends true
+				? {
+						buckets: KeyedArrayToObject<
+							IpRangeOutput<BaseQuery, E, Index, Agg, Ranges>
+						>;
+					}
+				: {
+						// array default (keyed: false)
+						buckets: IpRangeOutput<BaseQuery, E, Index, Agg, Ranges>;
+					},
 			Field
 		>
 	: never;

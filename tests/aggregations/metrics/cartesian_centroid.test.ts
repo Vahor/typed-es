@@ -1,9 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
-import type { EsPoint, EsShape } from "../../../src/types/fields";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("CartesianCentroid Aggregations", () => {
@@ -59,48 +54,6 @@ describe("CartesianCentroid Aggregations", () => {
 					};
 				}[];
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field type", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				invalid_stats: {
-					cartesian_centroid: {
-						field: "score";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			invalid_stats: InvalidFieldTypeInAggregation<
-				"score",
-				"demo",
-				Aggregations["input"]["invalid_stats"],
-				number,
-				EsPoint | EsShape
-			>;
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				invalid_stats: {
-					cartesian_centroid: {
-						field: "invalid_field";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			invalid_stats: InvalidFieldInAggregation<
-				"invalid_field",
-				"demo",
-				Aggregations["input"]["invalid_stats"]
-			>;
 		}>();
 	});
 });

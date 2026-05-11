@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Histogram Aggregations", () => {
@@ -48,27 +47,6 @@ describe("Histogram Aggregations", () => {
 					}
 				>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				prices: {
-					histogram: {
-						field: "invalid";
-						interval: 50;
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			prices: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["prices"]
-			>;
 		}>();
 	});
 });

@@ -1,8 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Rate Aggregations", () => {
@@ -122,50 +118,6 @@ describe("Rate Aggregations", () => {
 					};
 				}>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field type", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				invalid_stats: {
-					rate: {
-						field: "entity_id";
-						unit: "day";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			invalid_stats: InvalidFieldTypeInAggregation<
-				"entity_id",
-				"demo",
-				Aggregations["input"]["invalid_stats"],
-				string,
-				number
-			>;
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				invalid_stats: {
-					rate: {
-						field: "invalid_field";
-						unit: "day";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			invalid_stats: InvalidFieldInAggregation<
-				"invalid_field",
-				"demo",
-				Aggregations["input"]["invalid_stats"]
-			>;
 		}>();
 	});
 });

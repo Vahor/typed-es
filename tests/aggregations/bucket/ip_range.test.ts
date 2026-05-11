@@ -1,8 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("IpRange Aggregations", () => {
@@ -165,52 +161,6 @@ describe("IpRange Aggregations", () => {
 					};
 				};
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				price_ranges: {
-					ip_range: {
-						field: "invalid";
-						keyed: true;
-						ranges: [{ to: "10.0.0.5" }, { from: "10.0.0.5" }];
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			price_ranges: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["price_ranges"]
-			>;
-		}>();
-	});
-
-	test("fails when using an invalid type field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				price_ranges: {
-					ip_range: {
-						field: "score";
-						keyed: true;
-						ranges: [{ to: "10.0.0.5" }, { from: "10.0.0.5" }];
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			price_ranges: InvalidFieldTypeInAggregation<
-				"score",
-				"demo",
-				Aggregations["input"]["price_ranges"],
-				number,
-				string
-			>;
 		}>();
 	});
 

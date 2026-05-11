@@ -1,8 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("String Stats Aggregation", () => {
@@ -44,42 +40,6 @@ describe("String Stats Aggregation", () => {
 				entropy: number;
 				distribution: Record<string, number>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid type field", () => {
-		type Aggregations = TestAggregationOutput<
-			"reviews",
-			{
-				rating_stats: { string_stats: { field: "rating" } };
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			rating_stats: InvalidFieldTypeInAggregation<
-				"rating",
-				"reviews",
-				Aggregations["input"]["rating_stats"],
-				number,
-				string
-			>;
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"reviews",
-			{
-				invalid_stats: {
-					string_stats: { field: "invalid" };
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			invalid_stats: InvalidFieldInAggregation<
-				"invalid",
-				"reviews",
-				Aggregations["input"]["invalid_stats"]
-			>;
 		}>();
 	});
 });

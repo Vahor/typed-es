@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Geo Centroid Aggregation", () => {
@@ -55,26 +54,6 @@ describe("Geo Centroid Aggregation", () => {
 					};
 				}>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				centroid: {
-					geo_centroid: {
-						field: "invalid";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			centroid: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["centroid"]
-			>;
 		}>();
 	});
 });

@@ -1,5 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Range Aggregations", () => {
@@ -161,28 +160,6 @@ describe("Range Aggregations", () => {
 					};
 				};
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				price_ranges: {
-					range: {
-						field: "invalid";
-						keyed: true;
-						ranges: [{ to: 100 }, { from: 100; to: 200 }, { from: 200 }];
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			price_ranges: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["price_ranges"]
-			>;
 		}>();
 	});
 

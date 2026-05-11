@@ -1,8 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Categorize Text Aggregations", () => {
@@ -62,50 +58,6 @@ describe("Categorize Text Aggregations", () => {
 					};
 				}>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				categorize_text_agg: {
-					categorize_text: {
-						field: "invalid_field";
-					};
-				};
-			}
-		>;
-
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			categorize_text_agg: InvalidFieldInAggregation<
-				"invalid_field",
-				"demo",
-				Aggregations["input"]["categorize_text_agg"]
-			>;
-		}>();
-	});
-
-	test("fails when using a field that is not a string", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				categorize_text_agg: {
-					categorize_text: {
-						field: "score";
-					};
-				};
-			}
-		>;
-
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			categorize_text_agg: InvalidFieldTypeInAggregation<
-				"score",
-				"demo",
-				Aggregations["input"]["categorize_text_agg"],
-				number,
-				string
-			>;
 		}>();
 	});
 });

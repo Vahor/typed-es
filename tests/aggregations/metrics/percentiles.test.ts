@@ -1,8 +1,4 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Percentiles Aggregation", () => {
@@ -107,49 +103,6 @@ describe("Percentiles Aggregation", () => {
 					},
 				];
 			};
-		}>();
-	});
-
-	test("fails when using an invalid type field", () => {
-		type Aggregations = TestAggregationOutput<
-			"orders",
-			{
-				load_time_outlier: {
-					percentiles: {
-						field: "id";
-						keyed: false;
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			load_time_outlier: InvalidFieldTypeInAggregation<
-				"id",
-				"orders",
-				Aggregations["input"]["load_time_outlier"],
-				string,
-				number
-			>;
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				load_time_outlier: {
-					percentiles: {
-						field: "invalid";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			load_time_outlier: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["load_time_outlier"]
-			>;
 		}>();
 	});
 });

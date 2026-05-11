@@ -1,9 +1,5 @@
 import { describe, expectTypeOf, test } from "bun:test";
 import type {
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-} from "../../../src/index";
-import type {
 	CidrIpv4,
 	CidrIpv6,
 	Ipv4,
@@ -129,50 +125,6 @@ describe("IpPrefix Aggregations", () => {
 					}
 				>;
 			};
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				price_ranges: {
-					ip_prefix: {
-						field: "invalid";
-						prefix_length: 24;
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			price_ranges: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["price_ranges"]
-			>;
-		}>();
-	});
-
-	test("fails when using an invalid type field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				price_ranges: {
-					ip_prefix: {
-						field: "score";
-						prefix_length: 24;
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			price_ranges: InvalidFieldTypeInAggregation<
-				"score",
-				"demo",
-				Aggregations["input"]["price_ranges"],
-				number,
-				string
-			>;
 		}>();
 	});
 

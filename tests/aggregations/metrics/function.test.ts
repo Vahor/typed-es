@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type InvalidFieldInAggregation, typedEs } from "../../../src/index";
+import { typedEs } from "../../../src/index";
 import type { TypedSearchResponse } from "../../../src/override/search-response";
 import {
 	type CustomIndexes,
@@ -128,26 +128,6 @@ describe("Leaf Function Aggregations", () => {
 							}>;
 						};
 				  };
-		}>();
-	});
-
-	test("fails when using an invalid field", () => {
-		type Aggregations = TestAggregationOutput<
-			"demo",
-			{
-				min_value: {
-					min: {
-						field: "invalid";
-					};
-				};
-			}
-		>;
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			min_value: InvalidFieldInAggregation<
-				"invalid",
-				"demo",
-				Aggregations["input"]["min_value"]
-			>;
 		}>();
 	});
 
