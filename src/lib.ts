@@ -34,7 +34,8 @@ type WithVariants<T extends string> = `${T}.${string}` | T;
 type AllIndex = "_all";
 export type ElasticsearchIndex<Indexes extends ElasticsearchIndexes> =
 	| Extract<keyof Indexes, string>
-	| AllIndex;
+	| AllIndex
+	| RArray<Extract<keyof Indexes, string>>;
 
 type FilterToOnlyLeaf<
 	T extends string,
@@ -222,10 +223,14 @@ export type TypeOfField<
 		? RecursiveDotNotation<Indexes[Index], Field>
 		: never;
 
+type RequestedIndexValue<Index> = Index extends string
+	? Index
+	: Index extends RArray<infer I extends string>
+		? I
+		: never;
+
 export type RequestedIndex<Query> = "index" extends keyof Query
-	? Query["index"] extends string
-		? Query["index"]
-		: never
+	? RequestedIndexValue<NonNullable<Query["index"]>>
 	: never;
 
 export type HasOption<
@@ -476,6 +481,18 @@ type DeepPickFieldsForAllIndex<
 		: DeepPickPaths<E[K], Extract<Paths, PossibleFields<K, E>>>;
 }[Extract<keyof E, string>];
 
+type DeepPickPathsForIndex<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Paths extends string,
+> = Paths extends string
+	? IsNever<TypeOfField<Paths, E, Index>> extends false
+		? Paths
+		: IsParentKeyALeaf<Paths, E, Index> extends true
+			? Paths
+			: never
+	: never;
+
 type DeepPickFieldsForIndex<
 	E extends ElasticsearchIndexes,
 	Index extends string,
@@ -487,7 +504,7 @@ type DeepPickFieldsForIndex<
 			: DeepPickFieldsForAllIndex<E, Paths>
 		: DeepPickFieldsForAllIndex<E, Paths>
 	: Index extends keyof E
-		? DeepPickPaths<E[Index], Paths>
+		? DeepPickPaths<E[Index], DeepPickPathsForIndex<E, Index, Paths>>
 		: never;
 
 export type ElasticsearchOutputFields<
@@ -630,8 +647,9 @@ type IssueWithReadonlyArray = "sort" | "query";
 type TypedSearchRequestForIndex<
 	Indexes extends ElasticsearchIndexes,
 	Index extends string,
+	IndexInput = Index,
 > = {
-	index: Index;
+	index: IndexInput;
 	_source?:
 		| RArray<PossibleFieldsWithWildcards<Index, Indexes>>
 		| false
@@ -669,6 +687,11 @@ export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 				>;
 		  }[Extract<keyof Indexes, string>]
 		| TypedSearchRequestForIndex<Indexes, AllIndex>
+		| TypedSearchRequestForIndex<
+				Indexes,
+				Extract<keyof Indexes, string>,
+				RArray<Extract<keyof Indexes, string>>
+		  >
 	);
 
 export type ExtractAggs<V> = V extends

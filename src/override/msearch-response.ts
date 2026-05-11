@@ -2,6 +2,7 @@ import type { estypes } from "@elastic/elasticsearch";
 import type {
 	ElasticsearchIndex,
 	ElasticsearchIndexes,
+	RequestedIndex,
 	TypedSearchRequest,
 } from "../lib";
 import type {
@@ -74,9 +75,11 @@ type ParsedSearches<
 		? never
 		: P[index] extends { data: PairType<E> }
 			? {
-					Index: P[index]["data"]["header"]["index"] extends string
-						? P[index]["data"]["header"]["index"]
-						: Query["index"];
+					Index: IsNever<
+						RequestedIndex<P[index]["data"]["header"]>
+					> extends true
+						? RequestedIndex<Query>
+						: RequestedIndex<P[index]["data"]["header"]>;
 					Query: P[index]["data"]["request"];
 				}
 			: never;

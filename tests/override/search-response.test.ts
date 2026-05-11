@@ -38,6 +38,36 @@ describe("Should return the correct type", () => {
 				>();
 			});
 
+			test("with index list", () => {
+				const query = typedEs(client, {
+					index: ["demo", "orders"],
+				});
+				type Output = TypedSearchResponse<
+					typeof query,
+					CustomIndexes
+				>["hits"]["hits"][0]["_source"];
+
+				expectTypeOf<Output>().toEqualTypeOf<
+					CustomIndexes["demo"] | CustomIndexes["orders"]
+				>();
+			});
+
+			test("with index list and selected _source fields", () => {
+				const query = typedEs(client, {
+					index: ["demo", "orders"],
+					_source: ["score", "status"],
+				});
+				type Output = TypedSearchResponse<
+					typeof query,
+					CustomIndexes
+				>["hits"]["hits"][0]["_source"];
+
+				expectTypeOf<Output>().toEqualTypeOf<
+					| { score: CustomIndexes["demo"]["score"] }
+					| { status: CustomIndexes["orders"]["status"] }
+				>();
+			});
+
 			describe("handle custom fields", () => {
 				describe("on direct values", () => {
 					// not an object
