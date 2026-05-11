@@ -1,6 +1,7 @@
 # Typed ES — type-safe Elasticsearch responses for TypeScript
 
 [![Code quality](https://github.com/vahor/typed-es/actions/workflows/quality.yml/badge.svg)](https://github.com/vahor/typed-es/actions/workflows/quality.yml)
+[![type test coverage](https://img.shields.io/badge/dynamic/json?label=type%20test%20coverage&query=%24.typeCoverage.atLeast&suffix=%25&prefix=%E2%89%A5&url=https%3A%2F%2Fraw.githubusercontent.com%2FVahor%2Ftyped-es%2Fmain%2Fpackage.json)](https://github.com/Vahor/typed-es/actions/workflows/quality.yml)
 [![npm version](https://img.shields.io/npm/v/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
 [![npm downloads](https://img.shields.io/npm/dm/%40vahor%2Ftyped-es)](https://www.npmjs.com/package/@vahor/typed-es)
 [![license](https://img.shields.io/npm/l/%40vahor%2Ftyped-es)](https://github.com/Vahor/typed-es/blob/main/LICENSE)
