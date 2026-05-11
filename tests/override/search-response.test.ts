@@ -68,6 +68,21 @@ describe("Should return the correct type", () => {
 				>();
 			});
 
+			test("with index list and shared selected _source field", () => {
+				const query = typedEs(client, {
+					index: ["orders", "issues"],
+					_source: ["id"],
+				});
+				type Output = TypedSearchResponse<
+					typeof query,
+					CustomIndexes
+				>["hits"]["hits"][0]["_source"];
+
+				expectTypeOf<Output>().toEqualTypeOf<{
+					id: string;
+				}>();
+			});
+
 			describe("handle custom fields", () => {
 				describe("on direct values", () => {
 					// not an object
