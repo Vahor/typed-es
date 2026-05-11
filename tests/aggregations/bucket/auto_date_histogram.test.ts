@@ -1,4 +1,5 @@
 import { describe, expectTypeOf, test } from "bun:test";
+import type { InvalidFieldTypeInAggregation } from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Auto Date Histogram Aggregations", () => {
@@ -24,6 +25,30 @@ describe("Auto Date Histogram Aggregations", () => {
 				}>;
 				interval: string;
 			};
+		}>();
+	});
+
+	test("fails when using a non-date field", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				sales_over_time: {
+					auto_date_histogram: {
+						field: "score";
+						buckets: 10;
+					};
+				};
+			}
+		>;
+
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			sales_over_time: InvalidFieldTypeInAggregation<
+				"score",
+				"demo",
+				Aggregations["input"]["sales_over_time"],
+				number,
+				string
+			>;
 		}>();
 	});
 

@@ -1,5 +1,8 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
+} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Extended Stats Aggregations", () => {
@@ -54,6 +57,28 @@ describe("Extended Stats Aggregations", () => {
 					lower_sampling_as_string?: string;
 				};
 			};
+		}>();
+	});
+
+	test("fails when using a non-numeric field", () => {
+		type Aggregations = TestAggregationOutput<
+			"test_types",
+			{
+				price_stats: {
+					extended_stats: {
+						field: "name";
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			price_stats: InvalidFieldTypeInAggregation<
+				"name",
+				"test_types",
+				Aggregations["input"]["price_stats"],
+				string,
+				number
+			>;
 		}>();
 	});
 

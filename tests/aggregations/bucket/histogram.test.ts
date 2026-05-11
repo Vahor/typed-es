@@ -1,5 +1,8 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
+} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Histogram Aggregations", () => {
@@ -48,6 +51,29 @@ describe("Histogram Aggregations", () => {
 					}
 				>;
 			};
+		}>();
+	});
+
+	test("fails when using a non-numeric field", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				prices: {
+					histogram: {
+						field: "entity_id";
+						interval: 50;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			prices: InvalidFieldTypeInAggregation<
+				"entity_id",
+				"demo",
+				Aggregations["input"]["prices"],
+				string,
+				number
+			>;
 		}>();
 	});
 
