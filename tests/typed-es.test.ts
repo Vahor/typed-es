@@ -26,6 +26,24 @@ describe("typedEs Function", () => {
 			});
 			expectTypeOf<RequestedIndex<typeof query>>().toEqualTypeOf<"_all">();
 		});
+
+		test("with valid index list", () => {
+			const query = typedEs(client, {
+				index: ["demo", "orders"],
+				_source: [],
+			});
+			expectTypeOf<RequestedIndex<typeof query>>().toEqualTypeOf<
+				"demo" | "orders"
+			>();
+		});
+
+		test("with invalid index list", () => {
+			typedEs(client, {
+				// @ts-expect-error: 'invalid' is not a valid index
+				index: ["demo", "invalid"],
+				_source: [],
+			});
+		});
 	});
 
 	describe("Should enforce correct _source", () => {

@@ -30,6 +30,25 @@ describe("msearch aggregation response types", () => {
 		>().toEqualTypeOf<Pick<CustomIndexes["demo"], "score"> | {}>();
 	});
 
+	test("supports index lists", () => {
+		const query = {
+			index: ["demo", "orders"],
+			searches: [{}, {}, { index: ["issues", "reviews"] }, {}],
+		} as const satisfies TypedMsearchRequest<CustomIndexes>;
+
+		type Responses = TypedMSearchResponse<
+			typeof query,
+			CustomIndexes
+		>["responses"];
+
+		expectTypeOf<
+			SuccessfulMsearchResponse<Responses[0]>["hits"]["hits"][0]["_source"]
+		>().toEqualTypeOf<CustomIndexes["demo"] | CustomIndexes["orders"]>();
+		expectTypeOf<
+			SuccessfulMsearchResponse<Responses[1]>["hits"]["hits"][0]["_source"]
+		>().toEqualTypeOf<CustomIndexes["issues"] | CustomIndexes["reviews"]>();
+	});
+
 	test("preserves different aggregations per search", () => {
 		const query = {
 			index: "demo",

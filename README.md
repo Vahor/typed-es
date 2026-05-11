@@ -450,7 +450,7 @@ const result = await (client as unknown as Client).search<TDocument, TAggregatio
 - Some aggregation functions might be missing.
 - `_source` accepts arbitrary strings to support wildcards. Wildcards still produce the **correct inferred output type**.
 - Client setup currently requires `as unknown as TypedClient<Indexes>` because the official client types are being augmented.
-- `index` must be a concrete string key. Wildcard index names and `_all` are not supported yet.
+- `index` must be a concrete key, `_all`, or a list of concrete keys. Wildcard index names are not supported yet.
 
 PRs are welcome to fix these limitations.
 
