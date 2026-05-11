@@ -1,5 +1,9 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import { type InvalidFieldInAggregation, typedEs } from "../../../src/index";
+import {
+	type InvalidFieldInAggregation,
+	type InvalidFieldTypeInAggregation,
+	typedEs,
+} from "../../../src/index";
 import type { TypedSearchResponse } from "../../../src/override/search-response";
 import {
 	type CustomIndexes,
@@ -187,6 +191,11 @@ describe("Leaf Function Aggregations", () => {
 					};
 				};
 				//
+				str_avg: {
+					avg: {
+						field: "name";
+					};
+				};
 				num_avg: {
 					avg: {
 						field: "price";
@@ -198,6 +207,11 @@ describe("Leaf Function Aggregations", () => {
 					};
 				};
 				//
+				str_sum: {
+					sum: {
+						field: "name";
+					};
+				};
 				num_sum: {
 					sum: {
 						field: "price";
@@ -267,22 +281,42 @@ describe("Leaf Function Aggregations", () => {
 				value: number | string;
 				value_as_string?: string;
 			};
+			str_avg: InvalidFieldTypeInAggregation<
+				"name",
+				"test_types",
+				Aggregations["input"]["str_avg"],
+				string,
+				number
+			>;
 			num_avg: {
 				value: number;
 				value_as_string?: string;
 			};
-			date_avg: {
-				value: number | string;
-				value_as_string?: string;
-			};
+			date_avg: InvalidFieldTypeInAggregation<
+				"timestamp",
+				"test_types",
+				Aggregations["input"]["date_avg"],
+				Date,
+				number
+			>;
+			str_sum: InvalidFieldTypeInAggregation<
+				"name",
+				"test_types",
+				Aggregations["input"]["str_sum"],
+				string,
+				number
+			>;
 			num_sum: {
 				value: number;
 				value_as_string?: string;
 			};
-			date_sum: {
-				value: number | string;
-				value_as_string?: string;
-			};
+			date_sum: InvalidFieldTypeInAggregation<
+				"timestamp",
+				"test_types",
+				Aggregations["input"]["date_sum"],
+				Date,
+				number
+			>;
 			str_value_count: {
 				value: number;
 				value_as_string?: string;
