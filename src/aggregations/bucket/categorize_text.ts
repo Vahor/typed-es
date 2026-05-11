@@ -1,6 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { PrettyArray } from "../../types/helpers";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-categorize-text-aggregation
@@ -18,9 +18,7 @@ export type CategorizeText<
 			string,
 			{
 				buckets: PrettyArray<
-					{
-						key: string;
-						doc_count: number;
+					KeyedBucketBase<string> & {
 						max_matching_length: number;
 						regex: string;
 					} & AppendSubAggs<BaseQuery, E, Index, Agg>

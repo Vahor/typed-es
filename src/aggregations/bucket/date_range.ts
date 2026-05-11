@@ -1,6 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { KeyedArrayToObject, Prettify } from "../../types/helpers";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 type RangeSpec = {
 	from?: string | undefined;
@@ -22,12 +22,11 @@ type RangeOutput<
 		key?: infer CustomKey;
 	}
 		? Prettify<
-				{
-					key: undefined extends CustomKey
+				KeyedBucketBase<
+					undefined extends CustomKey
 						? `${FormatToKey<F>}-${FormatToKey<T>}`
-						: CustomKey;
-					doc_count: number;
-				} & {
+						: CustomKey
+				> & {
 					[K in "from" | "from_as_string" as F extends string
 						? K
 						: never]: K extends "from_as_string" ? string : number;

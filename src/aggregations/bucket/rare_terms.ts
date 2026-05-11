@@ -5,7 +5,7 @@ import type {
 	TypeOfField,
 } from "../..";
 import type { IsStringLiteral, PrettyArray } from "../../types/helpers";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-rare-terms-aggregation
@@ -22,15 +22,14 @@ export type RareTerms<
 			Agg,
 			{
 				buckets: PrettyArray<
-					{
-						// TODO: should probably add a helper for this kind of thing
-						key: number extends TypeOfField<Field, E, Index>
+					KeyedBucketBase<
+						number extends TypeOfField<Field, E, Index>
 							? number
 							: IsStringLiteral<TypeOfField<Field, E, Index>> extends true
 								? TypeOfField<Field, E, Index>
-								: string | number;
-						doc_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
+								: string | number
+					> &
+						AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
 			},
 			Field

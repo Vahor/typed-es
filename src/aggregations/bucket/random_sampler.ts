@@ -5,6 +5,7 @@ import type {
 	SearchRequest,
 } from "../..";
 import type { IsNumericLiteral, Prettify } from "../../types/helpers";
+import type { BucketBase } from "../helpers";
 
 /**
  * Valid probability range for `random_sampler` aggregation.
@@ -50,11 +51,7 @@ export type RandomSampler<
 	Agg,
 > = Agg extends { random_sampler: { probability: infer P } }
 	? ValidateProbability<P> extends true
-		? Prettify<
-				{
-					doc_count: number;
-				} & AppendSubAggs<BaseQuery, E, Index, Agg>
-			>
+		? Prettify<BucketBase & AppendSubAggs<BaseQuery, E, Index, Agg>>
 		: InvalidPropertyTypeInAggregation<
 				"probability",
 				Agg,
@@ -62,9 +59,5 @@ export type RandomSampler<
 				ValidProbabilityRange
 			>
 	: Agg extends { random_sampler: object }
-		? Prettify<
-				{
-					doc_count: number;
-				} & AppendSubAggs<BaseQuery, E, Index, Agg>
-			>
+		? Prettify<BucketBase & AppendSubAggs<BaseQuery, E, Index, Agg>>
 		: never;

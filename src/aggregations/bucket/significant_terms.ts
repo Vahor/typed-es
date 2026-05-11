@@ -3,8 +3,12 @@ import type {
 	ElasticsearchIndexes,
 	SearchRequest,
 } from "../../";
-import type { PrettyArray } from "../../types/helpers";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type { Prettify, PrettyArray } from "../../types/helpers";
+import type {
+	AggregationFieldTypeResult,
+	BucketBase,
+	KeyedBucketBase,
+} from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation
@@ -20,18 +24,17 @@ export type SignificantTerms<
 			Index,
 			Agg,
 			string,
-			{
-				doc_count: number;
-				bg_count: number;
-				buckets: PrettyArray<
-					{
-						key: string;
-						doc_count: number;
-						score: number;
-						bg_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
-				>;
-			},
+			Prettify<
+				BucketBase & {
+					bg_count: number;
+					buckets: PrettyArray<
+						KeyedBucketBase<string> & {
+							score: number;
+							bg_count: number;
+						} & AppendSubAggs<BaseQuery, E, Index, Agg>
+					>;
+				}
+			>,
 			Field
 		>
 	: never;

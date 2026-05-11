@@ -7,7 +7,7 @@ import type {
 	KeyedArrayToObject,
 	PrettyArray,
 } from "../../types/helpers";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 type IpPrefixOutput<
 	BaseQuery extends SearchRequest,
@@ -19,15 +19,15 @@ type IpPrefixOutput<
 	PrefixLength extends number,
 	IsIpv6,
 > = PrettyArray<
-	{
-		key: AppendPrefixLength extends true
+	KeyedBucketBase<
+		AppendPrefixLength extends true
 			? IsIpv6 extends true
 				? CidrIpv6<PrefixLength>
 				: CidrIpv4<PrefixLength>
 			: IsIpv6 extends true
 				? Ipv6
-				: Ipv4;
-		doc_count: number;
+				: Ipv4
+	> & {
 		is_ipv6: IsIpv6 extends true ? true : false;
 		prefix_length: PrefixLength;
 	} & {

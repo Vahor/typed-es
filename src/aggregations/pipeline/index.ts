@@ -2,6 +2,7 @@ export * from "./avg_bucket";
 export * from "./bucket_correlation";
 export * from "./bucket_count_ks_test";
 export * from "./bucket_script";
+export * from "./change_point";
 export * from "./cumulative_cardinality";
 export * from "./cumulative_sum";
 export * from "./derivative";

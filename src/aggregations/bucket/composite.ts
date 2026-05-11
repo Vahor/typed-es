@@ -1,5 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { PrettyArray } from "../../types/helpers";
+import type { KeyedBucketBase } from "../helpers";
 
 type CompositeSources = Array<Record<string, unknown>>;
 
@@ -21,10 +22,8 @@ export type Composite<
 	? {
 			after_key: Record<ExtractSourcesKeys<Sources>, unknown>;
 			buckets: PrettyArray<
-				{
-					key: Record<ExtractSourcesKeys<Sources>, unknown>;
-					doc_count: number;
-				} & AppendSubAggs<BaseQuery, E, Index, Agg>
+				KeyedBucketBase<Record<ExtractSourcesKeys<Sources>, unknown>> &
+					AppendSubAggs<BaseQuery, E, Index, Agg>
 			>;
 		}
 	: never;

@@ -3,6 +3,7 @@ import type { PrettyArray, RangeInclusive } from "../../types/helpers";
 import type {
 	AggregationFieldResult,
 	AggregationPropertyTypeResult,
+	KeyedBucketBase,
 } from "../helpers";
 
 type DefaultPrecision = 7;
@@ -34,10 +35,8 @@ export type GeoTileGrid<
 				Range_0_29,
 				{
 					buckets: PrettyArray<
-						{
-							key: `${GetPrecision<Precision>}/${number}/${number}`;
-							doc_count: number;
-						} & AppendSubAggs<BaseQuery, E, Index, Agg>
+						KeyedBucketBase<`${GetPrecision<Precision>}/${number}/${number}`> &
+							AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
 				},
 				GetPrecision<Precision>

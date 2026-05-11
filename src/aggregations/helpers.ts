@@ -8,6 +8,20 @@ import type {
 } from "../lib";
 import type { IsSomeSortOf } from "../types/helpers";
 
+export type BucketBase = {
+	doc_count: number;
+};
+
+export type KeyedBucketBase<Key = string | number> = {
+	key: Key;
+	doc_count: number;
+};
+
+export type UnknownKeyedBucketBase<Key = string | number> =
+	KeyedBucketBase<Key> & {
+		[property: string]: unknown;
+	};
+
 export type AggregationPropertyTypeResult<
 	PropertyName extends string,
 	Aggregation,

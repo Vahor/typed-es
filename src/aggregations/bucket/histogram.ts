@@ -1,15 +1,12 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 type HistogramAggOutput<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg extends Record<string, unknown>,
-> = {
-	key: number;
-	doc_count: number;
-} & AppendSubAggs<BaseQuery, E, Index, Agg>;
+> = KeyedBucketBase<number> & AppendSubAggs<BaseQuery, E, Index, Agg>;
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation

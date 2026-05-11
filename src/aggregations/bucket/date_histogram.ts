@@ -1,6 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
-import type { PrettyArray } from "../../types/helpers";
-import type { AggregationFieldResult } from "../helpers";
+import type { Prettify, PrettyArray } from "../../types/helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-datehistogram-aggregation
@@ -24,20 +24,18 @@ export type DateHistogram<
 				? {
 						buckets: Record<
 							string,
-							{
-								key_as_string: string;
-								key: number;
-								doc_count: number;
-							} & AppendSubAggs<BaseQuery, E, Index, Agg>
+							Prettify<
+								KeyedBucketBase<number> & {
+									key_as_string: string;
+								} & AppendSubAggs<BaseQuery, E, Index, Agg>
+							>
 						>;
 					}
 				: // array default (keyed: false)
 					{
 						buckets: PrettyArray<
-							{
+							KeyedBucketBase<number> & {
 								key_as_string: string;
-								key: number;
-								doc_count: number;
 							} & AppendSubAggs<BaseQuery, E, Index, Agg>
 						>;
 					},

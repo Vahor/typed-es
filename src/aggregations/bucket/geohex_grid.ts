@@ -3,6 +3,7 @@ import type { PrettyArray, RangeInclusive } from "../../types/helpers";
 import type {
 	AggregationFieldResult,
 	AggregationPropertyTypeResult,
+	KeyedBucketBase,
 } from "../helpers";
 
 type DefaultPrecision = 6;
@@ -34,10 +35,7 @@ export type GeoHexGrid<
 				Range_0_15,
 				{
 					buckets: PrettyArray<
-						{
-							key: string;
-							doc_count: number;
-						} & AppendSubAggs<BaseQuery, E, Index, Agg>
+						KeyedBucketBase<string> & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
 				},
 				GetPrecision<Precision>
