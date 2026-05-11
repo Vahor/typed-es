@@ -3,12 +3,12 @@ import type {
 	ElasticsearchIndex,
 	ElasticsearchIndexes,
 	RequestedIndex,
+	SearchRequest,
 	TypedSearchRequest,
 } from "../lib";
 import type {
 	AlternatingPair,
 	IsNever,
-	MergeProperties,
 	Prettify,
 	RArray,
 	UnionToIntersection,
@@ -25,6 +25,15 @@ type PopPair<Data> = Data extends [infer H, infer T, ...infer Rest]
 	? { header: H; request: T; rest: Rest }
 	: never;
 
+type PairFromSearchItem<T> = PopPair<
+	[
+		"index" extends keyof UnionToIntersection<T>
+			? Pick<UnionToIntersection<T>, "index">
+			: {},
+		Prettify<Omit<UnionToIntersection<T>, "index">>,
+	]
+>;
+
 type ExtractAllPairs<Data> = Data extends readonly [
 	infer H,
 	infer T,
@@ -39,19 +48,7 @@ type ExtractAllPairs<Data> = Data extends readonly [
 	: Data extends Array<infer T>
 		? IsNever<T> extends true
 			? []
-			: [
-					{
-						// TODO: make this pretty
-						data: PopPair<
-							[
-								"index" extends keyof UnionToIntersection<T>
-									? Pick<UnionToIntersection<T>, "index">
-									: {},
-								Prettify<Omit<UnionToIntersection<T>, "index">>,
-							]
-						>;
-					},
-				]
+			: [{ data: PairFromSearchItem<T> }]
 		: [];
 
 export type TypedMsearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
@@ -85,6 +82,30 @@ type ParsedSearches<
 			: never;
 };
 
+type InheritRestTotalHitsAsInt<Search, Parent> = Search extends {
+	rest_total_hits_as_int: unknown;
+}
+	? Search
+	: Parent extends { rest_total_hits_as_int: infer RestTotalHitsAsInt }
+		? Search & { rest_total_hits_as_int: RestTotalHitsAsInt }
+		: Search;
+
+type TypedMSearchResponseForPair<
+	Query extends TypedMsearchRequest<E>,
+	E extends ElasticsearchIndexes,
+	Pair,
+> = Pair extends {
+	Index: infer Index extends string;
+	Query: infer Search extends SearchRequest;
+}
+	? { index: Index } & Omit<
+			InheritRestTotalHitsAsInt<Search, Query>,
+			"index"
+		> extends infer ResponseQuery extends SearchRequest
+		? TypedSearchResponse<ResponseQuery, E>
+		: never
+	: never;
+
 export type TypedMSearchResponse<
 	Query extends TypedMsearchRequest<E>,
 	E extends ElasticsearchIndexes,
@@ -92,20 +113,7 @@ export type TypedMSearchResponse<
 > = Omit<estypes.MsearchResponse, "responses"> & {
 	responses: {
 		[Index in keyof Pairs]:
-			| TypedSearchResponse<
-					// @ts-expect-error: TODO: see why ts is no happy about this
-					{ index: Pairs[Index]["Index"] } & Omit<
-						MergeProperties<
-							// @ts-expect-error: TODO: see why ts is no happy about this
-							Pairs[Index]["Query"],
-							Query,
-							// @ts-expect-error: Same issue as above
-							"rest_total_hits_as_int"
-						>,
-						"index"
-					>,
-					E
-			  >
+			| TypedMSearchResponseForPair<Query, E, Pairs[Index]>
 			| (estypes.ErrorResponseBase & { hits: undefined });
 	};
 };
