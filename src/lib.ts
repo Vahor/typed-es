@@ -1,7 +1,6 @@
 import type { estypes } from "@elastic/elasticsearch";
 import type * as Bucket from "./aggregations/bucket";
 import type * as Metric from "./aggregations/metrics";
-import type { AggFunction } from "./aggregations/metrics";
 import type * as Pipeline from "./aggregations/pipeline";
 import type {
 	AnyString,
@@ -250,90 +249,126 @@ export type ExtractAggsKey<Query extends SearchRequest> =
 			: never
 		: never;
 
+type KeysOfUnion<T> = T extends unknown ? keyof T : never;
+
 type ObjectKeysWithSpecificKeys<T, TargetKeys extends string> = {
 	[k in keyof T]: T[k] extends Record<string, unknown>
-		? TargetKeys extends keyof UnionToIntersection<T[k]>
-			? k
-			: never
+		? Extract<KeysOfUnion<T[k]>, TargetKeys> extends never
+			? never
+			: k
 		: never;
 }[keyof T];
 
 export type NextAggsParentKey<
 	Query extends Record<string, unknown>,
 	Aggs = ExtractAggs<Query>,
-> = ObjectKeysWithSpecificKeys<
-	Aggs,
-	| "adjacency_matrix"
-	| "auto_date_histogram"
-	| "boxplot"
-	| "cartesian_bounds"
-	| "cartesian_centroid"
-	| "categorize_text"
-	| "children"
-	| "date_histogram"
-	| "date_range"
-	| "diversified_sampler"
-	| "extended_stats"
-	| "filter"
-	| "filters"
-	| "frequent_item_sets"
-	| "geo_bounds"
-	| "geo_centroid"
-	| "geo_line"
-	| "geohex_grid"
-	| "geotile_grid"
-	| "histogram"
-	| "ip_prefix"
-	| "ip_range"
-	| "matrix_stats"
-	| "global"
-	| "missing"
-	| "nested"
-	| "median_absolute_deviation"
-	| "parent"
-	| "percentile_ranks"
-	| "percentiles"
-	| "range"
-	| "rate"
-	| "random_sampler"
-	| "sampler"
-	| "scripted_metric"
-	| "significant_text"
-	| "significant_terms"
-	| "stats"
-	| "string_stats"
-	| "t_test"
-	| "multi_terms"
-	| "terms"
-	| "time_series"
-	| "rare_terms"
-	| "top_hits"
-	| "top_metrics"
-	| "variable_width_histogram"
-	| "reverse_nested"
-	//
-	| AggFunction
-	// Pipeline
-	| "avg_bucket"
-	| "bucket_correlation"
-	| "bucket_count_ks_test"
-	| "bucket_script"
-	| "change_point"
-	| "cumulative_cardinality"
-	| "cumulative_sum"
-	| "derivative"
-	| "stats_bucket"
-	| "sum_bucket"
-	| "min_bucket"
-	| "max_bucket"
-	| "extended_stats_bucket"
-	| "inference"
-	| "moving_fn"
-	| "normalize"
-	| "percentiles_bucket"
-	| "moving_percentiles"
-	| "serial_diff"
->;
+	Outputs = AggregationOutputMap<
+		SearchRequest,
+		Query,
+		ElasticsearchIndexes,
+		string,
+		never
+	>,
+> = ObjectKeysWithSpecificKeys<Aggs, keyof Outputs & string>;
+
+type AggregationOutputMap<
+	BaseQuery extends SearchRequest,
+	Query extends Record<string, unknown>,
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Agg,
+> = {
+	// Only aggregations that add entries to the response belong here.
+	// Bucket aggregations
+	adjacency_matrix: Bucket.AdjacencyMatrix<BaseQuery, E, Index, Agg>;
+	auto_date_histogram: Bucket.AutoDateHistogram<BaseQuery, E, Index, Agg>;
+	categorize_text: Bucket.CategorizeText<BaseQuery, E, Index, Agg>;
+	children: Bucket.Children<BaseQuery, E, Index, Agg>;
+	composite: Bucket.Composite<BaseQuery, E, Index, Agg>;
+	date_histogram: Bucket.DateHistogram<BaseQuery, E, Index, Agg>;
+	date_range: Bucket.DateRange<BaseQuery, E, Index, Agg>;
+	diversified_sampler: Bucket.DiversifiedSampler<BaseQuery, E, Index, Agg>;
+	filter: Bucket.Filter<BaseQuery, E, Index, Agg>;
+	filters: Bucket.Filters<BaseQuery, E, Index, Agg>;
+	frequent_item_sets: Bucket.FrequentItemSets<BaseQuery, E, Index, Agg>;
+	geohash_grid: Bucket.GeoHashGrid<BaseQuery, E, Index, Agg>;
+	geohex_grid: Bucket.GeoHexGrid<BaseQuery, E, Index, Agg>;
+	geotile_grid: Bucket.GeoTileGrid<BaseQuery, E, Index, Agg>;
+	histogram: Bucket.Histogram<BaseQuery, E, Index, Agg>;
+	ip_prefix: Bucket.IpPrefix<BaseQuery, E, Index, Agg>;
+	ip_range: Bucket.IpRange<BaseQuery, E, Index, Agg>;
+	parent: Bucket.Parent<BaseQuery, E, Index, Agg>;
+	global: Bucket.Global<BaseQuery, E, Index, Agg>;
+	missing: Bucket.Missing<BaseQuery, E, Index, Agg>;
+	nested: Bucket.Nested<BaseQuery, E, Index, Agg>;
+	range: Bucket.Range<BaseQuery, E, Index, Agg>;
+	random_sampler: Bucket.RandomSampler<BaseQuery, E, Index, Agg>;
+	sampler: Bucket.Sampler<BaseQuery, E, Index, Agg>;
+	significant_text: Bucket.SignificantText<BaseQuery, E, Index, Agg>;
+	significant_terms: Bucket.SignificantTerms<BaseQuery, E, Index, Agg>;
+	terms: Bucket.Terms<BaseQuery, E, Index, Agg>;
+	time_series: Bucket.TimeSeries<BaseQuery, E, Index, Agg>;
+	rare_terms: Bucket.RareTerms<BaseQuery, E, Index, Agg>;
+	multi_terms: Bucket.MultiTerms<BaseQuery, E, Index, Agg>;
+	variable_width_histogram: Bucket.VariableWidthHistogram<
+		BaseQuery,
+		E,
+		Index,
+		Agg
+	>;
+	reverse_nested: Bucket.ReverseNested<BaseQuery, E, Index, Agg>;
+	// Metric aggregations
+	boxplot: Metric.Boxplot<E, Index, Agg>;
+	cartesian_bounds: Metric.CartesianBounds<E, Index, Agg>;
+	cartesian_centroid: Metric.CartesianCentroid<E, Index, Agg>;
+	extended_stats: Metric.ExtendedStats<E, Index, Agg>;
+	value_count: Metric.Function<E, Index, Agg>;
+	cardinality: Metric.Function<E, Index, Agg>;
+	sum: Metric.Function<E, Index, Agg>;
+	avg: Metric.Function<E, Index, Agg>;
+	max: Metric.Function<E, Index, Agg>;
+	min: Metric.Function<E, Index, Agg>;
+	geo_bounds: Metric.GeoBounds<E, Index, Agg>;
+	geo_centroid: Metric.GeoCentroid<E, Index, Agg>;
+	geo_line: Metric.GeoLine<E, Index, Agg>;
+	matrix_stats: Metric.MatrixStats<E, Index, Agg>;
+	median_absolute_deviation: Metric.MedianAbsoluteDeviation<E, Index, Agg>;
+	percentiles: Metric.Percentiles<E, Index, Agg>;
+	percentile_ranks: Metric.PercentileRanks<E, Index, Agg>;
+	rate: Metric.Rate<E, Index, Agg>;
+	scripted_metric: Metric.ScriptedMetric<Agg>;
+	stats: Metric.Stats<E, Index, Agg>;
+	string_stats: Metric.StringStats<E, Index, Agg>;
+	t_test: Metric.TTest<E, Index, Agg>;
+	top_hits: Metric.TopHits<BaseQuery, E, Index, Agg>;
+	top_metrics: Metric.TopMetrics<E, Index, Agg>;
+	weighted_avg: Metric.WeightedAvg<E, Index, Agg>;
+	// Pipeline aggregations
+	avg_bucket: Pipeline.AvgBucket<Agg>;
+	bucket_correlation: Pipeline.BucketCorrelation<Agg>;
+	bucket_count_ks_test: Pipeline.BucketCountKSTest<Agg>;
+	bucket_script: Pipeline.BucketScript<Agg>;
+	change_point: Pipeline.ChangePoint<BaseQuery, Query, E, Index, Agg>;
+	cumulative_cardinality: Pipeline.CumulativeCardinality<Agg>;
+	cumulative_sum: Pipeline.CumulativeSum<Agg>;
+	derivative: Pipeline.Derivative<Agg>;
+	extended_stats_bucket: Pipeline.ExtendedStatsBucket<Agg>;
+	inference: Pipeline.Inference<Agg>;
+	max_bucket: Pipeline.MaxBucket<Agg>;
+	min_bucket: Pipeline.MinBucket<Agg>;
+	moving_fn: Pipeline.MovingFunction<Agg>;
+	moving_percentiles: Pipeline.MovingPercentiles<
+		ExtractAggs<Query>,
+		E,
+		Index,
+		Agg
+	>;
+	normalize: Pipeline.Normalize<Agg>;
+	percentiles_bucket: Pipeline.PercentilesBucket<Agg>;
+	serial_diff: Pipeline.SerialDiff<Agg>;
+	stats_bucket: Pipeline.StatsBucket<Agg>;
+	sum_bucket: Pipeline.SumBucket<Agg>;
+};
 
 export type AggregationOutput<
 	BaseQuery extends SearchRequest,
@@ -342,84 +377,9 @@ export type AggregationOutput<
 	CurrentAggregationKey extends keyof ExtractAggs<Query>,
 	Index extends string = RequestedIndex<Query>,
 	Agg = UnionToIntersection<ExtractAggs<Query>[CurrentAggregationKey]>,
-> =
-	IsNever<CurrentAggregationKey> extends true
-		? never
-		: // Bucket aggregations
-				| Bucket.AdjacencyMatrix<BaseQuery, E, Index, Agg>
-				| Bucket.AutoDateHistogram<BaseQuery, E, Index, Agg>
-				| Bucket.CategorizeText<BaseQuery, E, Index, Agg>
-				| Bucket.Children<BaseQuery, E, Index, Agg>
-				| Bucket.Composite<BaseQuery, E, Index, Agg>
-				| Bucket.DateHistogram<BaseQuery, E, Index, Agg>
-				| Bucket.DateRange<BaseQuery, E, Index, Agg>
-				| Bucket.DiversifiedSampler<BaseQuery, E, Index, Agg>
-				| Bucket.Filter<BaseQuery, E, Index, Agg>
-				| Bucket.Filters<BaseQuery, E, Index, Agg>
-				| Bucket.FrequentItemSets<BaseQuery, E, Index, Agg>
-				| Bucket.GeoHashGrid<BaseQuery, E, Index, Agg>
-				| Bucket.GeoHexGrid<BaseQuery, E, Index, Agg>
-				| Bucket.GeoTileGrid<BaseQuery, E, Index, Agg>
-				| Bucket.Histogram<BaseQuery, E, Index, Agg>
-				| Bucket.IpPrefix<BaseQuery, E, Index, Agg>
-				| Bucket.IpRange<BaseQuery, E, Index, Agg>
-				| Bucket.Parent<BaseQuery, E, Index, Agg>
-				| Bucket.Global<BaseQuery, E, Index, Agg>
-				| Bucket.Missing<BaseQuery, E, Index, Agg>
-				| Bucket.Nested<BaseQuery, E, Index, Agg>
-				| Bucket.Range<BaseQuery, E, Index, Agg>
-				| Bucket.RandomSampler<BaseQuery, E, Index, Agg>
-				| Bucket.Sampler<BaseQuery, E, Index, Agg>
-				| Bucket.SignificantText<BaseQuery, E, Index, Agg>
-				| Bucket.SignificantTerms<BaseQuery, E, Index, Agg>
-				| Bucket.Terms<BaseQuery, E, Index, Agg>
-				| Bucket.TimeSeries<BaseQuery, E, Index, Agg>
-				| Bucket.RareTerms<BaseQuery, E, Index, Agg>
-				| Bucket.MultiTerms<BaseQuery, E, Index, Agg>
-				| Bucket.VariableWidthHistogram<BaseQuery, E, Index, Agg>
-				| Bucket.ReverseNested<BaseQuery, E, Index, Agg>
-				// Metric aggregations
-				| Metric.Boxplot<E, Index, Agg>
-				| Metric.CartesianBounds<E, Index, Agg>
-				| Metric.CartesianCentroid<E, Index, Agg>
-				| Metric.ExtendedStats<E, Index, Agg>
-				| Metric.Function<E, Index, Agg>
-				| Metric.GeoBounds<E, Index, Agg>
-				| Metric.GeoCentroid<E, Index, Agg>
-				| Metric.GeoLine<E, Index, Agg>
-				| Metric.MatrixStats<E, Index, Agg>
-				| Metric.MedianAbsoluteDeviation<E, Index, Agg>
-				| Metric.Percentiles<E, Index, Agg>
-				| Metric.PercentileRanks<E, Index, Agg>
-				| Metric.Rate<E, Index, Agg>
-				| Metric.ScriptedMetric<Agg>
-				| Metric.Stats<E, Index, Agg>
-				| Metric.StringStats<E, Index, Agg>
-				| Metric.TTest<E, Index, Agg>
-				| Metric.TopHits<BaseQuery, E, Index, Agg>
-				| Metric.TopMetrics<E, Index, Agg>
-				| Metric.WeightedAvg<E, Index, Agg>
-				// Pipeline aggregations
-				| Pipeline.AvgBucket<Agg>
-				| Pipeline.BucketCorrelation<Agg>
-				| Pipeline.BucketCountKSTest<Agg>
-				| Pipeline.BucketScript<Agg>
-				| Pipeline.BucketSelector<Agg>
-				| Pipeline.ChangePoint<BaseQuery, Query, E, Index, Agg>
-				| Pipeline.CumulativeCardinality<Agg>
-				| Pipeline.CumulativeSum<Agg>
-				| Pipeline.Derivative<Agg>
-				| Pipeline.ExtendedStatsBucket<Agg>
-				| Pipeline.Inference<Agg>
-				| Pipeline.MaxBucket<Agg>
-				| Pipeline.MinBucket<Agg>
-				| Pipeline.MovingFunction<Agg>
-				| Pipeline.MovingPercentiles<ExtractAggs<Query>, E, Index, Agg>
-				| Pipeline.Normalize<Agg>
-				| Pipeline.PercentilesBucket<Agg>
-				| Pipeline.SerialDiff<Agg>
-				| Pipeline.StatsBucket<Agg>
-				| Pipeline.SumBucket<Agg>;
+	Outputs = AggregationOutputMap<BaseQuery, Query, E, Index, Agg>,
+	Key extends keyof Outputs = Extract<keyof Agg, keyof Outputs>,
+> = IsNever<CurrentAggregationKey> extends true ? never : Outputs[Key];
 
 export type AggregationOutputs<
 	BaseQuery extends SearchRequest,
