@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, test } from "bun:test";
 import {
-	type ExtractQuery_Source,
 	type ExtractQueryFields,
+	type ExtractQuerySource,
 	typedEs,
 } from "../src/index";
 import { type CustomIndexes, client } from "./shared";
@@ -15,7 +15,7 @@ describe("RequestedFields", () => {
 
 		expectTypeOf<ExtractQueryFields<typeof query>>().toEqualTypeOf<never>();
 		expectTypeOf<
-			ExtractQuery_Source<typeof query, CustomIndexes>
+			ExtractQuerySource<typeof query, CustomIndexes>
 		>().toEqualTypeOf<Expected>();
 	});
 
@@ -28,7 +28,7 @@ describe("RequestedFields", () => {
 
 		expectTypeOf<ExtractQueryFields<typeof query>>().toEqualTypeOf<never>();
 		expectTypeOf<
-			ExtractQuery_Source<typeof query, CustomIndexes>
+			ExtractQuerySource<typeof query, CustomIndexes>
 		>().toEqualTypeOf<never>();
 	});
 
@@ -41,7 +41,7 @@ describe("RequestedFields", () => {
 
 		expectTypeOf<ExtractQueryFields<typeof query>>().toEqualTypeOf<never>();
 		expectTypeOf<
-			ExtractQuery_Source<typeof query, CustomIndexes>
+			ExtractQuerySource<typeof query, CustomIndexes>
 		>().toEqualTypeOf<Expected>();
 	});
 
@@ -62,7 +62,7 @@ describe("RequestedFields", () => {
 			"shipping_address.street" | "*_at"
 		>();
 		expectTypeOf<
-			ExtractQuery_Source<typeof query, CustomIndexes>
+			ExtractQuerySource<typeof query, CustomIndexes>
 		>().toEqualTypeOf<"user_id">();
 	});
 
@@ -77,7 +77,7 @@ describe("RequestedFields", () => {
 
 		expectTypeOf<ExtractQueryFields<typeof query>>().toEqualTypeOf<Expected>();
 		expectTypeOf<
-			ExtractQuery_Source<typeof query, CustomIndexes>
+			ExtractQuerySource<typeof query, CustomIndexes>
 		>().toEqualTypeOf<never>();
 	});
 });

@@ -2,8 +2,8 @@ import { describe, expectTypeOf, test } from "bun:test";
 import type { RequestedIndex, SearchRequest } from "../src/index";
 import type { TypedSearchResponse } from "../src/override/search-response";
 import type {
-	ExtractQuery_Source,
 	ExtractQueryFields,
+	ExtractQuerySource,
 } from "../src/types/requested-fields";
 import type { CustomIndexes, testQueries } from "./shared";
 
@@ -15,7 +15,7 @@ describe("Field Extraction", () => {
 				_source: ["score", "invalid"],
 			} as const satisfies SearchRequest;
 			expectTypeOf<
-				ExtractQuery_Source<typeof query, CustomIndexes>
+				ExtractQuerySource<typeof query, CustomIndexes>
 			>().toEqualTypeOf<"score" | "invalid">();
 		});
 
@@ -24,7 +24,7 @@ describe("Field Extraction", () => {
 				index: "demo",
 			} as const satisfies SearchRequest;
 			expectTypeOf<
-				ExtractQuery_Source<typeof query, CustomIndexes>
+				ExtractQuerySource<typeof query, CustomIndexes>
 			>().toEqualTypeOf<keyof CustomIndexes["demo"]>();
 		});
 
@@ -34,7 +34,7 @@ describe("Field Extraction", () => {
 				_source: false,
 			} as const satisfies SearchRequest;
 			expectTypeOf<
-				ExtractQuery_Source<typeof query, CustomIndexes>
+				ExtractQuerySource<typeof query, CustomIndexes>
 			>().toEqualTypeOf<never>();
 		});
 
@@ -47,7 +47,7 @@ describe("Field Extraction", () => {
 					},
 				} as const satisfies SearchRequest;
 				expectTypeOf<
-					ExtractQuery_Source<typeof query, CustomIndexes>
+					ExtractQuerySource<typeof query, CustomIndexes>
 				>().toEqualTypeOf<"score" | "invalid">();
 			});
 
@@ -59,7 +59,7 @@ describe("Field Extraction", () => {
 					},
 				} as const satisfies SearchRequest;
 				expectTypeOf<
-					ExtractQuery_Source<typeof query, CustomIndexes>
+					ExtractQuerySource<typeof query, CustomIndexes>
 				>().toEqualTypeOf<Exclude<keyof CustomIndexes["demo"], "score">>();
 			});
 			test("with _source.includes and _source.excludes", () => {
@@ -71,7 +71,7 @@ describe("Field Extraction", () => {
 					},
 				} as const satisfies SearchRequest;
 				expectTypeOf<
-					ExtractQuery_Source<typeof query, CustomIndexes>
+					ExtractQuerySource<typeof query, CustomIndexes>
 				>().toEqualTypeOf<never>();
 			});
 		});

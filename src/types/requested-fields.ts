@@ -1,13 +1,21 @@
 import type { RequestedIndex } from "../lib";
 import type { GetField, IsNever } from "./helpers";
 
-type InferSource<T, Key extends string> = T extends {
-	[k in Key]: (infer A)[];
-}
-	? A
+type SourceFilterKey = "includes" | "include" | "excludes" | "exclude";
+type SourceFilter = Partial<Record<SourceFilterKey, readonly string[]>>;
+
+type SourceFilterValue<T, Key extends SourceFilterKey> = Key extends string
+	? T extends { [K in Key]: readonly (infer Field extends string)[] }
+		? Field
+		: never
 	: never;
 
-export type ExtractQuery_Source<
+type SourceIncludeFields<Source, AllFields> =
+	IsNever<SourceFilterValue<Source, "includes" | "include">> extends true
+		? AllFields
+		: SourceFilterValue<Source, "includes" | "include">;
+
+export type ExtractQuerySource<
 	Query extends Record<string, unknown>,
 	Indexes,
 	Index extends string = RequestedIndex<Query>,
@@ -15,33 +23,22 @@ export type ExtractQuery_Source<
 	Source = Query["_source"],
 > = Source extends readonly (infer Fields extends string)[]
 	? Fields
-	: Source extends {
-				includes?: string[];
-				include?: string[];
-				excludes?: string[];
-				exclude?: string[];
-			}
+	: Source extends SourceFilter
 		? Exclude<
-				// TODO: check if we can do this better
-					| InferSource<Source, "includes">
-					| IsNever<InferSource<Source, "include">> extends true
-					? AllFields
-					: InferSource<Source, "includes"> | InferSource<Source, "include">,
-				InferSource<Source, "excludes"> | InferSource<Source, "exclude">
+				SourceIncludeFields<Source, AllFields>,
+				SourceFilterValue<Source, "excludes" | "exclude">
 			>
 		: Source extends false
 			? never
 			: AllFields;
 
+type FieldRequestName<Field> = Field extends string
+	? Field
+	: Field extends { field: infer Name extends string }
+		? Name
+		: never;
+
 export type ExtractQueryFields<
 	Query extends Record<string, unknown>,
 	Fields = GetField<Query, "fields"> | GetField<Query, "docvalue_fields">,
-> = Fields extends readonly (infer FieldsItem extends
-	| string
-	| { field: string })[]
-	?
-			| Extract<FieldsItem, string>
-			| {
-					[k in Extract<FieldsItem, { field: string }>["field"]]: k;
-			  }[Extract<FieldsItem, { field: string }>["field"]]
-	: never;
+> = Fields extends readonly (infer Field)[] ? FieldRequestName<Field> : never;
