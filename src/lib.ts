@@ -313,6 +313,7 @@ export type NextAggsParentKey<
 	| "bucket_correlation"
 	| "bucket_count_ks_test"
 	| "bucket_script"
+	| "change_point"
 	| "cumulative_cardinality"
 	| "cumulative_sum"
 	| "derivative"
@@ -397,6 +398,7 @@ export type AggregationOutput<
 				| Pipeline.BucketCorrelation<Agg>
 				| Pipeline.BucketCountKSTest<Agg>
 				| Pipeline.BucketScript<Agg>
+				| Pipeline.ChangePoint<BaseQuery, Query, E, Index, Agg>
 				| Pipeline.CumulativeCardinality<Agg>
 				| Pipeline.CumulativeSum<Agg>
 				| Pipeline.Derivative<Agg>
