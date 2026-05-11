@@ -321,6 +321,7 @@ export type NextAggsParentKey<
 	| "min_bucket"
 	| "max_bucket"
 	| "extended_stats_bucket"
+	| "inference"
 	| "moving_fn"
 	| "normalize"
 	| "percentiles_bucket"
@@ -400,6 +401,7 @@ export type AggregationOutput<
 				| Pipeline.CumulativeSum<Agg>
 				| Pipeline.Derivative<Agg>
 				| Pipeline.ExtendedStatsBucket<Agg>
+				| Pipeline.Inference<Agg>
 				| Pipeline.MaxBucket<Agg>
 				| Pipeline.MinBucket<Agg>
 				| Pipeline.MovingFunction<Agg>

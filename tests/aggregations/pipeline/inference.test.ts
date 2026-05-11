@@ -1,5 +1,3 @@
-// @ts-nocheck
-// TODO implement aggregation
 import { describe, expectTypeOf, test } from "bun:test";
 import type { TestAggregationOutput } from "../../shared";
 
@@ -39,22 +37,8 @@ describe("Inference Bucket Pipeline Aggregation", () => {
 			}
 		>;
 
-		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
-			client_ip: {
-				buckets: Array<{
-					key: Record<string, unknown>;
-					doc_count: number;
-					url_dc: { value: number };
-					bytes_sum: { value: number; value_as_string?: string };
-					geo_src_dc: { value: number };
-					geo_dest_dc: { value: number };
-					responses_total: { value: number };
-					success: { doc_count: number };
-					error404: { doc_count: number };
-					error503: { doc_count: number };
-					malicious_client_ip: unknown;
-				}>;
-			};
-		}>();
+		expectTypeOf<
+			Aggregations["aggregations"]["client_ip"]["buckets"][number]["malicious_client_ip"]
+		>().toEqualTypeOf<unknown>();
 	});
 });

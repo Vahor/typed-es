@@ -6,6 +6,7 @@ export * from "./cumulative_cardinality";
 export * from "./cumulative_sum";
 export * from "./derivative";
 export * from "./extended_stats_bucket";
+export * from "./inference";
 export * from "./max_bucket";
 export * from "./min_bucket";
 export * from "./moving_fn";
