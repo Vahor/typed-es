@@ -121,7 +121,7 @@ npm install -D @vahor/typed-es
 | Cumulative Sum | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-sum-aggregation) |
 | Derivative | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-derivative-aggregation) |
 | Extended Stats Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-extended-stats-bucket-aggregation) |
-| Inference | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-inference-bucket-aggregation) |
+| Inference | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-inference-bucket-aggregation) |
 | Max Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-max-bucket-aggregation) |
 | Min Bucket | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-min-bucket-aggregation) |
 | Moving Function | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation) |
