@@ -400,6 +400,7 @@ export type AggregationOutput<
 				| Pipeline.BucketCorrelation<Agg>
 				| Pipeline.BucketCountKSTest<Agg>
 				| Pipeline.BucketScript<Agg>
+				| Pipeline.BucketSelector<Agg>
 				| Pipeline.ChangePoint<BaseQuery, Query, E, Index, Agg>
 				| Pipeline.CumulativeCardinality<Agg>
 				| Pipeline.CumulativeSum<Agg>
