@@ -1,5 +1,8 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { ChangePointType } from "../../../src/aggregations/pipeline";
+import type {
+	ChangePointBucket,
+	ChangePointType,
+} from "../../../src/aggregations/pipeline";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Change Point Pipeline Aggregation", () => {
@@ -25,11 +28,7 @@ describe("Change Point Pipeline Aggregation", () => {
 				}>;
 			};
 			change_points_avg: {
-				bucket?: {
-					key: string | number;
-					doc_count: number;
-					avg: { value: number; value_as_string?: string };
-				};
+				bucket?: ChangePointBucket;
 				type: ChangePointType;
 			};
 		}>();
