@@ -615,6 +615,10 @@ type MovingAverageAggregationModel =
 	| "holt"
 	| "holt_winters";
 
+/**
+ * @deprecated Use `moving_fn` instead.
+ * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-movfn-aggregation
+ */
 type LooseMovingAverageAggregation = {
 	buckets_path?: AggregationBucketsPath;
 	model?: MovingAverageAggregationModel;
@@ -636,6 +640,9 @@ type TypedAggregationContainer = {
 } & {
 	aggregations?: Record<string, TypedAggregationContainer>;
 	aggs?: Record<string, TypedAggregationContainer>;
+	/**
+	 * @deprecated Use `moving_fn` instead.
+	 */
 	moving_avg?: LooseMovingAverageAggregation;
 };
 
