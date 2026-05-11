@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 0.4.0
+
+### Minor Changes
+
+- [#372](https://github.com/Vahor/typed-es/pull/372) [`9a0178d`](https://github.com/Vahor/typed-es/commit/9a0178d944fe9dc43c41518a7662a58d67e5ead2) Thanks [@Vahor](https://github.com/Vahor)! - Rename exported aggregation helper types to remove the `Aggs` suffix and add category namespace exports.
+
+- [#372](https://github.com/Vahor/typed-es/pull/372) [`9a0178d`](https://github.com/Vahor/typed-es/commit/9a0178d944fe9dc43c41518a7662a58d67e5ead2) Thanks [@Vahor](https://github.com/Vahor)! - Disable tsdown CJS declaration re-exports. As it assumes CJS and ESM builds share the same output directory.
+
 ## 0.3.1
 
 ### Patch Changes
