@@ -42,6 +42,8 @@ npm install -D @vahor/typed-es
 <details>
 <summary>Supported Aggregations</summary>
 
+All Elasticsearch aggregations tracked in this table are supported.
+
 ### Bucket Aggregations
 | Aggregation | Status | Documentation |
 |-------------|--------|---------------|
