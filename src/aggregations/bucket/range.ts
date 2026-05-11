@@ -6,7 +6,7 @@ import type {
 	ToDecimal,
 	ToString,
 } from "../../types/helpers";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 type RangeSpec = {
 	from?: number | undefined;
@@ -33,10 +33,9 @@ type RangeOutput<
 		key?: infer K;
 	}
 		? Prettify<
-				{
-					key: K extends string ? K : `${FormatToKey<F>}-${FormatToKey<T>}`;
-					doc_count: number;
-				} & {
+				KeyedBucketBase<
+					K extends string ? K : `${FormatToKey<F>}-${FormatToKey<T>}`
+				> & {
 					[K in "from" as F extends number ? K : never]: F;
 				} & {
 					[K in "to" as T extends number ? K : never]: T;

@@ -1,5 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { Prettify, PrettyArray } from "../../types/helpers";
+import type { BucketBase, KeyedBucketBase } from "../helpers";
 
 type KeysAndOBK<Keys, Agg> = Agg extends {
 	filters: { other_bucket_key: infer OBK extends string };
@@ -25,9 +26,7 @@ export type Filters<
 		? // Anonymous filters (array format)
 			{
 				buckets: PrettyArray<
-					{
-						doc_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
+					BucketBase & AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
 			}
 		: Filters extends Record<infer Keys, unknown>
@@ -35,17 +34,14 @@ export type Filters<
 				Keyed extends false
 				? {
 						buckets: PrettyArray<
-							{
-								key: KeysAndOBK<Keys, Agg>;
-								doc_count: number;
-							} & AppendSubAggs<BaseQuery, E, Index, Agg>
+							KeyedBucketBase<KeysAndOBK<Keys, Agg>> &
+								AppendSubAggs<BaseQuery, E, Index, Agg>
 						>;
 					}
 				: {
 						buckets: Prettify<{
-							[K in KeysAndOBK<Keys, Agg>]: {
-								doc_count: number;
-							} & AppendSubAggs<BaseQuery, E, Index, Agg>;
+							[K in KeysAndOBK<Keys, Agg>]: BucketBase &
+								AppendSubAggs<BaseQuery, E, Index, Agg>;
 						}>;
 					}
 			: never

@@ -1,3 +1,4 @@
+import type { UnknownKeyedBucketBase } from "../helpers";
 import type { BucketsPath } from "./types";
 
 type ChangePointDetails = {
@@ -17,11 +18,7 @@ export type ChangePointType =
 			trend_change: { p_value: number; r_value: number; change_point: number };
 	  };
 
-export type ChangePointBucket = {
-	key: string | number;
-	doc_count: number;
-	[property: string]: unknown;
-};
+export type ChangePointBucket = UnknownKeyedBucketBase;
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-change-point-aggregation

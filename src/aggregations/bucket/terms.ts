@@ -5,7 +5,7 @@ import type {
 	TypeOfField,
 } from "../..";
 import type { IsStringLiteral, PrettyArray } from "../../types/helpers";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation
@@ -24,14 +24,14 @@ export type Terms<
 				doc_count_error_upper_bound: number;
 				sum_other_doc_count: number;
 				buckets: PrettyArray<
-					{
-						key: number extends TypeOfField<Field, E, Index>
+					KeyedBucketBase<
+						number extends TypeOfField<Field, E, Index>
 							? number
 							: IsStringLiteral<TypeOfField<Field, E, Index>> extends true
 								? TypeOfField<Field, E, Index>
-								: string | number;
-						doc_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
+								: string | number
+					> &
+						AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
 			},
 			Field

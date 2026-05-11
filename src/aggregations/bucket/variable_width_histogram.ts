@@ -1,6 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { AtMostN, Prettify } from "../../types/helpers";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation
@@ -24,11 +24,9 @@ export type VariableWidthHistogram<
 			{
 				buckets: AtMostN<
 					Prettify<
-						{
+						KeyedBucketBase<number> & {
 							min: number;
-							key: number;
 							max: number;
-							doc_count: number;
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>,
 					Buckets

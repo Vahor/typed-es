@@ -5,6 +5,7 @@ import type {
 	TypeOfField,
 } from "../..";
 import type { PrettyArray } from "../../types/helpers";
+import type { KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-frequent-item-sets-aggregation
@@ -21,11 +22,9 @@ export type FrequentItemSets<
 }
 	? {
 			buckets: PrettyArray<
-				{
-					key: {
-						[K in Fields[number]["field"]]: TypeOfField<K, E, Index>[];
-					};
-					doc_count: number;
+				KeyedBucketBase<{
+					[K in Fields[number]["field"]]: TypeOfField<K, E, Index>[];
+				}> & {
 					support: number;
 				} & AppendSubAggs<BaseQuery, E, Index, Agg>
 			>;

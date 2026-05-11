@@ -1,5 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { Combinations, PrettyArray } from "../../types/helpers";
+import type { KeyedBucketBase } from "../helpers";
 
 type DefaultSeparator = "&";
 type GetSeparator<S> = S extends string ? S : DefaultSeparator;
@@ -21,10 +22,10 @@ export type AdjacencyMatrix<
 	? Filters extends Record<infer Keys, unknown>
 		? {
 				buckets: PrettyArray<
-					{
-						key: Combinations<Extract<Keys, string>, GetSeparator<Separator>>;
-						doc_count: number;
-					} & AppendSubAggs<BaseQuery, E, Index, Agg>
+					KeyedBucketBase<
+						Combinations<Extract<Keys, string>, GetSeparator<Separator>>
+					> &
+						AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
 			}
 		: never

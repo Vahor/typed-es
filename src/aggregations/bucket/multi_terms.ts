@@ -5,7 +5,7 @@ import type {
 	TypeOfField,
 } from "../../";
 import type { PrettyArray, SeparatedString } from "../../types/helpers";
-import type { AggregationFieldResult } from "../helpers";
+import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-multi-terms-aggregation
@@ -27,10 +27,8 @@ export type MultiTerms<
 					doc_count_error_upper_bound: number;
 					sum_other_doc_count: number;
 					buckets: PrettyArray<
-						{
-							key: Array<TypeOfField<Field, E, Index>>;
+						KeyedBucketBase<Array<TypeOfField<Field, E, Index>>> & {
 							key_as_string: SeparatedString<"|", Terms["length"]>;
-							doc_count: number;
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
 				},

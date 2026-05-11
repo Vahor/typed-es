@@ -9,7 +9,7 @@ import type {
 	KeyedArrayToObject,
 	Prettify,
 } from "../../types/helpers";
-import type { AggregationFieldTypeResult } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 type IpRangeSpec =
 	| AtLeastOneOf<
@@ -41,14 +41,13 @@ type IpRangeOutput<
 		key?: infer K;
 	}
 		? Prettify<
-				{
-					key: K extends string
+				KeyedBucketBase<
+					K extends string
 						? K
 						: M extends string
 							? M
-							: `${FormatToKey<F>}-${FormatToKey<T>}`;
-					doc_count: number;
-				} & {
+							: `${FormatToKey<F>}-${FormatToKey<T>}`
+				> & {
 					[K in "from" as F extends string
 						? K
 						: M extends string
