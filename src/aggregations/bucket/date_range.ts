@@ -1,6 +1,6 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { KeyedArrayToObject, Prettify } from "../../types/helpers";
-import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 type RangeSpec = {
 	from?: string | undefined;
@@ -55,10 +55,11 @@ export type DateRange<
 		ranges: infer Ranges;
 	};
 }
-	? AggregationFieldResult<
+	? AggregationFieldTypeResult<
 			E,
 			Index,
 			Agg,
+			string,
 			Ranges extends readonly RangeSpec[]
 				? Keyed extends true
 					? {

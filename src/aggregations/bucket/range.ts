@@ -6,7 +6,7 @@ import type {
 	ToDecimal,
 	ToString,
 } from "../../types/helpers";
-import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 type RangeSpec = {
 	from?: number | undefined;
@@ -59,10 +59,11 @@ export type Range<
 		ranges: infer Ranges;
 	};
 }
-	? AggregationFieldResult<
+	? AggregationFieldTypeResult<
 			E,
 			Index,
 			Agg,
+			number,
 			Ranges extends readonly RangeSpec[]
 				? Keyed extends true
 					? {

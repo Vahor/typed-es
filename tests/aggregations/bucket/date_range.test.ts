@@ -1,5 +1,8 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
+} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("DateRange Aggregations", () => {
@@ -122,6 +125,31 @@ describe("DateRange Aggregations", () => {
 					};
 				};
 			};
+		}>();
+	});
+
+	test("fails when using a non-date field", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				range: {
+					date_range: {
+						field: "score";
+						format: "MM-yyy";
+						ranges: [{ from: "01-2015"; to: "03-2015"; key: "quarter_01" }];
+						keyed: true;
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			range: InvalidFieldTypeInAggregation<
+				"score",
+				"demo",
+				Aggregations["input"]["range"],
+				number,
+				string
+			>;
 		}>();
 	});
 

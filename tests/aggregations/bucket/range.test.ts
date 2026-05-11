@@ -1,5 +1,8 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { InvalidFieldInAggregation } from "../../../src/index";
+import type {
+	InvalidFieldInAggregation,
+	InvalidFieldTypeInAggregation,
+} from "../../../src/index";
 import type { TestAggregationOutput } from "../../shared";
 
 describe("Range Aggregations", () => {
@@ -164,6 +167,30 @@ describe("Range Aggregations", () => {
 		}>();
 	});
 
+	test("fails when using a non-numeric field", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				price_ranges: {
+					range: {
+						field: "entity_id";
+						keyed: true;
+						ranges: [{ to: 100 }, { from: 100; to: 200 }, { from: 200 }];
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			price_ranges: InvalidFieldTypeInAggregation<
+				"entity_id",
+				"demo",
+				Aggregations["input"]["price_ranges"],
+				string,
+				number
+			>;
+		}>();
+	});
+
 	test("fails when using an invalid field", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",
@@ -191,7 +218,7 @@ describe("Range Aggregations", () => {
 			"orders",
 			{
 				with_sub: {
-					range: { field: "shipping_address.geo_point"; ranges: [{ to: 100 }] };
+					range: { field: "total"; ranges: [{ to: 100 }] };
 					aggs: {
 						by_status: { terms: { field: "status" } };
 					};

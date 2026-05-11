@@ -1,5 +1,5 @@
 import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
-import type { AggregationFieldResult, KeyedBucketBase } from "../helpers";
+import type { AggregationFieldTypeResult, KeyedBucketBase } from "../helpers";
 
 type HistogramAggOutput<
 	BaseQuery extends SearchRequest,
@@ -23,10 +23,11 @@ export type Histogram<
 		keyed?: infer Keyed;
 	};
 }
-	? AggregationFieldResult<
+	? AggregationFieldTypeResult<
 			E,
 			Index,
 			Agg,
+			number,
 			Keyed extends true
 				? {
 						buckets: Record<
