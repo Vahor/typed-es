@@ -5,7 +5,6 @@ export * from "./client";
 export * from "./lib";
 export * from "./typed-es";
 export type {
-	ExtractQuery_Source,
 	ExtractQueryFields,
 	ExtractQuerySource,
 } from "./types/requested-fields";

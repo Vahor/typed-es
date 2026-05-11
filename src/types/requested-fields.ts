@@ -32,14 +32,6 @@ export type ExtractQuerySource<
 			? never
 			: AllFields;
 
-export type ExtractQuery_Source<
-	Query extends Record<string, unknown>,
-	Indexes,
-	Index extends string = RequestedIndex<Query>,
-	AllFields = Index extends keyof Indexes ? keyof Indexes[Index] : never,
-	Source = Query["_source"],
-> = ExtractQuerySource<Query, Indexes, Index, AllFields, Source>;
-
 type FieldRequestName<Field> = Field extends string
 	? Field
 	: Field extends { field: infer Name extends string }
