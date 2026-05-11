@@ -1,9 +1,4 @@
-import type {
-	AggregationFieldResult,
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type {
 	IsNever,
 	KeyedArrayToObject,
@@ -11,6 +6,7 @@ import type {
 	ToDecimal,
 	ToString,
 } from "../../types/helpers";
+import type { AggregationFieldResult } from "../helpers";
 
 type RangeSpec = {
 	from?: number | undefined;

@@ -1,4 +1,5 @@
-import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationTwoFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation
@@ -13,22 +14,17 @@ export type TTest<
 		b?: { field?: infer FieldB extends string; script?: unknown };
 	};
 }
-	? AggregationFieldTypeResult<
+	? AggregationTwoFieldTypeResult<
 			E,
 			Index,
 			Agg,
+			FieldA,
 			number,
-			AggregationFieldTypeResult<
-				E,
-				Index,
-				Agg,
-				number,
-				{
-					value: number;
-					value_as_string?: string;
-				},
-				FieldB
-			>,
-			FieldA
+			FieldB,
+			number,
+			{
+				value: number;
+				value_as_string?: string;
+			}
 		>
 	: never;

@@ -1,5 +1,6 @@
-import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
+import type { ElasticsearchIndexes } from "../..";
 import type { EsPoint, EsShape } from "../../types/fields";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation

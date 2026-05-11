@@ -8,7 +8,6 @@ import type {
 	DeepPickPaths,
 	IsNever,
 	IsOptional,
-	IsSomeSortOf,
 	IsStringLiteral,
 	Optional,
 	RArray,
@@ -187,65 +186,6 @@ export type InvalidPropertyTypeInAggregation<
 	expected: expected;
 	hint: "Check the aggregation configuration syntax in Elasticsearch documentation";
 };
-
-export type AggregationPropertyTypeResult<
-	PropertyName extends string,
-	Aggregation,
-	Got,
-	Expected,
-	Result,
-	Check = Got,
-> =
-	IsSomeSortOf<Check, Expected> extends true
-		? Result
-		: InvalidPropertyTypeInAggregation<
-				PropertyName,
-				Aggregation,
-				Got,
-				Expected
-			>;
-
-type ExtractAggregationField<Aggregation> = {
-	[K in keyof Aggregation]: Aggregation[K] extends {
-		field?: infer Field extends string;
-	}
-		? Field
-		: never;
-}[keyof Aggregation];
-
-export type AggregationFieldResult<
-	E extends ElasticsearchIndexes,
-	Index extends string,
-	Aggregation,
-	Result,
-	Field extends string = ExtractAggregationField<Aggregation>,
-> =
-	CanBeUsedInAggregation<Field, Index, E> extends true
-		? Result
-		: InvalidFieldInAggregation<Field, Index, Aggregation>;
-
-export type AggregationFieldTypeResult<
-	E extends ElasticsearchIndexes,
-	Index extends string,
-	Aggregation,
-	Expected,
-	Result,
-	Field extends string = ExtractAggregationField<Aggregation>,
-> = AggregationFieldResult<
-	E,
-	Index,
-	Aggregation,
-	IsSomeSortOf<TypeOfField<Field, E, Index>, Expected> extends true
-		? Result
-		: InvalidFieldTypeInAggregation<
-				Field,
-				Index,
-				Aggregation,
-				TypeOfField<Field, E, Index>,
-				Expected
-			>,
-	Field
->;
 
 export type PossibleFieldsWithWildcards<
 	Index,

@@ -1,5 +1,6 @@
-import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
+import type { ElasticsearchIndexes } from "../..";
 import type { ToDecimal } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 type DefaultPercents = [1, 5, 25, 50, 75, 95, 99];
 

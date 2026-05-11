@@ -1,9 +1,4 @@
-import type {
-	AggregationFieldTypeResult,
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type {
 	CidrIpv4,
 	CidrIpv6,
@@ -12,6 +7,7 @@ import type {
 	KeyedArrayToObject,
 	PrettyArray,
 } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 type IpPrefixOutput<
 	BaseQuery extends SearchRequest,

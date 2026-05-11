@@ -1,4 +1,5 @@
-import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation

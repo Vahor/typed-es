@@ -1,5 +1,4 @@
 import type {
-	AggregationFieldTypeResult,
 	AppendSubAggs,
 	ElasticsearchIndexes,
 	InvalidPropertyTypeInAggregation,
@@ -10,6 +9,7 @@ import type {
 	KeyedArrayToObject,
 	Prettify,
 } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 type IpRangeSpec =
 	| AtLeastOneOf<

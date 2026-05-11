@@ -1,4 +1,5 @@
-import type { AggregationFieldResult, ElasticsearchIndexes } from "../..";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationFieldResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation

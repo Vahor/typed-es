@@ -1,9 +1,5 @@
-import type {
-	AggregationFieldResult,
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
+import type { AggregationFieldResult } from "../helpers";
 
 type HistogramAggOutput<
 	BaseQuery extends SearchRequest,

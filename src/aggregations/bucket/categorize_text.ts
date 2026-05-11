@@ -1,10 +1,6 @@
-import type {
-	AggregationFieldTypeResult,
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { PrettyArray } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-categorize-text-aggregation

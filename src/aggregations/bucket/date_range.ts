@@ -1,10 +1,6 @@
-import type {
-	AggregationFieldResult,
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	SearchRequest,
-} from "../..";
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
 import type { KeyedArrayToObject, Prettify } from "../../types/helpers";
+import type { AggregationFieldResult } from "../helpers";
 
 type RangeSpec = {
 	from?: string | undefined;

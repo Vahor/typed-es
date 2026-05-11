@@ -1,5 +1,6 @@
-import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
+import type { ElasticsearchIndexes } from "../..";
 import type { ToDecimal } from "../../types/helpers";
+import type { AggregationFieldTypeResult } from "../helpers";
 
 type PercentilesValues<Percents extends readonly number[]> = {
 	[index in keyof Percents]: {

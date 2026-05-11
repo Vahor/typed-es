@@ -1,8 +1,5 @@
-import type {
-	AggregationFieldResult,
-	AggregationFieldTypeResult,
-	ElasticsearchIndexes,
-} from "../..";
+import type { ElasticsearchIndexes } from "../..";
+import type { AggregationTwoFieldTypeResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-weight-avg-aggregation
@@ -23,34 +20,17 @@ export type WeightedAvg<
 		};
 	};
 }
-	? AggregationFieldResult<
+	? AggregationTwoFieldTypeResult<
 			E,
 			Index,
 			Agg,
-			AggregationFieldResult<
-				E,
-				Index,
-				Agg,
-				AggregationFieldTypeResult<
-					E,
-					Index,
-					Agg,
-					number,
-					AggregationFieldTypeResult<
-						E,
-						Index,
-						Agg,
-						number | Array<number>,
-						{
-							value: number;
-							value_as_string?: string;
-						},
-						ValueField
-					>,
-					WeightField
-				>,
-				WeightField
-			>,
-			ValueField
+			ValueField,
+			number | Array<number>,
+			WeightField,
+			number,
+			{
+				value: number;
+				value_as_string?: string;
+			}
 		>
 	: never;

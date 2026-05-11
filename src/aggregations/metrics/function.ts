@@ -1,8 +1,5 @@
-import type {
-	AggregationFieldResult,
-	ElasticsearchIndexes,
-	TypeOfField,
-} from "../..";
+import type { ElasticsearchIndexes, TypeOfField } from "../..";
+import type { AggregationFieldResult } from "../helpers";
 
 type ExtractAggField<Agg> = {
 	[Fn in Extract<keyof Agg, AggFunction>]: Agg[Fn] extends {

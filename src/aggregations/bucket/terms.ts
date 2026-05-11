@@ -1,11 +1,11 @@
 import type {
-	AggregationFieldResult,
 	AppendSubAggs,
 	ElasticsearchIndexes,
 	SearchRequest,
 	TypeOfField,
 } from "../..";
 import type { IsStringLiteral, PrettyArray } from "../../types/helpers";
+import type { AggregationFieldResult } from "../helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation

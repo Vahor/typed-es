@@ -1,11 +1,9 @@
+import type { AppendSubAggs, ElasticsearchIndexes, SearchRequest } from "../..";
+import type { PrettyArray, RangeInclusive } from "../../types/helpers";
 import type {
 	AggregationFieldResult,
 	AggregationPropertyTypeResult,
-	AppendSubAggs,
-	ElasticsearchIndexes,
-	SearchRequest,
-} from "../..";
-import type { PrettyArray, RangeInclusive } from "../../types/helpers";
+} from "../helpers";
 
 type DefaultPrecision = 7;
 type GetPrecision<P> = P extends number ? P : DefaultPrecision;
