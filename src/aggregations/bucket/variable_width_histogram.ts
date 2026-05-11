@@ -1,13 +1,10 @@
 import type {
+	AggregationFieldTypeResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
 	SearchRequest,
-	TypeOfField,
 } from "../..";
-import type { AtMostN, IsSomeSortOf, Not, Prettify } from "../../types/helpers";
+import type { AtMostN, Prettify } from "../../types/helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation
@@ -23,27 +20,24 @@ export type VariableWidthHistogram<
 		buckets: infer Buckets extends number;
 	};
 }
-	? Not<CanBeUsedInAggregation<Field, Index, E>> extends true
-		? InvalidFieldInAggregation<Field, Index, Agg>
-		: Not<IsSomeSortOf<TypeOfField<Field, E, Index>, number>> extends true
-			? InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					number
-				>
-			: {
-					buckets: AtMostN<
-						Prettify<
-							{
-								min: number;
-								key: number;
-								max: number;
-								doc_count: number;
-							} & AppendSubAggs<BaseQuery, E, Index, Agg>
-						>,
-						Buckets
-					>;
-				}
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			number,
+			{
+				buckets: AtMostN<
+					Prettify<
+						{
+							min: number;
+							key: number;
+							max: number;
+							doc_count: number;
+						} & AppendSubAggs<BaseQuery, E, Index, Agg>
+					>,
+					Buckets
+				>;
+			},
+			Field
+		>
 	: never;

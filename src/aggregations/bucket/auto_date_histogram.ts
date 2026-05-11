@@ -1,8 +1,7 @@
 import type {
+	AggregationFieldResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
 	SearchRequest,
 } from "../..";
 import type { PrettyArray } from "../../types/helpers";
@@ -20,8 +19,11 @@ export type AutoDateHistogram<
 		field: infer Field extends string;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				buckets: PrettyArray<
 					{
 						key_as_string: string;
@@ -30,6 +32,7 @@ export type AutoDateHistogram<
 					} & AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
 				interval: string;
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;

@@ -1,8 +1,4 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-} from "../..";
+import type { AggregationFieldResult, ElasticsearchIndexes } from "../..";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation
@@ -16,8 +12,11 @@ export type ExtendedStats<
 		field: infer Field extends string;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				count: number;
 				min: number;
 				min_as_string?: string;
@@ -55,6 +54,7 @@ export type ExtendedStats<
 					lower_sampling: number;
 					lower_sampling_as_string?: string;
 				};
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;

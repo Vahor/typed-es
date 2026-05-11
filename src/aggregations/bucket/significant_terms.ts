@@ -1,13 +1,10 @@
 import type {
+	AggregationFieldTypeResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
 	SearchRequest,
-	TypeOfField,
 } from "../../";
-import type { IsSomeSortOf, PrettyArray } from "../../types/helpers";
+import type { PrettyArray } from "../../types/helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation
@@ -18,26 +15,23 @@ export type SignificantTerms<
 	Index extends string,
 	Agg,
 > = Agg extends { significant_terms: { field: infer Field extends string } }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<Field, E, Index>, string> extends true
-			? {
-					doc_count: number;
-					bg_count: number;
-					buckets: PrettyArray<
-						{
-							key: string;
-							doc_count: number;
-							score: number;
-							bg_count: number;
-						} & AppendSubAggs<BaseQuery, E, Index, Agg>
-					>;
-				}
-			: InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					string
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			string,
+			{
+				doc_count: number;
+				bg_count: number;
+				buckets: PrettyArray<
+					{
+						key: string;
+						doc_count: number;
+						score: number;
+						bg_count: number;
+					} & AppendSubAggs<BaseQuery, E, Index, Agg>
+				>;
+			},
+			Field
+		>
 	: never;

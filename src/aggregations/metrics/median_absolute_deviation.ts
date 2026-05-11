@@ -1,11 +1,4 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-	TypeOfField,
-} from "../..";
-import type { IsSomeSortOf } from "../../types/helpers";
+import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-median-absolute-deviation-aggregation
@@ -19,18 +12,15 @@ export type MedianAbsoluteDeviation<
 		field: infer Field extends string;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<Field, E, Index>, number> extends true
-			? {
-					value: number;
-					value_as_string?: string;
-				}
-			: InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					number
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			number,
+			{
+				value: number;
+				value_as_string?: string;
+			},
+			Field
+		>
 	: never;

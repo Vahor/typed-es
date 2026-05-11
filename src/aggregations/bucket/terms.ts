@@ -1,8 +1,7 @@
 import type {
+	AggregationFieldResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
 	SearchRequest,
 	TypeOfField,
 } from "../..";
@@ -17,8 +16,11 @@ export type Terms<
 	Index extends string,
 	Agg,
 > = Agg extends { terms: { field: infer Field extends string } }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				doc_count_error_upper_bound: number;
 				sum_other_doc_count: number;
 				buckets: PrettyArray<
@@ -31,6 +33,7 @@ export type Terms<
 						doc_count: number;
 					} & AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;

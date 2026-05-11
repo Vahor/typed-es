@@ -1,16 +1,11 @@
 import type {
+	AggregationFieldResult,
+	AggregationPropertyTypeResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidPropertyTypeInAggregation,
 	SearchRequest,
 } from "../..";
-import type {
-	IsSomeSortOf,
-	PrettyArray,
-	RangeInclusive,
-} from "../../types/helpers";
+import type { PrettyArray, RangeInclusive } from "../../types/helpers";
 
 type DefaultPrecision = 5;
 type GetPrecision<P> = P extends number ? P : DefaultPrecision;
@@ -30,21 +25,25 @@ export type GeoHashGrid<
 		precision?: infer Precision;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<GetPrecision<Precision>, Range_1_12> extends true
-			? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			AggregationPropertyTypeResult<
+				"precision",
+				Agg,
+				Precision,
+				Range_1_12,
+				{
 					buckets: PrettyArray<
 						{
 							key: string;
 							doc_count: number;
 						} & AppendSubAggs<BaseQuery, E, Index, Agg>
 					>;
-				}
-			: InvalidPropertyTypeInAggregation<
-					"precision",
-					Agg,
-					Precision,
-					Range_1_12
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+				},
+				GetPrecision<Precision>
+			>,
+			Field
+		>
 	: never;

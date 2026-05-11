@@ -1,8 +1,7 @@
 import type {
+	AggregationFieldResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
 	SearchRequest,
 } from "../..";
 
@@ -31,17 +30,21 @@ export type Histogram<
 		keyed?: infer Keyed;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? Keyed extends true
-			? {
-					buckets: Record<
-						`${number}`,
-						HistogramAggOutput<BaseQuery, E, Index, Agg>
-					>;
-				}
-			: {
-					// array default (keyed: false)
-					buckets: Array<HistogramAggOutput<BaseQuery, E, Index, Agg>>;
-				}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			Keyed extends true
+				? {
+						buckets: Record<
+							`${number}`,
+							HistogramAggOutput<BaseQuery, E, Index, Agg>
+						>;
+					}
+				: {
+						// array default (keyed: false)
+						buckets: Array<HistogramAggOutput<BaseQuery, E, Index, Agg>>;
+					},
+			Field
+		>
 	: never;

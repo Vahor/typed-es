@@ -1,8 +1,7 @@
 import type {
+	AggregationFieldResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
 	SearchRequest,
 } from "../..";
 import type { KeyedArrayToObject, Prettify } from "../../types/helpers";
@@ -61,18 +60,22 @@ export type DateRange<
 		ranges: infer Ranges;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? Ranges extends readonly RangeSpec[]
-			? Keyed extends true
-				? {
-						buckets: KeyedArrayToObject<
-							RangeOutput<BaseQuery, E, Index, Agg, Ranges>
-						>;
-					}
-				: {
-						// array default (keyed: false)
-						buckets: RangeOutput<BaseQuery, E, Index, Agg, Ranges>;
-					}
-			: never
-		: InvalidFieldInAggregation<Field, Index, Agg>
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			Ranges extends readonly RangeSpec[]
+				? Keyed extends true
+					? {
+							buckets: KeyedArrayToObject<
+								RangeOutput<BaseQuery, E, Index, Agg, Ranges>
+							>;
+						}
+					: {
+							// array default (keyed: false)
+							buckets: RangeOutput<BaseQuery, E, Index, Agg, Ranges>;
+						}
+				: never,
+			Field
+		>
 	: never;

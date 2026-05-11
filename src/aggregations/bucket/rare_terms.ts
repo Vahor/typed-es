@@ -1,8 +1,7 @@
 import type {
+	AggregationFieldResult,
 	AppendSubAggs,
-	CanBeUsedInAggregation,
 	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
 	SearchRequest,
 	TypeOfField,
 } from "../..";
@@ -17,8 +16,11 @@ export type RareTerms<
 	Index extends string,
 	Agg,
 > = Agg extends { rare_terms: { field: infer Field extends string } }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				buckets: PrettyArray<
 					{
 						// TODO: should probably add a helper for this kind of thing
@@ -30,6 +32,7 @@ export type RareTerms<
 						doc_count: number;
 					} & AppendSubAggs<BaseQuery, E, Index, Agg>
 				>;
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;

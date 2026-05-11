@@ -1,11 +1,5 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-	InvalidFieldTypeInAggregation,
-	TypeOfField,
-} from "../..";
-import type { IsSomeSortOf, ToDecimal } from "../../types/helpers";
+import type { AggregationFieldTypeResult, ElasticsearchIndexes } from "../..";
+import type { ToDecimal } from "../../types/helpers";
 
 type PercentilesValues<Percents extends readonly number[]> = {
 	[index in keyof Percents]: {
@@ -35,21 +29,18 @@ export type PercentileRanks<
 		keyed?: infer Keyed;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? IsSomeSortOf<TypeOfField<Field, E, Index>, number> extends true
-			? Keyed extends false
+	? AggregationFieldTypeResult<
+			E,
+			Index,
+			Agg,
+			number,
+			Keyed extends false
 				? {
 						values: PercentilesValues<Values>;
 					}
 				: {
 						values: PercentilesValuesToObject<PercentilesValues<Values>>;
-					}
-			: InvalidFieldTypeInAggregation<
-					Field,
-					Index,
-					Agg,
-					TypeOfField<Field, E, Index>,
-					number
-				>
-		: InvalidFieldInAggregation<Field, Index, Agg>
+					},
+			Field
+		>
 	: never;

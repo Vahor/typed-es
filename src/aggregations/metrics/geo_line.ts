@@ -1,8 +1,4 @@
-import type {
-	CanBeUsedInAggregation,
-	ElasticsearchIndexes,
-	InvalidFieldInAggregation,
-} from "../..";
+import type { AggregationFieldResult, ElasticsearchIndexes } from "../..";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geo-line
@@ -18,15 +14,18 @@ export type GeoLine<
 		};
 		// Required only if not in a nested time_series aggregation. So optional for simplicity
 		// sort?: {
-		// 	field: string;
+		// 	field: infer Field extends string;
 		// };
 		// include_sort?: boolean;
 		// size?: number;
 		// sort_order?: OrLowercase<"ASC" | "DESC">;
 	};
 }
-	? CanBeUsedInAggregation<Field, Index, E> extends true
-		? {
+	? AggregationFieldResult<
+			E,
+			Index,
+			Agg,
+			{
 				type: "Feature";
 				geometry: {
 					type: "LineString";
@@ -35,6 +34,7 @@ export type GeoLine<
 				properties: {
 					complete: boolean;
 				};
-			}
-		: InvalidFieldInAggregation<Field, Index, Agg>
+			},
+			Field
+		>
 	: never;
