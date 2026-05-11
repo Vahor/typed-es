@@ -1,5 +1,39 @@
 # @vahor/typed-es
 
+## 0.4.1
+
+### Patch Changes
+
+- [#390](https://github.com/Vahor/typed-es/pull/390) [`0982df0`](https://github.com/Vahor/typed-es/commit/0982df0d3aeb31b7055ca1a32e8fab5bc0b0803f) Thanks [@Vahor](https://github.com/Vahor)! - Export the `bucket_selector` pipeline aggregation output type, which correctly resolves to no response entry because `bucket_selector` only filters parent buckets.
+
+- [#380](https://github.com/Vahor/typed-es/pull/380) [`b29dafa`](https://github.com/Vahor/typed-es/commit/b29dafaee6643eab65e807076cb26d30e4c83c00) Thanks [@Vahor](https://github.com/Vahor)! - Mark `bucket_selector` aggregation support as implemented with type coverage for its output shape.
+
+- [#382](https://github.com/Vahor/typed-es/pull/382) [`a8215ca`](https://github.com/Vahor/typed-es/commit/a8215ca4ac196c61d6b5e45aa1f73d26d5753432) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `change_point` pipeline aggregation.
+
+- [#393](https://github.com/Vahor/typed-es/pull/393) [`6ef13cf`](https://github.com/Vahor/typed-es/commit/6ef13cf9a491bc57c409d67b2b99d5dd78857c60) Thanks [@Vahor](https://github.com/Vahor)! - Clean up response override helper types and remove unnecessary type suppressions.
+
+- [#394](https://github.com/Vahor/typed-es/pull/394) [`428181b`](https://github.com/Vahor/typed-es/commit/428181b8f295005cf89e395ac17df48c355a2011) Thanks [@Vahor](https://github.com/Vahor)! - Refactor type helpers for requested fields, output fields, and typed client overrides, and remove the legacy `ExtractQuery_Source` export.
+
+- [#379](https://github.com/Vahor/typed-es/pull/379) [`427dd14`](https://github.com/Vahor/typed-es/commit/427dd145f9c6a2b7fb23f6dd9c269bf2f3536a53) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the `cumulative_cardinality` pipeline aggregation.
+
+- [#381](https://github.com/Vahor/typed-es/pull/381) [`391eb47`](https://github.com/Vahor/typed-es/commit/391eb470d4d06599f070f884f3460f853a85dd3e) Thanks [@Vahor](https://github.com/Vahor)! - Add support for the inference bucket pipeline aggregation.
+
+- [#389](https://github.com/Vahor/typed-es/pull/389) [`cc18a80`](https://github.com/Vahor/typed-es/commit/cc18a8057bbfedd04b10b37a127d33431f3c0608) Thanks [@Vahor](https://github.com/Vahor)! - Add field-type validation to `extended_stats`, `histogram`, `range`, `auto_date_histogram`, `date_histogram`, and `date_range`, so incompatible fields now return `InvalidFieldTypeInAggregation`.
+
+- [#387](https://github.com/Vahor/typed-es/pull/387) [`74e0c70`](https://github.com/Vahor/typed-es/commit/74e0c70d4d2697e5350603e49caa9f7820ffce9c) Thanks [@Vahor](https://github.com/Vahor)! - Validate `sum` and `avg` metric aggregation fields as numeric fields.
+
+- [#386](https://github.com/Vahor/typed-es/pull/386) [`87ba353`](https://github.com/Vahor/typed-es/commit/87ba353f31556d0035c54e5cfb57362f09b26a06) Thanks [@Vahor](https://github.com/Vahor)! - Restrict the `stats` aggregation to numeric fields.
+
+- [#374](https://github.com/Vahor/typed-es/pull/374) [`85085dd`](https://github.com/Vahor/typed-es/commit/85085dd23ae40a058fcd6f3a60246d42c5c4e962) Thanks [@Vahor](https://github.com/Vahor)! - Refactor aggregation field validation through shared helper types.
+
+- [`dc2be93`](https://github.com/Vahor/typed-es/commit/dc2be9327e7cc51d9201cfee9981e13f924e1d88) Thanks [@Vahor](https://github.com/Vahor)! - Validate literal `_source` fields in `typedEs`, so invalid fields now report the selected `index` instead of unrelated index fields while preserving wildcard and dynamic string support.
+
+- [#377](https://github.com/Vahor/typed-es/pull/377) [`d49fb32`](https://github.com/Vahor/typed-es/commit/d49fb32dbd6df4155cec6a4724c8dcad5c8d4d06) Thanks [@Vahor](https://github.com/Vahor)! - Add `_all` as a supported typed search index target.
+
+- [#378](https://github.com/Vahor/typed-es/pull/378) [`bdd16d4`](https://github.com/Vahor/typed-es/commit/bdd16d4b8ec0a8195c3dd0913f9d0f79c9893029) Thanks [@Vahor](https://github.com/Vahor)! - Add typed search and msearch support for index lists.
+
+- [#383](https://github.com/Vahor/typed-es/pull/383) [`dfc1ceb`](https://github.com/Vahor/typed-es/commit/dfc1ceb67bdccdae0900f249500622d9bbd1e1e2) Thanks [@Vahor](https://github.com/Vahor)! - Add type support for the `time_series` bucket aggregation.
+
 ## 0.4.0
 
 ### Minor Changes
