@@ -15,15 +15,14 @@ import type {
 	UnionToIntersection,
 } from "./types/helpers";
 import type {
-	FLAT_UNKNOWN,
 	JoinKeys,
 	Primitive,
 	RecursiveDotNotation,
 	RemoveLastDot,
 } from "./types/object-to-dot-notation";
 import type {
-	ExtractQuery_Source,
 	ExtractQueryFields,
+	ExtractQuerySource,
 } from "./types/requested-fields";
 import type {
 	InverseWildcardSearch,
@@ -539,6 +538,20 @@ type DeepPickFieldsForIndex<
 		? DeepPickPaths<E[Index], DeepPickPathsForIndex<E, Index, Paths>>
 		: never;
 
+type FieldVariantFields<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	PossibleFieldPaths,
+	RequestedFields,
+> =
+	InverseWildcardSearch<PossibleFieldPaths, RequestedFields> extends infer Field
+		? Field extends string
+			? IsParentKeyALeaf<Field, E, Index> extends true
+				? Field
+				: never
+			: never
+		: never;
+
 export type ElasticsearchOutputFields<
 	QueryWithSource extends Partial<SearchRequest>,
 	E extends ElasticsearchIndexes,
@@ -546,33 +559,35 @@ export type ElasticsearchOutputFields<
 	Type extends "_source" | "fields",
 	//
 	RequestedFields = Type extends "_source"
-		? ExtractQuery_Source<
+		? ExtractQuerySource<
 				QueryWithSource,
 				E,
 				Index,
 				Index extends keyof E ? keyof E[Index] : PossibleFields<Index, E>
 			>
 		: ExtractQueryFields<QueryWithSource>,
-	// TODO: make this a union string instead of an object. we no longer need the values
-	Output = {
-		[K in WildcardSearch<
-			PossibleFields<Index, E, Type extends "fields" ? true : false>,
-			RequestedFields
-		>]: TypeOfField<K, E, Index>;
-	} & {
-		[K in InverseWildcardSearch<
-			PossibleFields<Index, E, Type extends "fields" ? true : false>,
-			RequestedFields
-		> as IsParentKeyALeaf<K, E, Index> extends true ? K : never]: FLAT_UNKNOWN;
-	},
+	PossibleFieldPaths = PossibleFields<
+		Index,
+		E,
+		Type extends "fields" ? true : false
+	>,
+	MatchedFields = WildcardSearch<PossibleFieldPaths, RequestedFields>,
+	// Elasticsearch accepts variant names like `field.keyword`; keep them when the base `field` exists as a leaf.
+	VariantFields = FieldVariantFields<
+		E,
+		Index,
+		PossibleFieldPaths,
+		RequestedFields
+	>,
+	OutputFields = MatchedFields | VariantFields,
 > = Type extends "_source"
-	? DeepPickFieldsForIndex<E, Index, Extract<keyof Output, string>>
+	? DeepPickFieldsForIndex<E, Index, Extract<OutputFields, string>>
 	: {
-			[K in keyof Output as Output[K] extends FLAT_UNKNOWN
+			[K in Extract<OutputFields, string> as K extends VariantFields
 				? RemoveLastDot<K>
-				: K]: Output[K] extends FLAT_UNKNOWN
+				: K]: K extends VariantFields
 				? Array<unknown>
-				: Array<Output[K]>;
+				: Array<TypeOfField<K, E, Index>>;
 		};
 
 export type ExtractScriptFieldsKeys<Query extends SearchRequest> =
