@@ -313,6 +313,7 @@ export type NextAggsParentKey<
 	| "bucket_correlation"
 	| "bucket_count_ks_test"
 	| "bucket_script"
+	| "cumulative_cardinality"
 	| "cumulative_sum"
 	| "derivative"
 	| "stats_bucket"
@@ -395,6 +396,7 @@ export type AggregationOutput<
 				| Pipeline.BucketCorrelation<Agg>
 				| Pipeline.BucketCountKSTest<Agg>
 				| Pipeline.BucketScript<Agg>
+				| Pipeline.CumulativeCardinality<Agg>
 				| Pipeline.CumulativeSum<Agg>
 				| Pipeline.Derivative<Agg>
 				| Pipeline.ExtendedStatsBucket<Agg>
