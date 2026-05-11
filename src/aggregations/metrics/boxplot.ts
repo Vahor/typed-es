@@ -10,7 +10,7 @@ import type { IsSomeSortOf } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-boxplot-aggregation
  */
-export type BoxplotAggs<
+export type Boxplot<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

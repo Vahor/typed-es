@@ -10,7 +10,7 @@ type KeysAndOBK<Keys, Agg> = Agg extends {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-filters-aggregation
  */
-export type FiltersAggs<
+export type Filters<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

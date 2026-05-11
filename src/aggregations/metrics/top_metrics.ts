@@ -4,7 +4,7 @@ import type { PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics
  */
-export type TopMetricsAggs<
+export type TopMetrics<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

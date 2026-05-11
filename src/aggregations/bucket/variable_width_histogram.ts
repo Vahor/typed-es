@@ -12,7 +12,7 @@ import type { AtMostN, IsSomeSortOf, Not, Prettify } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation
  */
-export type VariableWidthHistogramAggs<
+export type VariableWidthHistogram<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

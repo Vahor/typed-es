@@ -11,7 +11,7 @@ import type { IsSomeSortOf, Not } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-cartesian-centroid-aggregation
  */
-export type CartesianCentroidAggs<
+export type CartesianCentroid<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

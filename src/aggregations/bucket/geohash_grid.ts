@@ -19,7 +19,7 @@ type Range_1_12 = RangeInclusive<1, 12>;
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geohashgrid-aggregation
  */
-export type GeoHashGridAggs<
+export type GeoHashGrid<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

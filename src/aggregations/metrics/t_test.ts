@@ -10,7 +10,7 @@ import type { IsSomeSortOf } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-ttest-aggregation
  */
-export type TTestAggs<
+export type TTest<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

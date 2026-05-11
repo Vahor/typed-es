@@ -49,7 +49,7 @@ type RangeOutput<
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-daterange-aggregation
  */
-export type DateRangeAggs<
+export type DateRange<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

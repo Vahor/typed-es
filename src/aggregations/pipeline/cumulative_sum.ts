@@ -1,7 +1,7 @@
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-cumulative-sum-aggregation
  */
-export type CumulativeSumAggs<Agg> = Agg extends {
+export type CumulativeSum<Agg> = Agg extends {
 	cumulative_sum: { buckets_path: string };
 }
 	? {

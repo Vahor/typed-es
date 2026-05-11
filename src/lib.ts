@@ -1,74 +1,8 @@
 import type { estypes } from "@elastic/elasticsearch";
-import type { AdjacencyMatrixAggs } from "./aggregations/bucket/adjacency_matrix";
-import type { AutoDateHistogramAggs } from "./aggregations/bucket/auto_date_histogram";
-import type { CategorizeTextAggs } from "./aggregations/bucket/categorize_text";
-import type { ChildrenAggs } from "./aggregations/bucket/children";
-import type { CompositeAggs } from "./aggregations/bucket/composite";
-import type { DateHistogramAggs } from "./aggregations/bucket/date_histogram";
-import type { DateRangeAggs } from "./aggregations/bucket/date_range";
-import type { DiversifiedSamplerAggs } from "./aggregations/bucket/diversified_sampler";
-import type { FilterAggs } from "./aggregations/bucket/filter";
-import type { FiltersAggs } from "./aggregations/bucket/filters";
-import type { FrequentItemSetsAggs } from "./aggregations/bucket/frequent_item_sets";
-import type { GeoHashGridAggs } from "./aggregations/bucket/geohash_grid";
-import type { GeoHexGridAggs } from "./aggregations/bucket/geohex_grid";
-import type { GeoTileGridAggs } from "./aggregations/bucket/geotile_grid";
-import type { GlobalAggs } from "./aggregations/bucket/global";
-import type { HistogramAggs } from "./aggregations/bucket/histogram";
-import type { IpPrefixAggs } from "./aggregations/bucket/ip_prefix";
-import type { IpRangeAggs } from "./aggregations/bucket/ip_range";
-import type { MissingAggs } from "./aggregations/bucket/missing";
-import type { MultiTermsAggs } from "./aggregations/bucket/multi_terms";
-import type { NestedAggs } from "./aggregations/bucket/nested";
-import type { ParentAggs } from "./aggregations/bucket/parent";
-import type { RandomSamplerAggs } from "./aggregations/bucket/random_sampler";
-import type { RangeAggs } from "./aggregations/bucket/range";
-import type { RareTermsAggs } from "./aggregations/bucket/rare_terms";
-import type { ReverseNestedAggs } from "./aggregations/bucket/reverse_nested";
-import type { SamplerAggs } from "./aggregations/bucket/sampler";
-import type { SignificantTermsAggs } from "./aggregations/bucket/significant_terms";
-import type { SignificantTextAggs } from "./aggregations/bucket/significant_text";
-import type { TermsAggs } from "./aggregations/bucket/terms";
-import type { VariableWidthHistogramAggs } from "./aggregations/bucket/variable_width_histogram";
-import type { BoxplotAggs } from "./aggregations/metrics/boxplot";
-import type { CartesianBoundsAggs } from "./aggregations/metrics/cartesian_bounds";
-import type { CartesianCentroidAggs } from "./aggregations/metrics/cartesian_centroid";
-import type { ExtendedStatsAggs } from "./aggregations/metrics/extended_stats";
-import type {
-	AggFunction,
-	FunctionAggs,
-} from "./aggregations/metrics/function";
-import type { GeoBoundsAggs } from "./aggregations/metrics/geo_bounds";
-import type { GeoCentroidAggs } from "./aggregations/metrics/geo_centroid";
-import type { GeoLineAggs } from "./aggregations/metrics/geo_line";
-import type { MatrixStatsAggs } from "./aggregations/metrics/matrix_stats";
-import type { MedianAbsoluteDeviationAggs } from "./aggregations/metrics/median_absolute_deviation";
-import type { PercentileRanksAggs } from "./aggregations/metrics/percentile_ranks";
-import type { PercentilesAggs } from "./aggregations/metrics/percentiles";
-import type { RateAggs } from "./aggregations/metrics/rate";
-import type { ScriptedMetricAggs } from "./aggregations/metrics/scripted_metric";
-import type { StatsAggs } from "./aggregations/metrics/stats";
-import type { StringStatsAggs } from "./aggregations/metrics/string_stats";
-import type { TTestAggs } from "./aggregations/metrics/t_test";
-import type { TopHitsAggs } from "./aggregations/metrics/top_hits";
-import type { TopMetricsAggs } from "./aggregations/metrics/top_metrics";
-import type { WeightedAvgAggs } from "./aggregations/metrics/weighted_avg";
-import type { AvgBucketAggs } from "./aggregations/pipeline/avg_bucket";
-import type { BucketCorrelationAggs } from "./aggregations/pipeline/bucket_correlation";
-import type { BucketCountKSTestAggs } from "./aggregations/pipeline/bucket_count_ks_test";
-import type { BucketScriptAggs } from "./aggregations/pipeline/bucket_script";
-import type { CumulativeSumAggs } from "./aggregations/pipeline/cumulative_sum";
-import type { DerivativeAggs } from "./aggregations/pipeline/derivative";
-import type { ExtendedStatsBucketAggs } from "./aggregations/pipeline/extended_stats_bucket";
-import type { MaxBucketAggs } from "./aggregations/pipeline/max_bucket";
-import type { MinBucketAggs } from "./aggregations/pipeline/min_bucket";
-import type { MovingFunctionAggs } from "./aggregations/pipeline/moving_fn";
-import type { MovingPercentilesAggs } from "./aggregations/pipeline/moving_percentiles";
-import type { NormalizeAggs } from "./aggregations/pipeline/normalize";
-import type { PercentilesBucketAggs } from "./aggregations/pipeline/percentiles_bucket";
-import type { SerialDiffAggs } from "./aggregations/pipeline/serial_diff";
-import type { StatsBucketAggs } from "./aggregations/pipeline/stats_bucket";
-import type { SumBucketAggs } from "./aggregations/pipeline/sum_bucket";
+import type * as Bucket from "./aggregations/bucket";
+import type * as Metric from "./aggregations/metrics";
+import type { AggFunction } from "./aggregations/metrics";
+import type * as Pipeline from "./aggregations/pipeline";
 import type {
 	AnyString,
 	DeepPickPaths,
@@ -375,76 +309,76 @@ export type AggregationOutput<
 > =
 	IsNever<CurrentAggregationKey> extends true
 		? never
-		: // Bucket Aggs
-				| AdjacencyMatrixAggs<BaseQuery, E, Index, Agg>
-				| AutoDateHistogramAggs<BaseQuery, E, Index, Agg>
-				| CategorizeTextAggs<BaseQuery, E, Index, Agg>
-				| ChildrenAggs<BaseQuery, E, Index, Agg>
-				| CompositeAggs<BaseQuery, E, Index, Agg>
-				| DateHistogramAggs<BaseQuery, E, Index, Agg>
-				| DateRangeAggs<BaseQuery, E, Index, Agg>
-				| DiversifiedSamplerAggs<BaseQuery, E, Index, Agg>
-				| FilterAggs<BaseQuery, E, Index, Agg>
-				| FiltersAggs<BaseQuery, E, Index, Agg>
-				| FrequentItemSetsAggs<BaseQuery, E, Index, Agg>
-				| GeoHashGridAggs<BaseQuery, E, Index, Agg>
-				| GeoHexGridAggs<BaseQuery, E, Index, Agg>
-				| GeoTileGridAggs<BaseQuery, E, Index, Agg>
-				| HistogramAggs<BaseQuery, E, Index, Agg>
-				| IpPrefixAggs<BaseQuery, E, Index, Agg>
-				| IpRangeAggs<BaseQuery, E, Index, Agg>
-				| ParentAggs<BaseQuery, E, Index, Agg>
-				| GlobalAggs<BaseQuery, E, Index, Agg>
-				| MissingAggs<BaseQuery, E, Index, Agg>
-				| NestedAggs<BaseQuery, E, Index, Agg>
-				| RangeAggs<BaseQuery, E, Index, Agg>
-				| RandomSamplerAggs<BaseQuery, E, Index, Agg>
-				| SamplerAggs<BaseQuery, E, Index, Agg>
-				| SignificantTextAggs<BaseQuery, E, Index, Agg>
-				| SignificantTermsAggs<BaseQuery, E, Index, Agg>
-				| TermsAggs<BaseQuery, E, Index, Agg>
-				| RareTermsAggs<BaseQuery, E, Index, Agg>
-				| MultiTermsAggs<BaseQuery, E, Index, Agg>
-				| VariableWidthHistogramAggs<BaseQuery, E, Index, Agg>
-				| ReverseNestedAggs<BaseQuery, E, Index, Agg>
-				// Metric Aggs
-				| BoxplotAggs<E, Index, Agg>
-				| CartesianBoundsAggs<E, Index, Agg>
-				| CartesianCentroidAggs<E, Index, Agg>
-				| ExtendedStatsAggs<E, Index, Agg>
-				| FunctionAggs<E, Index, Agg>
-				| GeoBoundsAggs<E, Index, Agg>
-				| GeoCentroidAggs<E, Index, Agg>
-				| GeoLineAggs<E, Index, Agg>
-				| MatrixStatsAggs<E, Index, Agg>
-				| MedianAbsoluteDeviationAggs<E, Index, Agg>
-				| PercentilesAggs<E, Index, Agg>
-				| PercentileRanksAggs<E, Index, Agg>
-				| RateAggs<E, Index, Agg>
-				| ScriptedMetricAggs<Agg>
-				| StatsAggs<E, Index, Agg>
-				| StringStatsAggs<E, Index, Agg>
-				| TTestAggs<E, Index, Agg>
-				| TopHitsAggs<BaseQuery, E, Index, Agg>
-				| TopMetricsAggs<E, Index, Agg>
-				| WeightedAvgAggs<E, Index, Agg>
-				// Pipeline Aggs
-				| AvgBucketAggs<Agg>
-				| BucketCorrelationAggs<Agg>
-				| BucketCountKSTestAggs<Agg>
-				| BucketScriptAggs<Agg>
-				| CumulativeSumAggs<Agg>
-				| DerivativeAggs<Agg>
-				| ExtendedStatsBucketAggs<Agg>
-				| MaxBucketAggs<Agg>
-				| MinBucketAggs<Agg>
-				| MovingFunctionAggs<Agg>
-				| MovingPercentilesAggs<ExtractAggs<Query>, E, Index, Agg>
-				| NormalizeAggs<Agg>
-				| PercentilesBucketAggs<Agg>
-				| SerialDiffAggs<Agg>
-				| StatsBucketAggs<Agg>
-				| SumBucketAggs<Agg>;
+		: // Bucket aggregations
+				| Bucket.AdjacencyMatrix<BaseQuery, E, Index, Agg>
+				| Bucket.AutoDateHistogram<BaseQuery, E, Index, Agg>
+				| Bucket.CategorizeText<BaseQuery, E, Index, Agg>
+				| Bucket.Children<BaseQuery, E, Index, Agg>
+				| Bucket.Composite<BaseQuery, E, Index, Agg>
+				| Bucket.DateHistogram<BaseQuery, E, Index, Agg>
+				| Bucket.DateRange<BaseQuery, E, Index, Agg>
+				| Bucket.DiversifiedSampler<BaseQuery, E, Index, Agg>
+				| Bucket.Filter<BaseQuery, E, Index, Agg>
+				| Bucket.Filters<BaseQuery, E, Index, Agg>
+				| Bucket.FrequentItemSets<BaseQuery, E, Index, Agg>
+				| Bucket.GeoHashGrid<BaseQuery, E, Index, Agg>
+				| Bucket.GeoHexGrid<BaseQuery, E, Index, Agg>
+				| Bucket.GeoTileGrid<BaseQuery, E, Index, Agg>
+				| Bucket.Histogram<BaseQuery, E, Index, Agg>
+				| Bucket.IpPrefix<BaseQuery, E, Index, Agg>
+				| Bucket.IpRange<BaseQuery, E, Index, Agg>
+				| Bucket.Parent<BaseQuery, E, Index, Agg>
+				| Bucket.Global<BaseQuery, E, Index, Agg>
+				| Bucket.Missing<BaseQuery, E, Index, Agg>
+				| Bucket.Nested<BaseQuery, E, Index, Agg>
+				| Bucket.Range<BaseQuery, E, Index, Agg>
+				| Bucket.RandomSampler<BaseQuery, E, Index, Agg>
+				| Bucket.Sampler<BaseQuery, E, Index, Agg>
+				| Bucket.SignificantText<BaseQuery, E, Index, Agg>
+				| Bucket.SignificantTerms<BaseQuery, E, Index, Agg>
+				| Bucket.Terms<BaseQuery, E, Index, Agg>
+				| Bucket.RareTerms<BaseQuery, E, Index, Agg>
+				| Bucket.MultiTerms<BaseQuery, E, Index, Agg>
+				| Bucket.VariableWidthHistogram<BaseQuery, E, Index, Agg>
+				| Bucket.ReverseNested<BaseQuery, E, Index, Agg>
+				// Metric aggregations
+				| Metric.Boxplot<E, Index, Agg>
+				| Metric.CartesianBounds<E, Index, Agg>
+				| Metric.CartesianCentroid<E, Index, Agg>
+				| Metric.ExtendedStats<E, Index, Agg>
+				| Metric.Function<E, Index, Agg>
+				| Metric.GeoBounds<E, Index, Agg>
+				| Metric.GeoCentroid<E, Index, Agg>
+				| Metric.GeoLine<E, Index, Agg>
+				| Metric.MatrixStats<E, Index, Agg>
+				| Metric.MedianAbsoluteDeviation<E, Index, Agg>
+				| Metric.Percentiles<E, Index, Agg>
+				| Metric.PercentileRanks<E, Index, Agg>
+				| Metric.Rate<E, Index, Agg>
+				| Metric.ScriptedMetric<Agg>
+				| Metric.Stats<E, Index, Agg>
+				| Metric.StringStats<E, Index, Agg>
+				| Metric.TTest<E, Index, Agg>
+				| Metric.TopHits<BaseQuery, E, Index, Agg>
+				| Metric.TopMetrics<E, Index, Agg>
+				| Metric.WeightedAvg<E, Index, Agg>
+				// Pipeline aggregations
+				| Pipeline.AvgBucket<Agg>
+				| Pipeline.BucketCorrelation<Agg>
+				| Pipeline.BucketCountKSTest<Agg>
+				| Pipeline.BucketScript<Agg>
+				| Pipeline.CumulativeSum<Agg>
+				| Pipeline.Derivative<Agg>
+				| Pipeline.ExtendedStatsBucket<Agg>
+				| Pipeline.MaxBucket<Agg>
+				| Pipeline.MinBucket<Agg>
+				| Pipeline.MovingFunction<Agg>
+				| Pipeline.MovingPercentiles<ExtractAggs<Query>, E, Index, Agg>
+				| Pipeline.Normalize<Agg>
+				| Pipeline.PercentilesBucket<Agg>
+				| Pipeline.SerialDiff<Agg>
+				| Pipeline.StatsBucket<Agg>
+				| Pipeline.SumBucket<Agg>;
 
 export type AppendSubAggs<
 	BaseQuery extends SearchRequest,

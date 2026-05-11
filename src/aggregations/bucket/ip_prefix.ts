@@ -46,7 +46,7 @@ type IpPrefixOutput<
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-ipprefix-aggregation
  */
-export type IpPrefixAggs<
+export type IpPrefix<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

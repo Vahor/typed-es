@@ -7,7 +7,7 @@ import type {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geocentroid-aggregation
  */
-export type GeoCentroidAggs<
+export type GeoCentroid<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

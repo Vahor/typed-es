@@ -17,7 +17,7 @@ type AggFunctionsNumber = "value_count" | "cardinality";
 
 export type AggFunction = AggFunctionsNumber | "sum" | "avg" | "max" | "min";
 
-export type FunctionAggs<
+export type Function<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

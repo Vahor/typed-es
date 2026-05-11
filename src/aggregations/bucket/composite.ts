@@ -10,7 +10,7 @@ type ExtractSourcesKeys<Sources extends CompositeSources> = {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-composite-aggregation
  */
-export type CompositeAggs<
+export type Composite<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

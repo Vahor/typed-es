@@ -7,7 +7,7 @@ import type {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-geobounds-aggregation
  */
-export type GeoBoundsAggs<
+export type GeoBounds<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

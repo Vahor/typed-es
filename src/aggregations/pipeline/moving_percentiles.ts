@@ -1,12 +1,12 @@
 import type { ElasticsearchIndexes } from "../../lib";
-import type { PercentilesAggs } from "../metrics/percentiles";
+import type { Percentiles } from "../metrics/percentiles";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-moving-percentiles-aggregation
  *
  * > The output format of the moving_percentiles aggregation is inherited from the format of the referenced percentiles aggregation.
  */
-export type MovingPercentilesAggs<
+export type MovingPercentiles<
 	SiblingAggregations,
 	E extends ElasticsearchIndexes,
 	Index extends string,
@@ -15,6 +15,6 @@ export type MovingPercentilesAggs<
 	moving_percentiles: { buckets_path: infer BucketPath };
 }
 	? BucketPath extends keyof SiblingAggregations
-		? PercentilesAggs<E, Index, SiblingAggregations[BucketPath]> | undefined
+		? Percentiles<E, Index, SiblingAggregations[BucketPath]> | undefined
 		: never
 	: never;

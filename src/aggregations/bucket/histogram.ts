@@ -19,7 +19,7 @@ type HistogramAggOutput<
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-histogram-aggregation
  */
-export type HistogramAggs<
+export type Histogram<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

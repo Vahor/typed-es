@@ -19,7 +19,7 @@ type Range_0_29 = RangeInclusive<0, 29>;
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-geotilegrid-aggregation
  */
-export type GeoTileGridAggs<
+export type GeoTileGrid<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

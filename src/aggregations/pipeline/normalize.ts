@@ -11,7 +11,7 @@ export type NormalizeMethod =
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-normalize-aggregation
  */
-export type NormalizeAggs<Agg> = Agg extends {
+export type Normalize<Agg> = Agg extends {
 	normalize: {
 		buckets_path: BucketsPath;
 		method: NormalizeMethod;

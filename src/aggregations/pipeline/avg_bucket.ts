@@ -1,7 +1,7 @@
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-pipeline-avg-bucket-aggregation
  */
-export type AvgBucketAggs<Agg> = Agg extends {
+export type AvgBucket<Agg> = Agg extends {
 	avg_bucket: { buckets_path: string };
 }
 	? {

@@ -9,7 +9,7 @@ import type { PrettyArray } from "../../types/helpers";
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-frequent-item-sets-aggregation
  */
-export type FrequentItemSetsAggs<
+export type FrequentItemSets<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

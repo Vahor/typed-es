@@ -72,7 +72,7 @@ type IpRangeOutput<
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-iprange-aggregation
  */
-export type IpRangeAggs<
+export type IpRange<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,

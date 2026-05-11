@@ -7,7 +7,7 @@ import type {
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-extendedstats-aggregation
  */
-export type ExtendedStatsAggs<
+export type ExtendedStats<
 	E extends ElasticsearchIndexes,
 	Index extends string,
 	Agg,

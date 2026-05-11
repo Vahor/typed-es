@@ -7,7 +7,7 @@ type GetSeparator<S> = S extends string ? S : DefaultSeparator;
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-adjacency-matrix-aggregation
  */
-export type AdjacencyMatrixAggs<
+export type AdjacencyMatrix<
 	BaseQuery extends SearchRequest,
 	E extends ElasticsearchIndexes,
 	Index extends string,
