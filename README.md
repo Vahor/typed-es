@@ -75,7 +75,7 @@ npm install -D @vahor/typed-es
 | Significant Terms | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significantterms-aggregation) |
 | Significant Text | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-significanttext-aggregation) |
 | Terms | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-terms-aggregation) |
-| Time Series | ❌ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-time-series-aggregation) |
+| Time Series | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-time-series-aggregation) |
 | Variable Width Histogram | ✅ | [docs](https://www.elastic.co/docs/reference/aggregations/search-aggregations-bucket-variablewidthhistogram-aggregation) |
 
 ### Metrics Aggregations

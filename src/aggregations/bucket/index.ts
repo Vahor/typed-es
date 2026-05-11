@@ -28,4 +28,5 @@ export * from "./sampler";
 export * from "./significant_terms";
 export * from "./significant_text";
 export * from "./terms";
+export * from "./time_series";
 export * from "./variable_width_histogram";

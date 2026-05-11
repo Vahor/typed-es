@@ -301,6 +301,7 @@ export type NextAggsParentKey<
 	| "t_test"
 	| "multi_terms"
 	| "terms"
+	| "time_series"
 	| "rare_terms"
 	| "top_hits"
 	| "top_metrics"
@@ -368,6 +369,7 @@ export type AggregationOutput<
 				| Bucket.SignificantText<BaseQuery, E, Index, Agg>
 				| Bucket.SignificantTerms<BaseQuery, E, Index, Agg>
 				| Bucket.Terms<BaseQuery, E, Index, Agg>
+				| Bucket.TimeSeries<BaseQuery, E, Index, Agg>
 				| Bucket.RareTerms<BaseQuery, E, Index, Agg>
 				| Bucket.MultiTerms<BaseQuery, E, Index, Agg>
 				| Bucket.VariableWidthHistogram<BaseQuery, E, Index, Agg>
