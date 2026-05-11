@@ -43,11 +43,12 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-      - name: Remove incompatible tests for v8 (catesian)
+      - name: Remove incompatible tests for v8
         if: matrix.elasticsearch-version == '^8'
         run: |
           rm -f tests/aggregations/metrics/cartesian_bounds.test.ts
           rm -f tests/aggregations/metrics/cartesian_centroid.test.ts
+          rm -f tests/aggregations/pipeline/change_point.test.ts
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
