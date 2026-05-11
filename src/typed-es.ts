@@ -4,6 +4,7 @@ import type {
 	OverwrittenSearchRequestFields,
 	TypedClient,
 	TypedSearchRequest,
+	ValidateTypedSearchRequest,
 } from ".";
 
 /**
@@ -80,7 +81,7 @@ export function typedEs<
 	const Query extends TypedSearchRequest<Indexes>,
 >(
 	_client: TypedClient<Indexes>,
-	query: Query,
+	query: Query & ValidateTypedSearchRequest<Indexes, Query>,
 ): Query & Omit<estypes.SearchRequest, OverwrittenSearchRequestFields> {
 	return query as Query &
 		Omit<estypes.SearchRequest, OverwrittenSearchRequestFields>;

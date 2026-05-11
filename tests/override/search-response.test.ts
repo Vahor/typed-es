@@ -111,10 +111,10 @@ describe("Should return the correct type", () => {
 					});
 
 					test("on an unknown field", () => {
-						const query = typedEs(client, {
+						const query = {
 							index: "demo",
 							_source: ["entity_id.keyword", "invalid"],
-						});
+						} as const satisfies SearchRequest;
 						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
@@ -145,10 +145,10 @@ describe("Should return the correct type", () => {
 					});
 
 					test("on the object itself", () => {
-						const query = typedEs(client, {
+						const query = {
 							index: "orders",
 							_source: ["shipping_address.keyword"],
-						});
+						} as const satisfies SearchRequest;
 						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes
@@ -158,13 +158,13 @@ describe("Should return the correct type", () => {
 					});
 
 					test("on the object itself, but also querying for a leaf field", () => {
-						const query = typedEs(client, {
+						const query = {
 							index: "orders",
 							_source: [
 								"shipping_address.keyword",
 								"shipping_address.postal_code.keyword",
 							],
-						});
+						} as const satisfies SearchRequest;
 						type OutputSource = TypedSearchResponse<
 							typeof query,
 							CustomIndexes

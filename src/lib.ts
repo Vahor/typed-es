@@ -208,6 +208,11 @@ export type PossibleFieldsWithWildcards<
 	OnlyLeaf = false,
 > = PossibleFields<Index, Indexes, OnlyLeaf> | AnyString;
 
+export type {
+	InvalidSourceField,
+	ValidateTypedSearchRequest,
+} from "./types/source-validation";
+
 export type TypeOfField<
 	Field extends string,
 	Indexes extends ElasticsearchIndexes,

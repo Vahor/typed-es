@@ -57,6 +57,7 @@ describe("typedEs Function", () => {
 		test("with invalid fields", () => {
 			typedEs(client, {
 				index: "demo",
+				// @ts-expect-error: `invalid` is not a valid `_source` field for `demo`
 				_source: ["score", "invalid"],
 			});
 		});
