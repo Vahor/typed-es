@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.4.2
+
+### Patch Changes
+
+- [#395](https://github.com/Vahor/typed-es/pull/395) [`76dd0d3`](https://github.com/Vahor/typed-es/commit/76dd0d325d9b2766508ee7706cbd4aafeb2ceb17) Thanks [@Vahor](https://github.com/Vahor)! - Add npm publish provenance by publishing releases through Changesets.
+
 ## 0.4.1
 
 ### Patch Changes
