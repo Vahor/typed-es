@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.0.3
         with:
           fetch-depth: 0
       - name: Setup Biome
@@ -36,7 +36,7 @@ jobs:
         elasticsearch-version: ["^8", "^9"]
         typescript: [tsgo, typescript]
     steps:
-      - uses: actions/checkout@v6.0.2
+      - uses: actions/checkout@v6.0.3
         with:
           fetch-depth: 0
       - uses: oven-sh/setup-bun@v2.2.0
