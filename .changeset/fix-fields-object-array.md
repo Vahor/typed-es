@@ -2,4 +2,4 @@
 "@vahor/typed-es": patch
 ---
 
-Fix `fields` output typing for paths inside "nested" object arrays.
+Fix `fields` and `_source` output typing for paths inside nested object arrays.

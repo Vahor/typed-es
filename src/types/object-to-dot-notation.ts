@@ -9,18 +9,20 @@ export type Primitive =
 	| null
 	| undefined;
 
+export type DotNotationLeaf = Primitive | Date | Function;
+
 export type JoinKeys<T, OnlyLeaf = false, Prefix extends string = ""> = {
-	[K in keyof T]: NonNullable<T[K]> extends Function
+	[K in keyof T]: NonNullable<T[K]> extends
+		| DotNotationLeaf
+		| ReadonlyArray<DotNotationLeaf>
 		? `${Prefix}${Extract<K, string>}`
-		: NonNullable<T[K]> extends Primitive | ReadonlyArray<Primitive> | Date
-			? `${Prefix}${Extract<K, string>}`
-			:
-					| (OnlyLeaf extends true ? never : `${Prefix}${Extract<K, string>}`)
-					| JoinKeys<
-							ArrayItem<T[K]>,
-							OnlyLeaf,
-							`${Prefix}${Extract<K, string>}.`
-					  >;
+		:
+				| (OnlyLeaf extends true ? never : `${Prefix}${Extract<K, string>}`)
+				| JoinKeys<
+						ArrayItem<T[K]>,
+						OnlyLeaf,
+						`${Prefix}${Extract<K, string>}.`
+				  >;
 }[keyof T];
 
 // Inverse steps

@@ -1,16 +1,12 @@
-import type { ArrayItem, UnionToIntersection } from "./helpers";
 import type {
-	Primitive,
+	ArrayItem,
+	ArrayObjectItem,
+	UnionToIntersection,
+} from "./helpers";
+import type {
 	RecursiveDotNotation,
 	RemoveLastDot,
 } from "./object-to-dot-notation";
-
-type ObjectArrayElement<T> =
-	NonNullable<T> extends ReadonlyArray<infer Item>
-		? NonNullable<Item> extends Primitive | Date | Function
-			? never
-			: NonNullable<Item>
-		: never;
 
 type ClosestObjectArrayPath<
 	Schema,
@@ -19,7 +15,7 @@ type ClosestObjectArrayPath<
 > = Field extends Parent
 	? never
 	: Parent extends string
-		? [ObjectArrayElement<RecursiveDotNotation<Schema, Parent>>] extends [never]
+		? [ArrayObjectItem<RecursiveDotNotation<Schema, Parent>>] extends [never]
 			? ClosestObjectArrayPath<Schema, Parent>
 			: Parent
 		: never;
@@ -30,11 +26,11 @@ type FieldObjectAtPath<
 	Value,
 > = Path extends `${infer Key}.${infer Rest}`
 	? Key extends keyof T
-		? [ObjectArrayElement<T[Key]>] extends [never]
+		? [ArrayObjectItem<T[Key]>] extends [never]
 			? { [K in Key]: FieldObjectAtPath<ArrayItem<T[Key]>, Rest, Value> }
 			: {
 					[K in Key]: Array<
-						FieldObjectAtPath<ObjectArrayElement<T[Key]>, Rest, Value>
+						FieldObjectAtPath<ArrayObjectItem<T[Key]>, Rest, Value>
 					>;
 				}
 		: {}

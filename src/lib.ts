@@ -14,8 +14,8 @@ import type {
 	UnionToIntersection,
 } from "./types/helpers";
 import type {
+	DotNotationLeaf,
 	JoinKeys,
-	Primitive,
 	RecursiveDotNotation,
 	RemoveLastDot,
 } from "./types/object-to-dot-notation";
@@ -451,6 +451,8 @@ export type QueryTotal<Query extends SearchRequest> =
 			? number
 			: estypes.SearchTotalHits;
 
+type LeafFieldValue = DotNotationLeaf | ReadonlyArray<DotNotationLeaf>;
+
 type IsParentKeyALeaf<
 	K extends string,
 	E extends ElasticsearchIndexes,
@@ -459,7 +461,7 @@ type IsParentKeyALeaf<
 > = ParentKey extends string
 	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
 		? false
-		: TypeOfField<ParentKey, E, Index> extends Primitive | Array<Primitive>
+		: TypeOfField<ParentKey, E, Index> extends LeafFieldValue
 			? true
 			: false
 	: false;
