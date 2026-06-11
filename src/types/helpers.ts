@@ -6,6 +6,18 @@ export type PrettyArray<T> = Array<Prettify<T>>;
 
 export type RArray<T> = readonly T[] | T[];
 
+export type ArrayItem<T> =
+	NonNullable<T> extends ReadonlyArray<infer Item> ? Item : NonNullable<T>;
+
+export type ArrayObjectItem<T> =
+	NonNullable<T> extends ReadonlyArray<infer Item>
+		? NonNullable<Item> extends object
+			? NonNullable<Item> extends Date | Function
+				? never
+				: NonNullable<Item>
+			: never
+		: never;
+
 export type MergeProperties<
 	A,
 	B,
@@ -205,12 +217,18 @@ export type Combinations<
 					: never
 		: never;
 
+type DeepPickValue<T, Path extends string> = [ArrayObjectItem<T>] extends [
+	never,
+]
+	? DeepPickOne<NonNullable<T>, Path>
+	: Array<DeepPickOne<ArrayObjectItem<T>, Path>>;
+
 type DeepPickOne<
 	T,
 	Path extends string,
 > = Path extends `${infer K}.${infer Rest}`
 	? K extends keyof T
-		? { [Q in K]: DeepPickOne<T[K], Rest> }
+		? { [Q in K]: DeepPickValue<T[K], Rest> }
 		: {}
 	: Path extends keyof T
 		? Pick<T, Path>
