@@ -14,11 +14,15 @@ import type {
 	UnionToIntersection,
 } from "./types/helpers";
 import type {
+	DotNotationLeaf,
 	JoinKeys,
-	Primitive,
 	RecursiveDotNotation,
 	RemoveLastDot,
 } from "./types/object-to-dot-notation";
+import type {
+	FieldsOutputForSchema,
+	MergeFieldsOutputEntries,
+} from "./types/output-fields";
 import type {
 	ExtractQueryFields,
 	ExtractQuerySource,
@@ -447,6 +451,8 @@ export type QueryTotal<Query extends SearchRequest> =
 			? number
 			: estypes.SearchTotalHits;
 
+type LeafFieldValue = DotNotationLeaf | ReadonlyArray<DotNotationLeaf>;
+
 type IsParentKeyALeaf<
 	K extends string,
 	E extends ElasticsearchIndexes,
@@ -455,7 +461,7 @@ type IsParentKeyALeaf<
 > = ParentKey extends string
 	? IsNever<TypeOfField<ParentKey, E, Index>> extends true
 		? false
-		: TypeOfField<ParentKey, E, Index> extends Primitive | Array<Primitive>
+		: TypeOfField<ParentKey, E, Index> extends LeafFieldValue
 			? true
 			: false
 	: false;
@@ -512,6 +518,49 @@ type FieldVariantFields<
 			: never
 		: never;
 
+type FieldsOutputForIndex<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Field extends string,
+	Value,
+> = Index extends AllIndex
+	? {
+			[K in Extract<keyof E, string>]: FieldsOutputForSchema<
+				E[K],
+				Field,
+				Value
+			>;
+		}[Extract<keyof E, string>]
+	: Index extends keyof E
+		? FieldsOutputForSchema<E[Index], Field, Value>
+		: Record<Field, Value>;
+
+type FieldsOutputEntry<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	Field extends string,
+	VariantFields,
+> = Field extends VariantFields
+	? RemoveLastDot<Field> extends infer BaseField extends string
+		? FieldsOutputForIndex<E, Index, BaseField, unknown[]>
+		: never
+	: FieldsOutputForIndex<E, Index, Field, Array<TypeOfField<Field, E, Index>>>;
+
+type ElasticsearchFieldsResult<
+	E extends ElasticsearchIndexes,
+	Index extends string,
+	OutputFields,
+	VariantFields,
+	Field extends string = Extract<OutputFields, string>,
+> =
+	IsNever<Field> extends true
+		? {}
+		: MergeFieldsOutputEntries<
+				Field extends string
+					? FieldsOutputEntry<E, Index, Field, VariantFields>
+					: never
+			>;
+
 export type ElasticsearchOutputFields<
 	QueryWithSource extends Partial<SearchRequest>,
 	E extends ElasticsearchIndexes,
@@ -542,13 +591,7 @@ export type ElasticsearchOutputFields<
 	OutputFields = MatchedFields | VariantFields,
 > = Type extends "_source"
 	? DeepPickFieldsForIndex<E, Index, Extract<OutputFields, string>>
-	: {
-			[K in Extract<OutputFields, string> as K extends VariantFields
-				? RemoveLastDot<K>
-				: K]: K extends VariantFields
-				? Array<unknown>
-				: Array<TypeOfField<K, E, Index>>;
-		};
+	: ElasticsearchFieldsResult<E, Index, OutputFields, VariantFields>;
 
 export type ExtractScriptFieldsKeys<Query extends SearchRequest> =
 	Query extends {

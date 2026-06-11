@@ -1,3 +1,5 @@
+import type { ArrayItem } from "./helpers";
+
 export type Primitive =
 	| string
 	| number
@@ -7,14 +9,20 @@ export type Primitive =
 	| null
 	| undefined;
 
+export type DotNotationLeaf = Primitive | Date | Function;
+
 export type JoinKeys<T, OnlyLeaf = false, Prefix extends string = ""> = {
-	[K in keyof T]: T[K] extends Function
+	[K in keyof T]: NonNullable<T[K]> extends
+		| DotNotationLeaf
+		| ReadonlyArray<DotNotationLeaf>
 		? `${Prefix}${Extract<K, string>}`
-		: T[K] extends Primitive | Array<Primitive> | Date
-			? `${Prefix}${Extract<K, string>}`
-			:
-					| (OnlyLeaf extends true ? never : `${Prefix}${Extract<K, string>}`)
-					| JoinKeys<T[K], OnlyLeaf, `${Prefix}${Extract<K, string>}.`>;
+		:
+				| (OnlyLeaf extends true ? never : `${Prefix}${Extract<K, string>}`)
+				| JoinKeys<
+						ArrayItem<T[K]>,
+						OnlyLeaf,
+						`${Prefix}${Extract<K, string>}.`
+				  >;
 }[keyof T];
 
 // Inverse steps
@@ -24,7 +32,7 @@ export type RecursiveDotNotation<
 	Path extends string,
 > = Path extends `${infer Key}.${infer Rest}`
 	? Key extends keyof T
-		? RecursiveDotNotation<T[Key], Rest>
+		? RecursiveDotNotation<ArrayItem<T[Key]>, Rest>
 		: never
 	: Path extends keyof T
 		? T[Path]
