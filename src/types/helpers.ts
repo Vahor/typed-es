@@ -6,6 +6,9 @@ export type PrettyArray<T> = Array<Prettify<T>>;
 
 export type RArray<T> = readonly T[] | T[];
 
+export type ArrayItem<T> =
+	NonNullable<T> extends ReadonlyArray<infer Item> ? Item : NonNullable<T>;
+
 export type MergeProperties<
 	A,
 	B,
