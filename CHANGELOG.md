@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.4.3
+
+### Patch Changes
+
+- [#408](https://github.com/Vahor/typed-es/pull/408) [`45e0b1c`](https://github.com/Vahor/typed-es/commit/45e0b1cc6add2bbbc4c8ea62e93cfb7e269c09c8) Thanks [@Vahor](https://github.com/Vahor)! - Fix `fields` and `_source` output typing for paths inside nested object arrays.
+
 ## 0.4.2
 
 ### Patch Changes
