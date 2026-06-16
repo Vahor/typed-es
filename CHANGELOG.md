@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 0.4.4
+
+### Patch Changes
+
+- [`9dca94c`](https://github.com/Vahor/typed-es/commit/9dca94c1220b137354f8f3d563aba31751c1768c) Thanks [@Vahor](https://github.com/Vahor)! - Fix fields output type for array-typed schema fields (e.g. `Date[]`) being double-wrapped into `Date[][]` instead of `Date[]`
+
 ## 0.4.3
 
 ### Patch Changes
