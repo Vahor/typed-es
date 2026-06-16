@@ -4,6 +4,7 @@ import type * as Metric from "./aggregations/metrics";
 import type * as Pipeline from "./aggregations/pipeline";
 import type {
 	AnyString,
+	ArrayItem,
 	DeepPickPaths,
 	IsNever,
 	IsOptional,
@@ -544,7 +545,12 @@ type FieldsOutputEntry<
 	? RemoveLastDot<Field> extends infer BaseField extends string
 		? FieldsOutputForIndex<E, Index, BaseField, unknown[]>
 		: never
-	: FieldsOutputForIndex<E, Index, Field, Array<TypeOfField<Field, E, Index>>>;
+	: FieldsOutputForIndex<
+			E,
+			Index,
+			Field,
+			Array<ArrayItem<TypeOfField<Field, E, Index>>>
+		>;
 
 type ElasticsearchFieldsResult<
 	E extends ElasticsearchIndexes,

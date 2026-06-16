@@ -42,7 +42,12 @@ test("407: fields output merges nested object array fields", () => {
 	const query = typedEs(client, {
 		index: "products",
 		_source: false,
-		fields: ["bidule.value", "bidule.description", "readonly_bidule.value"],
+		fields: [
+			"bidule.value",
+			"bidule.description",
+			"readonly_bidule.value",
+			"created_at",
+		],
 	});
 
 	type Output = TypedSearchResponse<typeof query, Indexes>;
@@ -56,5 +61,6 @@ test("407: fields output merges nested object array fields", () => {
 		readonly_bidule: Array<{
 			value: string[];
 		}>;
+		created_at: Date[];
 	}>();
 });
