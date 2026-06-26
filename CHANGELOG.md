@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 1.0.0
+
+### Major Changes
+
+- [#414](https://github.com/Vahor/typed-es/pull/414) [`29b5bcd`](https://github.com/Vahor/typed-es/commit/29b5bcd7ff4e4cefd41134a1155284e39d1413b2) Thanks [@Vahor](https://github.com/Vahor)! - Prepare for v1 stable release. All Elasticsearch aggregations are now implemented, with full bucket, metrics, and pipeline coverage. ESM types resolution fixed in package exports, and documentation updated for v1 semver conventions.
+
 ## 0.4.4
 
 ### Patch Changes
