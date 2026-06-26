@@ -72,6 +72,7 @@
 		"build": "bunx tsdown",
 		"format": "bunx @biomejs/biome check ./ --write",
 		"typecheck": "tsc --noEmit --declaration",
+		"test": "bun test",
 		"ci:version": "bunx @changesets/cli version",
 		"ci:publish": "bun run build && bunx @changesets/cli publish"
 	},

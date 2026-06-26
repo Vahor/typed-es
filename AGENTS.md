@@ -42,7 +42,7 @@ EOF
 - Biome linting with recommended rules (noBannedTypes disabled)
 - Pre-commit hooks with husky and lint-staged
 - Export types and utilities for Elasticsearch type safety
-- Add changesets when making a pull request. In version 0.x.x, create patch changesets.
+- Add changesets when making a pull request. Use "patch" for bug fixes, "minor" for new features, "major" for breaking changes.
 - When adding an aggregation, update the README.md table. 
 - Each aggregation has a test file in tests/aggregations/[type]. The filename for the test file should be the same as the aggregation name but with .test.ts extension. The aggregation filename should contain the aggregation full name in snake_case. If you don't find it by listing the files, it does not exist yet.
 - To add a new aggregation, you'll have to update lib.ts AggregationOutput type and probably NextAggsParentKey. Do not modify the other aggregation implementations unless requested.

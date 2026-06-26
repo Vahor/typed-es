@@ -95,7 +95,7 @@ Most tests verify that types compile correctly and infer the expected shapes.
    ```bash
    bunx @changesets/cli
    ```
-   - Choose "patch" for the version bump (we're in 0.0.x)
+   - Choose "patch" for bug fixes, "minor" for new features, "major" for breaking changes (we follow semver since v1)
    - Write a clear description of your changes
 
 6. **Ensure quality checks pass**:
@@ -133,4 +133,4 @@ tests/                   # Mirror structure of src/
 We use changesets for releases:
 - Maintainers handle the actual releases
 - Every PR that adds functionality should be accompanied by a changeset.
-- Since we're in 0.0.x, most changes are patches.
+- Since v1, we follow semver: minor for new features, patch for bug fixes, major for breaking changes.
