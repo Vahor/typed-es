@@ -643,6 +643,7 @@ export type OverwrittenSearchRequestFields =
 	| "_source"
 	| "aggs"
 	| "aggregations"
+	| "collapse"
 	| "docvalue_fields"
 	| "script_fields"
 	| "fields"
@@ -670,6 +671,24 @@ type SearchFieldsRequest<Field extends string> = RArray<
 	  }
 >;
 
+type SearchInnerHitsWithCollapse<Field extends string> = Omit<
+	estypes.SearchInnerHits,
+	"collapse"
+> & {
+	collapse?: SearchCollapseRequest<Field>;
+};
+
+type SearchCollapseRequest<Field extends string> = Omit<
+	estypes.SearchFieldCollapse,
+	"field" | "inner_hits" | "collapse"
+> & {
+	field: Field;
+	inner_hits?:
+		| SearchInnerHitsWithCollapse<Field>
+		| RArray<SearchInnerHitsWithCollapse<Field>>;
+	collapse?: SearchCollapseRequest<Field>;
+};
+
 export type SearchRequest = Pick<
 	estypes.SearchRequest,
 	Exclude<OverwrittenSearchRequestFields, IssueWithReadonlyArray>
@@ -680,6 +699,7 @@ export type SearchRequest = Pick<
 	docvalue_fields?:
 		| estypes.SearchRequest["docvalue_fields"]
 		| SearchFieldsRequest<string>;
+	collapse?: SearchCollapseRequest<string>;
 };
 
 /**
@@ -744,11 +764,17 @@ type TypedSearchRequestForIndex<
 	docvalue_fields?: SearchFieldsRequest<
 		PossibleFieldsWithWildcards<Index, Indexes, true>
 	>;
+	collapse?: SearchCollapseRequest<PossibleFields<Index, Indexes, true, true>>;
 };
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
 	estypes.SearchRequest,
-	"index" | "_source" | "fields" | "docvalue_fields" | IssueWithReadonlyArray
+	| "index"
+	| "_source"
+	| "fields"
+	| "docvalue_fields"
+	| "collapse"
+	| IssueWithReadonlyArray
 > &
 	(
 		| {
