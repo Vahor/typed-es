@@ -689,10 +689,7 @@ type SearchCollapseRequest<Field extends string> = Omit<
 	collapse?: SearchCollapseRequest<Field>;
 };
 
-type SearchSortFieldValue =
-	| estypes.FieldSort
-	| estypes.SortOrder
-	| { order?: string };
+type SearchSortFieldValue = estypes.FieldSort | estypes.SortOrder;
 
 /**
  * Filters out non-literal string types (bare `string` and template literal types).
