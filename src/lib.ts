@@ -689,6 +689,19 @@ type SearchCollapseRequest<Field extends string> = Omit<
 	collapse?: SearchCollapseRequest<Field>;
 };
 
+type SearchSortFieldValue = estypes.FieldSort | estypes.SortOrder;
+
+type SearchSortField<Field extends string> = {
+	[K in Field]: {
+		[P in K]: SearchSortFieldValue;
+	};
+}[Field];
+
+type SearchSortOptions<Field extends string> = estypes.SortOptionsKeys &
+	SearchSortField<Field>;
+
+type SearchSortRequest<Field extends string> = Field | SearchSortOptions<Field>;
+
 export type SearchRequest = Pick<
 	estypes.SearchRequest,
 	Exclude<OverwrittenSearchRequestFields, IssueWithReadonlyArray>
@@ -765,6 +778,9 @@ type TypedSearchRequestForIndex<
 		PossibleFieldsWithWildcards<Index, Indexes, true>
 	>;
 	collapse?: SearchCollapseRequest<PossibleFields<Index, Indexes, true, true>>;
+	sort?:
+		| SearchSortRequest<PossibleFields<Index, Indexes, true, false>>
+		| RArray<SearchSortRequest<PossibleFields<Index, Indexes, true, false>>>;
 };
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<

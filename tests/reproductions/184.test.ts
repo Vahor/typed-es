@@ -15,8 +15,11 @@ test("type still works when sorting on _score with condition", async () => {
 		rest_total_hits_as_int: true,
 		sort:
 			order.field === "score"
-				? [{ score: { order: "asc" } }, { entity_id: { order: "asc" } }]
-				: [{ entity_id: { order: "asc" } }],
+				? ([
+						{ score: { order: "asc" } },
+						{ entity_id: { order: "asc" } },
+					] as const)
+				: ([{ entity_id: { order: "asc" } }] as const),
 	});
 
 	type Total = QueryTotal<typeof query>;
