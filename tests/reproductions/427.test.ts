@@ -41,3 +41,21 @@ test("427: valid collapse field keeps the response typed", () => {
 		name: string;
 	}>();
 });
+
+test("427: secondary collapse field is validated too", () => {
+	const query = typedEs(client, {
+		index: "demo",
+		_source: false,
+		collapse: {
+			field: "entity_id",
+			// @ts-expect-error `not_a_real_field` is not a valid field for index `demo`
+			inner_hits: {
+				name: "by_score",
+				collapse: {
+					field: "not_a_real_field",
+				},
+			},
+		},
+	});
+	expectTypeOf(query.collapse).not.toBeAny();
+});
