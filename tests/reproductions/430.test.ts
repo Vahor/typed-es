@@ -38,3 +38,15 @@ test("430: valid sort field keeps the response typed", () => {
 		name: string;
 	}>();
 });
+
+test("430: nested sort fields are validated against the index schema", () => {
+	const query = typedEs(client, {
+		index: "demo",
+		_source: false,
+		sort: [
+			// @ts-expect-error `shipping_address.not_real` is not a valid field for index `demo`
+			{ "shipping_address.not_real": { order: "asc" } },
+		],
+	});
+	expectTypeOf(query.sort).not.toBeAny();
+});

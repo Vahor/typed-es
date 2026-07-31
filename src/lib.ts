@@ -691,33 +691,16 @@ type SearchCollapseRequest<Field extends string> = Omit<
 
 type SearchSortFieldValue = estypes.FieldSort | estypes.SortOrder;
 
-/**
- * Filters out non-literal string types (bare `string` and template literal types).
- * Template literal types like `score.${string}` are excluded because using them
- * as object keys behaves like a string index signature, accepting any field name.
- */
-type FilterToStringLiterals<T extends string> = T extends string
-	? string extends T
-		? never
-		: { [P in "__typed_es_not_a_sort_field__"]: 0 } extends {
-					[P in T]: 0;
-				}
-			? never
-			: T
-	: never;
-
 type SearchSortField<Field extends string> = {
-	[K in FilterToStringLiterals<Field>]: {
+	[K in Field]: {
 		[P in K]: SearchSortFieldValue;
 	};
-}[FilterToStringLiterals<Field>];
+}[Field];
 
 type SearchSortOptions<Field extends string> = estypes.SortOptionsKeys &
 	SearchSortField<Field>;
 
-type SearchSortRequest<Field extends string> =
-	| FilterToStringLiterals<Field>
-	| SearchSortOptions<Field>;
+type SearchSortRequest<Field extends string> = Field | SearchSortOptions<Field>;
 
 export type SearchRequest = Pick<
 	estypes.SearchRequest,
@@ -796,8 +779,8 @@ type TypedSearchRequestForIndex<
 	>;
 	collapse?: SearchCollapseRequest<PossibleFields<Index, Indexes, true, true>>;
 	sort?:
-		| SearchSortRequest<PossibleFields<Index, Indexes, true, true>>
-		| RArray<SearchSortRequest<PossibleFields<Index, Indexes, true, true>>>;
+		| SearchSortRequest<PossibleFields<Index, Indexes, true, false>>
+		| RArray<SearchSortRequest<PossibleFields<Index, Indexes, true, false>>>;
 };
 
 export type TypedSearchRequest<Indexes extends ElasticsearchIndexes> = Omit<
