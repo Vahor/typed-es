@@ -1,5 +1,13 @@
 # @vahor/typed-es
 
+## 1.0.1
+
+### Patch Changes
+
+- [#428](https://github.com/Vahor/typed-es/pull/428) [`fa14416`](https://github.com/Vahor/typed-es/commit/fa1441678dbbbaf96f97242efe72977bed98674a) Thanks [@Vahor](https://github.com/Vahor)! - Validate `collapse` field against the index schema, including secondary collapse inside `inner_hits`.
+
+- [#431](https://github.com/Vahor/typed-es/pull/431) [`ef6d6c1`](https://github.com/Vahor/typed-es/commit/ef6d6c1b1eb477e176e47f70b232ee365fc7693c) Thanks [@Vahor](https://github.com/Vahor)! - Validate sort field names against the index schema
+
 ## 1.0.0
 
 ### Major Changes
