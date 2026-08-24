@@ -191,6 +191,9 @@ See [`examples/search-and-aggregations.ts`](./examples/search-and-aggregations.t
 
 The official Elasticsearch client is flexible, but TypeScript often loses the exact response shape. You can write correct manual types, but then every query change also becomes a type-maintenance task. `@vahor/typed-es` keeps the query and response connected.
 
+https://github.com/user-attachments/assets/d4bb7e79-a65b-4f0e-801a-f43fa92731e2
+
+
 <details>
 <summary>Same Example Without This Library</summary>
 
