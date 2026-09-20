@@ -1,5 +1,11 @@
 # @vahor/typed-es
 
+## 1.0.2
+
+### Patch Changes
+
+- [#457](https://github.com/Vahor/typed-es/pull/457) [`03519fb`](https://github.com/Vahor/typed-es/commit/03519fb633af983ccffff79badad8f93aa99e97c) Thanks [@Vahor](https://github.com/Vahor)! - Update release tooling to Changesets v3.
+
 ## 1.0.1
 
 ### Patch Changes

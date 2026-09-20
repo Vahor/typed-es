@@ -1,6 +1,6 @@
 {
 	"name": "@vahor/typed-es",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Infer type-safe Elasticsearch search, msearch, and aggregation responses from your query.",
 	"license": "MIT",
 	"repository": {
