@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       matrix:
         elasticsearch-version: ["^8", "^9"]
-        typescript: [tsgo, typescript]
+        typescript: [tsgo, typescript, typescript-v6]
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -55,6 +55,10 @@ jobs:
         run: bun remove @elastic/elasticsearch && bun add @elastic/elasticsearch@"${{
           matrix.elasticsearch-version }}" --dev
 
+      - name: Install TypeScript v6
+        if: matrix.typescript == 'typescript-v6'
+        run: bun add typescript@^6 --dev
+
       - name: Run typecheck with tsgo
         if: matrix.typescript == 'tsgo'
         run: |
@@ -62,5 +66,5 @@ jobs:
           bunx tsgo --project tsconfig.json --extendedDiagnostics
 
       - name: Run typecheck
-        if: matrix.typescript == 'typescript'
+        if: matrix.typescript != 'tsgo'
         run: bun run typecheck -- --extendedDiagnostics
