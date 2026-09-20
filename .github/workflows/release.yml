@@ -38,10 +38,10 @@ jobs:
         id: changesets
         uses: changesets/action@v2.1.2
         with:
-          commit: "chore(release): version packages"
-          title: "chore(release): version packages"
-          publish: bun run ci:publish
-          version: bun run ci:version
+          commit-message: "chore(release): version packages"
+          pr-title: "chore(release): version packages"
+          publish-script: bun run ci:publish
+          version-script: bun run ci:version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_ENV: production
