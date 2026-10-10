@@ -60,7 +60,7 @@
 		"tsdown": "^0.23.0",
 		"husky": "^9.1.7",
 		"lint-staged": "^17.0.8",
-		"pkg-pr-new": "^0.0.88",
+		"pkg-pr-new": "^0.0.90",
 		"typescript": "^7.0.0"
 	},
 	"peerDependencies": {
