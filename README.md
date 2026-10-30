@@ -142,7 +142,7 @@ npm install -D @vahor/typed-es
 - **Script fields**: `script_fields` appear on the response under `fields` with `unknown` values.
 - **Total hits**: `hits.total` follows `track_total_hits` and `rest_total_hits_as_int`.
 - **Wildcard `_source` selections**: `_source: ["*_at"]` narrows the response to matching fields like `created_at`.
-- **Empty metric results**: `avg`, `min`, and `max` values include `null`; check for it before using the result. `sum`, `value_count`, and `cardinality` remain numeric.
+- **Empty metric results**: Standalone `avg`, `min`, and `max` aggregation values include `null`; check for it before using the result. `sum`, `value_count`, and `cardinality` remain numeric. This does not yet cover fields within `stats` or `extended_stats` results.
 - **Multi-search**: `msearch` responses preserve the type of each request pair.
 - **Async search**: `asyncSearch.get<typeof query>()` can recover the original response type.
 - **Child inner hits**: `has_child` + `inner_hits` is keyed by child `type` or `inner_hits.name`.

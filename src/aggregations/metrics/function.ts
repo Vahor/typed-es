@@ -49,7 +49,7 @@ type FunctionOutput<
 				value_as_string?: string;
 				value: Fn extends AggFunctionsCount
 					? number
-					: TypeOfField<Field, E, Index> extends number
+					: NonNullable<TypeOfField<Field, E, Index>> extends number
 						? number | null
 						: number | string | null;
 			},

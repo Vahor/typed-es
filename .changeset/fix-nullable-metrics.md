@@ -1,5 +1,5 @@
 ---
-"@vahor/typed-es": patch
+"@vahor/typed-es": major
 ---
 
-Correct `avg`, `min`, and `max` values to include `null` for empty results. Consumers may need to add null checks; `sum`, `value_count`, and `cardinality` remain non-nullable.
+Correct standalone `avg`, `min`, and `max` values to include `null` for empty results. Breaking type change: consumers must handle `null` before using number-only operations. Nullable numeric fields retain numeric `min`/`max` values without an additional `string` possibility. `sum`, `value_count`, and `cardinality` remain non-nullable.

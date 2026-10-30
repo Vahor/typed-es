@@ -12,6 +12,21 @@ import {
 } from "../../shared";
 
 describe("Leaf Function Aggregations", () => {
+	test("nullable numeric fields do not produce string min or max values", () => {
+		type Output = TypedSearchResponse<
+			{
+				index: "docs";
+				aggs: {
+					minimum: { min: { field: "price" } };
+					maximum: { max: { field: "optional_price" } };
+				};
+			},
+			{ docs: { price: number | null; optional_price?: number | null } }
+		>["aggregations"];
+		expectTypeOf<Output["minimum"]["value"]>().toEqualTypeOf<number | null>();
+		expectTypeOf<Output["maximum"]["value"]>().toEqualTypeOf<number | null>();
+	});
+
 	test("empty results can have null metrics but counts and sums remain numeric", () => {
 		const query = typedEs(client, {
 			index: "orders",
