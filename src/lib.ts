@@ -25,6 +25,7 @@ import type {
 	MergeFieldsOutputEntries,
 } from "./types/output-fields";
 import type {
+	ExcludeQuerySource,
 	ExtractQueryFields,
 	ExtractQuerySource,
 } from "./types/requested-fields";
@@ -596,7 +597,11 @@ export type ElasticsearchOutputFields<
 	>,
 	OutputFields = MatchedFields | VariantFields,
 > = Type extends "_source"
-	? DeepPickFieldsForIndex<E, Index, Extract<OutputFields, string>>
+	? DeepPickFieldsForIndex<
+			{ [K in keyof E]: ExcludeQuerySource<QueryWithSource, E[K]> },
+			Index,
+			Extract<OutputFields, string>
+		>
 	: ElasticsearchFieldsResult<E, Index, OutputFields, VariantFields>;
 
 export type ExtractScriptFieldsKeys<Query extends SearchRequest> =
