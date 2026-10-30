@@ -3,6 +3,21 @@ import type { MetricAggregations } from "../../../src";
 import type { CustomIndexes, TestAggregationOutput } from "../../shared";
 
 describe("top_metrics Aggregations", () => {
+	test("accepts a union of object and array metric forms", () => {
+		type Output = MetricAggregations.TopMetrics<
+			CustomIndexes,
+			"demo",
+			{
+				top_metrics: {
+					metrics: { field: "score" } | readonly [{ field: "score" }];
+				};
+			}
+		>;
+		expectTypeOf<Output>().toEqualTypeOf<{
+			top: Array<{ sort: unknown[]; metrics: { score: number } }>;
+		}>();
+	});
+
 	test("docs example with a single metric", () => {
 		type Aggregations = TestAggregationOutput<
 			"demo",

@@ -11,7 +11,9 @@ export type TopMetrics<
 > = Agg extends {
 	top_metrics: { metrics: infer M };
 }
-	? ArrayItem<M> extends { field: infer Field extends string }
+	? (M extends unknown ? ArrayItem<M> : never) extends {
+			field: infer Field extends string;
+		}
 		? {
 				top: PrettyArray<{
 					sort: unknown[];
