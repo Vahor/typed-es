@@ -3,6 +3,25 @@ import { type ElasticsearchOutputFields, typedEs } from "../src";
 import { type CustomIndexes, client } from "./shared";
 
 describe("OutputFields", () => {
+	test("exclusions preserve retained unknown payloads", () => {
+		type Output = ElasticsearchOutputFields<
+			{ index: "docs"; _source: { excludes: ["secret"] } },
+			{
+				docs: {
+					payload: unknown;
+					nested: { payload: unknown };
+					secret: string;
+				};
+			},
+			"docs",
+			"_source"
+		>;
+		expectTypeOf<Output>().toEqualTypeOf<{
+			payload: unknown;
+			nested: { payload: unknown };
+		}>();
+	});
+
 	test("default to all fields", () => {
 		const query = typedEs(client, {
 			index: "demo",

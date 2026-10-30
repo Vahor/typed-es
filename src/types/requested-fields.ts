@@ -45,17 +45,19 @@ type ExcludeSourceFields<
 		? {
 				[K in keyof Source]: ExcludeSourceFields<Source[K], Excludes, Prefix>;
 			}
-		: {
-				[K in keyof Source as IsNever<
-					WildcardSearch<`${Prefix}${Extract<K, string>}`, Excludes>
-				> extends true
-					? K
-					: never]: ExcludeSourceFields<
-					Source[K],
-					Excludes,
-					`${Prefix}${Extract<K, string>}.`
-				>;
-			};
+		: Source extends object
+			? {
+					[K in keyof Source as IsNever<
+						WildcardSearch<`${Prefix}${Extract<K, string>}`, Excludes>
+					> extends true
+						? K
+						: never]: ExcludeSourceFields<
+						Source[K],
+						Excludes,
+						`${Prefix}${Extract<K, string>}.`
+					>;
+				}
+			: Source;
 
 export type ExcludeQuerySource<Query, Source> = Query extends {
 	_source: infer Filter extends
