@@ -11,17 +11,20 @@ Thank you for your interest in contributing to Typed ES! This guide will help yo
 ### Development Setup
 
 1. Fork and clone the repository:
+
    ```bash
    git clone https://github.com/Vahor/typed-es.git
    cd typed-es
    ```
 
 2. Install dependencies:
+
    ```bash
    bun install
    ```
 
 3. Verify the setup:
+
    ```bash
    bun run build
    bun run typecheck
@@ -68,6 +71,7 @@ If you need an aggregation that's not implemented:
 ## Testing
 
 ### Type Testing
+
 Since this is a type-focused library, we primarily use TypeScript's compiler for testing:
 
 ```bash
@@ -77,6 +81,7 @@ bun run typecheck  # This runs tsc --noEmit
 Most tests verify that types compile correctly and infer the expected shapes.
 
 ### Test Requirements
+
 - **All new features must have tests**
 - **Tests should cover edge cases and error conditions**
 - **Use existing test patterns as reference**
@@ -92,13 +97,16 @@ Most tests verify that types compile correctly and infer the expected shapes.
 4. **Add documentation** for your changes: README, and if needed add a new example in `examples/`
 
 5. **Create a changeset** (optional):
+
    ```bash
    bunx @changesets/cli
    ```
+
    - Choose "patch" for bug fixes, "minor" for new features, "major" for breaking changes (we follow semver since v1)
    - Write a clear description of your changes
 
 6. **Ensure quality checks pass**:
+
    ```bash
    bun run format
    bun run typecheck
@@ -108,7 +116,6 @@ Most tests verify that types compile correctly and infer the expected shapes.
 7. **Create a pull request**:
    - Use a descriptive title
    - Reference any related issues
-
 
 8. **Review part**:
    - Ensure quality checks pass
