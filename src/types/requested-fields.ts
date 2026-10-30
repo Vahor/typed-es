@@ -1,5 +1,7 @@
 import type { RequestedIndex } from "../lib";
 import type { GetField, IsNever } from "./helpers";
+import type { DotNotationLeaf } from "./object-to-dot-notation";
+import type { WildcardSearch } from "./wildcard-search";
 
 type SourceFilterKey = "includes" | "include" | "excludes" | "exclude";
 type SourceFilter = Partial<Record<SourceFilterKey, readonly string[]>>;
@@ -31,6 +33,42 @@ export type ExtractQuerySource<
 		: Source extends false
 			? never
 			: AllFields;
+
+// Exclude fields before picking them so an included parent cannot restore excluded children.
+type ExcludeSourceFields<
+	Source,
+	Excludes,
+	Prefix extends string = "",
+> = Source extends DotNotationLeaf
+	? Source
+	: Source extends readonly unknown[]
+		? {
+				[K in keyof Source]: ExcludeSourceFields<Source[K], Excludes, Prefix>;
+			}
+		: Source extends object
+			? {
+					[K in keyof Source as IsNever<
+						WildcardSearch<`${Prefix}${Extract<K, string>}`, Excludes>
+					> extends true
+						? K
+						: never]: ExcludeSourceFields<
+						Source[K],
+						Excludes,
+						`${Prefix}${Extract<K, string>}.`
+					>;
+				}
+			: Source;
+
+export type ExcludeQuerySource<Query, Source> = Query extends {
+	_source: infer Filter extends
+		| { excludes: readonly string[] }
+		| { exclude: readonly string[] };
+}
+	? ExcludeSourceFields<
+			Source,
+			SourceFilterValue<Filter, "excludes" | "exclude">
+		>
+	: Source;
 
 type FieldRequestName<Field> = Field extends string
 	? Field
