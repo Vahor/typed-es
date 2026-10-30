@@ -31,7 +31,7 @@ describe("Bucket Sort Pipeline Aggregation", () => {
 				buckets: Array<{
 					key: string | number;
 					doc_count: number;
-					avg_score: { value: number | null; value_as_string?: string };
+					avg_score: { value: number; value_as_string?: string };
 				}>;
 			};
 		}>();
@@ -131,7 +131,7 @@ describe("Bucket Sort Pipeline Aggregation", () => {
 				buckets: Array<{
 					key: "t-shirt" | "hat";
 					doc_count: number;
-					avg_price: { value: number | null; value_as_string?: string };
+					avg_price: { value: number; value_as_string?: string };
 				}>;
 			};
 		}>();

@@ -102,7 +102,7 @@ describe("Significant Terms Aggregations", () => {
 					score: number;
 					bg_count: number;
 					avg_score: {
-						value: number | null;
+						value: number;
 						value_as_string?: string;
 					};
 				}>;

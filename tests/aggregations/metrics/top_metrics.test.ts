@@ -32,7 +32,7 @@ describe("top_metrics Aggregations", () => {
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			max_score: {
-				value: number | null;
+				value: number;
 				value_as_string?: string;
 			};
 			top_scores: {

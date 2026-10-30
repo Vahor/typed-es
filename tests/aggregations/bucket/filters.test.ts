@@ -134,7 +134,7 @@ describe("Filters Aggregations", () => {
 				buckets: Array<{
 					key: "t-shirt" | "hat";
 					doc_count: number;
-					avg_price: { value: number | null; value_as_string?: string };
+					avg_price: { value: number; value_as_string?: string };
 				}>;
 			};
 		}>();

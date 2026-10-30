@@ -35,7 +35,7 @@ return last_doc
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			max_score: {
-				value: number | null;
+				value: number;
 				value_as_string?: string;
 			};
 			latest_doc: {

@@ -44,7 +44,7 @@ describe("Missing Aggregations", () => {
 			orders_without_status: {
 				doc_count: number;
 				avg_total: {
-					value: number | null;
+					value: number;
 					value_as_string?: string;
 				};
 			};
@@ -79,11 +79,11 @@ describe("Missing Aggregations", () => {
 			items_without_score: {
 				doc_count: number;
 				avg_weight: {
-					value: number | null;
+					value: number;
 					value_as_string?: string;
 				};
 				max_load_time: {
-					value: number | null;
+					value: number;
 					value_as_string?: string;
 				};
 			};

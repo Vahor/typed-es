@@ -88,11 +88,11 @@ describe("Composite Aggregations", () => {
 					key: Record<"entity" | "key2", unknown>;
 					doc_count: number;
 					max_date: {
-						value: number | string | null;
+						value: number | string;
 						value_as_string?: string;
 					};
 					min_date: {
-						value: number | string | null;
+						value: number | string;
 						value_as_string?: string;
 					};
 					terms_field: {
@@ -149,7 +149,7 @@ describe("Composite Aggregations", () => {
 					doc_count: number;
 					value:
 						| {
-								value: number | null;
+								value: number;
 								value_as_string?: string;
 						  }
 						| {

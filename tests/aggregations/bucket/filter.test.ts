@@ -44,7 +44,7 @@ describe("Filter Aggregations", () => {
 			completed_orders: {
 				doc_count: number;
 				avg_total: {
-					value: number | null;
+					value: number;
 					value_as_string?: string;
 				};
 			};
@@ -83,11 +83,11 @@ describe("Filter Aggregations", () => {
 			high_scores: {
 				doc_count: number;
 				avg_score: {
-					value: number | null;
+					value: number;
 					value_as_string?: string;
 				};
 				max_score: {
-					value: number | null;
+					value: number;
 					value_as_string?: string;
 				};
 			};

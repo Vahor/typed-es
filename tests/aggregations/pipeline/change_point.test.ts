@@ -24,7 +24,7 @@ describe("Change Point Pipeline Aggregation", () => {
 					key_as_string: string;
 					key: number;
 					doc_count: number;
-					avg: { value: number | null; value_as_string?: string };
+					avg: { value: number; value_as_string?: string };
 				}>;
 			};
 			change_points_avg: {
