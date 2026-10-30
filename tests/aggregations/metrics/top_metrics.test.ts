@@ -1,7 +1,60 @@
 import { describe, expectTypeOf, test } from "bun:test";
-import type { TestAggregationOutput } from "../../shared";
+import type { MetricAggregations } from "../../../src";
+import type { CustomIndexes, TestAggregationOutput } from "../../shared";
 
 describe("top_metrics Aggregations", () => {
+	test("accepts a union of object and array metric forms", () => {
+		type Output = MetricAggregations.TopMetrics<
+			CustomIndexes,
+			"demo",
+			{
+				top_metrics: {
+					metrics: { field: "score" } | readonly [{ field: "score" }];
+				};
+			}
+		>;
+		expectTypeOf<Output>().toEqualTypeOf<{
+			top: Array<{ sort: unknown[]; metrics: { score: number } }>;
+		}>();
+	});
+
+	test("docs example with a single metric", () => {
+		type Aggregations = TestAggregationOutput<
+			"demo",
+			{
+				tm: {
+					top_metrics: {
+						metrics: { field: "score" };
+						sort: { latency: "desc" };
+					};
+				};
+			}
+		>;
+		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
+			tm: {
+				top: Array<{ sort: unknown[]; metrics: { score: number } }>;
+			};
+		}>();
+	});
+
+	test("readonly metric lists retain each field's type", () => {
+		type Output = MetricAggregations.TopMetrics<
+			CustomIndexes,
+			"demo",
+			{
+				top_metrics: {
+					metrics: readonly [{ field: "score" }, { field: "entity_id" }];
+				};
+			}
+		>;
+		expectTypeOf<Output>().toEqualTypeOf<{
+			top: Array<{
+				sort: unknown[];
+				metrics: { score: number; entity_id: string };
+			}>;
+		}>();
+	});
+
 	test("get the top 10 of a field", () => {
 		type Aggregations = TestAggregationOutput<
 			"orders",

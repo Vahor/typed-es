@@ -1,5 +1,5 @@
 import type { ElasticsearchIndexes, TypeOfField } from "../../lib";
-import type { PrettyArray } from "../../types/helpers";
+import type { ArrayItem, PrettyArray } from "../../types/helpers";
 
 /**
  * @see https://www.elastic.co/docs/reference/aggregations/search-aggregations-metrics-top-metrics
@@ -9,14 +9,18 @@ export type TopMetrics<
 	Index extends string,
 	Agg,
 > = Agg extends {
-	top_metrics: { metrics: infer M extends Record<"field", string>[] };
+	top_metrics: { metrics: infer M };
 }
-	? {
-			top: PrettyArray<{
-				sort: unknown[];
-				metrics: {
-					[k in M[number]["field"]]: TypeOfField<k, E, Index>;
-				};
-			}>;
+	? (M extends unknown ? ArrayItem<M> : never) extends {
+			field: infer Field extends string;
 		}
+		? {
+				top: PrettyArray<{
+					sort: unknown[];
+					metrics: {
+						[k in Field]: TypeOfField<k, E, Index>;
+					};
+				}>;
+			}
+		: never
 	: never;
