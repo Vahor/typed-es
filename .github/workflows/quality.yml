@@ -43,17 +43,13 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-      - name: Remove incompatible tests for v8
-        if: matrix.elasticsearch-version == '^8'
-        run: |
-          rm -f tests/aggregations/metrics/cartesian_bounds.test.ts
-          rm -f tests/aggregations/metrics/cartesian_centroid.test.ts
-          rm -f tests/aggregations/pipeline/change_point.test.ts
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Install Elasticsearch ${{ matrix.elasticsearch-version }}
-        run: bun remove @elastic/elasticsearch && bun add @elastic/elasticsearch@"${{
-          matrix.elasticsearch-version }}" --dev
+        run: >-
+          bun add --dev
+          @elastic/elasticsearch@"${{ matrix.elasticsearch-version }}"
+          @elastic/transport@"${{ matrix.elasticsearch-version }}"
 
       - name: Install TypeScript v6
         if: matrix.typescript == 'typescript-v6'
@@ -61,3 +57,7 @@ jobs:
 
       - name: Run typecheck
         run: bun run typecheck -- --extendedDiagnostics
+      - name: Run tests
+        run: bun test
+      - name: Build package
+        run: bun run build
