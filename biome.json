@@ -31,5 +31,10 @@
 		"formatter": {
 			"quoteStyle": "double"
 		}
+	},
+	"markdown": {
+		"formatter": {
+			"enabled": false
+		}
 	}
 }
