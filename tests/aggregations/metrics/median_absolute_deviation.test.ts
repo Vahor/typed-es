@@ -25,7 +25,7 @@ describe("Median Absolute Deviation Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			review_average: {
 				value_as_string?: string;
-				value: number;
+				value: number | null;
 			};
 			review_variability: {
 				value: number;
@@ -53,7 +53,7 @@ describe("Median Absolute Deviation Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			review_average: {
 				value_as_string?: string;
-				value: number;
+				value: number | null;
 			};
 			review_variability: InvalidFieldTypeInAggregation<
 				"id",
@@ -84,7 +84,7 @@ describe("Median Absolute Deviation Aggregation", () => {
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			review_average: {
 				value_as_string?: string;
-				value: number;
+				value: number | null;
 			};
 			review_variability: InvalidFieldInAggregation<
 				"invalid",

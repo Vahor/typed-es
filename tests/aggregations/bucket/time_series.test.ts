@@ -60,7 +60,7 @@ describe("Time Series Bucket Aggregation", () => {
 				buckets: Array<{
 					key: TimeSeriesKey;
 					doc_count: number;
-					max_price: { value: number; value_as_string?: string };
+					max_price: { value: number | null; value_as_string?: string };
 				}>;
 			};
 		}>();

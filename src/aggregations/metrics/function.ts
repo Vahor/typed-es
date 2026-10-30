@@ -21,9 +21,9 @@ export type AggFunction =
 	| AggFunctionsNumericField
 	| AggFunctionsNumericOrDateField;
 
-type NumericFunctionResult = {
+type NumericFunctionResult<Fn extends AggFunctionsNumericField> = {
 	value_as_string?: string;
-	value: number;
+	value: Fn extends "avg" ? number | null : number;
 };
 
 type FunctionOutput<
@@ -38,7 +38,7 @@ type FunctionOutput<
 			Index,
 			Agg,
 			number,
-			NumericFunctionResult,
+			NumericFunctionResult<Fn>,
 			Field
 		>
 	: AggregationFieldResult<
@@ -50,8 +50,8 @@ type FunctionOutput<
 				value: Fn extends AggFunctionsCount
 					? number
 					: TypeOfField<Field, E, Index> extends number
-						? number
-						: number | string;
+						? number | null
+						: number | string | null;
 			},
 			Field
 		>;

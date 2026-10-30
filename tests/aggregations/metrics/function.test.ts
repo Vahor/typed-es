@@ -12,6 +12,31 @@ import {
 } from "../../shared";
 
 describe("Leaf Function Aggregations", () => {
+	test("empty results can have null metrics but counts and sums remain numeric", () => {
+		const query = typedEs(client, {
+			index: "orders",
+			query: { match_none: {} },
+			aggs: {
+				average: { avg: { field: "total" } },
+				minimum: { min: { field: "total" } },
+				maximum: { max: { field: "total" } },
+				sum: { sum: { field: "total" } },
+				count: { value_count: { field: "total" } },
+				cardinality: { cardinality: { field: "total" } },
+			},
+		});
+		type Output = TypedSearchResponse<
+			typeof query,
+			CustomIndexes
+		>["aggregations"];
+		expectTypeOf<Output["average"]["value"]>().toEqualTypeOf<number | null>();
+		expectTypeOf<Output["minimum"]["value"]>().toEqualTypeOf<number | null>();
+		expectTypeOf<Output["maximum"]["value"]>().toEqualTypeOf<number | null>();
+		expectTypeOf<Output["sum"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["count"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["cardinality"]["value"]>().toEqualTypeOf<number>();
+	});
+
 	test("with min", () => {
 		type Aggregations = TestAggregationOutput<
 			"orders",
@@ -25,7 +50,7 @@ describe("Leaf Function Aggregations", () => {
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			min_value: {
-				value: number;
+				value: number | null;
 				value_as_string?: string;
 			};
 		}>();
@@ -50,7 +75,7 @@ describe("Leaf Function Aggregations", () => {
 		type Aggregations = Output["aggregations"];
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value: {
-				value: number;
+				value: number | null;
 				value_as_string?: string;
 			};
 		}>();
@@ -79,11 +104,11 @@ describe("Leaf Function Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value:
 				| {
-						value: number;
+						value: number | null;
 						value_as_string?: string;
 				  }
 				| {
-						value: number;
+						value: number | null;
 						value_as_string?: string;
 				  };
 		}>();
@@ -114,7 +139,7 @@ describe("Leaf Function Aggregations", () => {
 		expectTypeOf<Aggregations>().toEqualTypeOf<{
 			value:
 				| {
-						value: number;
+						value: number | null;
 						value_as_string?: string;
 				  }
 				| {
@@ -258,27 +283,27 @@ describe("Leaf Function Aggregations", () => {
 		>;
 		expectTypeOf<Aggregations["aggregations"]>().toEqualTypeOf<{
 			str_min: {
-				value: number | string;
+				value: number | string | null;
 				value_as_string?: string;
 			};
 			num_min: {
-				value: number;
+				value: number | null;
 				value_as_string?: string;
 			};
 			date_min: {
-				value: number | string;
+				value: number | string | null;
 				value_as_string?: string;
 			};
 			str_max: {
-				value: number | string;
+				value: number | string | null;
 				value_as_string?: string;
 			};
 			num_max: {
-				value: number;
+				value: number | null;
 				value_as_string?: string;
 			};
 			date_max: {
-				value: number | string;
+				value: number | string | null;
 				value_as_string?: string;
 			};
 			str_avg: InvalidFieldTypeInAggregation<
@@ -289,7 +314,7 @@ describe("Leaf Function Aggregations", () => {
 				number
 			>;
 			num_avg: {
-				value: number;
+				value: number | null;
 				value_as_string?: string;
 			};
 			date_avg: InvalidFieldTypeInAggregation<

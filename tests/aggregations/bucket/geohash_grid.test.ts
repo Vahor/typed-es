@@ -78,7 +78,7 @@ describe("Geohash Grid Aggregations", () => {
 					key: string;
 					doc_count: number;
 					avg_total: {
-						value: number;
+						value: number | null;
 						value_as_string?: string;
 					};
 				}>;

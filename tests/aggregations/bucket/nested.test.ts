@@ -128,7 +128,7 @@ describe("Nested Aggregations", () => {
 			resellers: {
 				doc_count: number;
 				min_price: {
-					value: number;
+					value: number | null;
 					value_as_string?: string;
 				};
 			};

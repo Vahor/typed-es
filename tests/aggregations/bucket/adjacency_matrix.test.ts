@@ -58,7 +58,7 @@ describe("adjacency_matrix aggregation", () => {
 				key: "SomeName" | "AnotherName" | "AnotherName&SomeName";
 				doc_count: number;
 				avg_score: {
-					value: number;
+					value: number | null;
 					value_as_string?: string;
 				};
 			}>;
