@@ -1,5 +1,17 @@
 # @vahor/typed-es
 
+## 1.0.3
+
+### Patch Changes
+
+- [#473](https://github.com/Vahor/typed-es/pull/473) [`acd1610`](https://github.com/Vahor/typed-es/commit/acd16104786b6693916fc6aba0f87d4526dc4485) Thanks [@Vahor](https://github.com/Vahor)! - Infer `null` in standalone `avg`, `min`, and `max` values only when the field definition explicitly includes `null`. Nullable numeric fields retain numeric `min`/`max` values without an additional `string` possibility. `sum`, `value_count`, and `cardinality` remain non-nullable. Non-nullable field definitions retain their existing result types, even though Elasticsearch can return `null` for empty results.
+
+- [#472](https://github.com/Vahor/typed-es/pull/472) [`e141ef4`](https://github.com/Vahor/typed-es/commit/e141ef4223efa6bb2a19be8cb0c8f100891c7edf) Thanks [@Vahor](https://github.com/Vahor)! - Apply `_source` exclusions to wildcard selections and nested fields without restoring excluded children through included parent objects.
+
+- [#471](https://github.com/Vahor/typed-es/pull/471) [`5691254`](https://github.com/Vahor/typed-es/commit/56912545dbc7147b77e8468e7810caf73266aad9) Thanks [@Vahor](https://github.com/Vahor)! - Fix `top_metrics` inference for single-metric objects and readonly metric arrays.
+
+- [#470](https://github.com/Vahor/typed-es/pull/470) [`25c5405`](https://github.com/Vahor/typed-es/commit/25c5405b09e7813c505e6ff2c1fd0dbc64816033) Thanks [@Vahor](https://github.com/Vahor)! - Update development dependencies and vulnerable transitive packages while retaining Elasticsearch 8 compatibility. Use Elasticsearch 8 for local development and validate Elasticsearch 8 and 9 with TypeScript 6 and 7 in CI.
+
 ## 1.0.2
 
 ### Patch Changes
