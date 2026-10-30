@@ -12,6 +12,50 @@ import {
 } from "../../shared";
 
 describe("Leaf Function Aggregations", () => {
+	test("metric nullability follows explicit null in the field definition", () => {
+		type Output = TypedSearchResponse<
+			{
+				index: "docs";
+				aggs: {
+					average: { avg: { field: "price" } };
+					minimum: { min: { field: "price" } };
+					maximum: { max: { field: "price" } };
+					optional: { avg: { field: "optional_price" } };
+					nullable_average: { avg: { field: "nullable_price" } };
+					nullable_minimum: { min: { field: "nullable_price" } };
+					nullable_maximum: { max: { field: "optional_nullable_price" } };
+					sum: { sum: { field: "nullable_price" } };
+					count: { value_count: { field: "nullable_price" } };
+					cardinality: { cardinality: { field: "nullable_price" } };
+				};
+			},
+			{
+				docs: {
+					price: number;
+					optional_price?: number;
+					nullable_price: number | null;
+					optional_nullable_price?: number | null;
+				};
+			}
+		>["aggregations"];
+		expectTypeOf<Output["average"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["minimum"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["maximum"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["optional"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["nullable_average"]["value"]>().toEqualTypeOf<
+			number | null
+		>();
+		expectTypeOf<Output["nullable_minimum"]["value"]>().toEqualTypeOf<
+			number | null
+		>();
+		expectTypeOf<Output["nullable_maximum"]["value"]>().toEqualTypeOf<
+			number | null
+		>();
+		expectTypeOf<Output["sum"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["count"]["value"]>().toEqualTypeOf<number>();
+		expectTypeOf<Output["cardinality"]["value"]>().toEqualTypeOf<number>();
+	});
+
 	test("with min", () => {
 		type Aggregations = TestAggregationOutput<
 			"orders",

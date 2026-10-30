@@ -145,6 +145,7 @@ npm install -D @vahor/typed-es
 - **Script fields**: `script_fields` appear on the response under `fields` with `unknown` values.
 - **Total hits**: `hits.total` follows `track_total_hits` and `rest_total_hits_as_int`.
 - **Wildcard `_source` selections**: `_source: ["*_at"]` narrows the response to matching fields like `created_at`.
+- **Metric nullability**: Standalone `avg`, `min`, and `max` aggregation values include `null` only when the field definition explicitly includes `null`. Optional fields alone do not add `null`. `sum`, `value_count`, and `cardinality` remain numeric. Elasticsearch can still return `null` for empty aggregations on non-nullable fields; this schema-driven typing does not model that case. This does not cover fields within `stats` or `extended_stats` results.
 - **Source exclusions**: `_source.excludes` removes matching fields, including nested fields selected through parents or wildcards.
 - **Multi-search**: `msearch` responses preserve the type of each request pair.
 - **Async search**: `asyncSearch.get<typeof query>()` can recover the original response type.
