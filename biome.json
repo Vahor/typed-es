@@ -32,9 +32,10 @@
 			"quoteStyle": "double"
 		}
 	},
-	"markdown": {
-		"formatter": {
-			"enabled": false
+	"overrides": [
+		{
+			"includes": [".changeset/**", "CHANGELOG.md"],
+			"formatter": { "enabled": false }
 		}
-	}
+	]
 }
