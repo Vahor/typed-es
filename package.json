@@ -61,7 +61,7 @@
 		"@types/bun": "^1.4.4",
 		"husky": "^9.1.7",
 		"lint-staged": "^17.6.0",
-		"pkg-pr-new": "^0.0.93",
+		"pkg-pr-new": "^0.0.95",
 		"tsdown": "^0.23.4",
 		"typescript": "^7.0.2"
 	},
