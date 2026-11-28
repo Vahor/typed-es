@@ -54,7 +54,7 @@
 	],
 	"devDependencies": {
 		"@biomejs/biome": "2.6.4",
-		"@changesets/changelog-github": "^1.0.1",
+		"@changesets/changelog-github": "^2.0.0",
 		"@changesets/cli": "^3.0.3",
 		"@elastic/elasticsearch": "^8.19.2",
 		"@elastic/transport": "^8.11.0",
